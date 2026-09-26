@@ -88,9 +88,7 @@ body { margin: 0; overflow: hidden; background: #1A1A2E; }
 <body>
 
 <div id="status">&#127981; Cargando La Fabrica de Fantine...</div>
-
 <div id="zona-indicator">ZONA 1: Entrada de la Fabrica</div>
-
 <div id="controles">
   <strong style="color:#D4A574;">Controles:</strong><br>
   W A S D = caminar<br>
@@ -98,7 +96,7 @@ body { margin: 0; overflow: hidden; background: #1A1A2E; }
   Clic = interactuar
 </div>
 
-<!-- PANEL: CARTEL HISTORICO -->
+<!-- PANELES ZONA 1 -->
 <div class="panel" id="p-cartel">
   <span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span>
   <b style="color:#D4A574;font-size:20px;">&#128203; Contexto Historico: Montreuil-sur-Mer</b><br><br>
@@ -112,7 +110,6 @@ body { margin: 0; overflow: hidden; background: #1A1A2E; }
   <small style="color:#A0896E;">&mdash; Victor Hugo, Los Miserables, Parte I, Libro V, Cap. II (1862)</small>
 </div>
 
-<!-- PANEL: PORTON -->
 <div class="panel" id="p-porton">
   <span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span>
   <b style="color:#D4A574;font-size:20px;">&#128682; El Porton de la Fabrica</b><br><br>
@@ -121,24 +118,20 @@ body { margin: 0; overflow: hidden; background: #1A1A2E; }
   A las mujeres les exigia <em>"buenas costumbres"</em> &mdash;
   una condicion que destruiria a Fantine cuando descubrieran
   su secreto: tenia una hija.<br><br>
-  <b style="color:#FF5900;">&#10148; Avanza hacia el interior de la fabrica (tecla W)
-  para descubrir la historia de Fantine.</b>
+  <b style="color:#FF5900;">&#10148; Avanza hacia el interior (tecla W) para descubrir la historia.</b>
 </div>
 
-<!-- PANEL: INSTRUCCIONES -->
 <div class="panel" id="p-instrucciones">
   <span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span>
   <b style="color:#D4A574;font-size:20px;">&#128214; Como explorar este universo virtual</b><br><br>
-  <b>Movimiento:</b> Teclas W (adelante), S (atras), A (izquierda), D (derecha)<br>
+  <b>Movimiento:</b> W (adelante), S (atras), A (izquierda), D (derecha)<br>
   <b>Mirar:</b> Mueve el mouse<br>
-  <b>Interactuar:</b> Haz clic en los objetos que brillan<br>
+  <b>Interactuar:</b> Clic en los objetos que brillan<br>
   <b>Paneles:</b> Cierra con la X roja<br><br>
-  <b style="color:#FFB347;">Hay 5 zonas por explorar. Cada zona tiene objetos
-  interactivos marcados con [ ] dorado.</b><br><br>
-  <small style="color:#A0896E;">Tiempo estimado de recorrido: 15-20 minutos</small>
+  <b style="color:#FFB347;">Hay 5 zonas por explorar con 10 objetos interactivos.</b><br>
+  <small style="color:#A0896E;">Tiempo estimado: 15-20 minutos</small>
 </div>
 
-<!-- PANEL: LETRERO -->
 <div class="panel" id="p-letrero">
   <span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span>
   <b style="color:#D4A574;font-size:20px;">&#127981; FABRIQUE MADELEINE</b><br><br>
@@ -146,15 +139,61 @@ body { margin: 0; overflow: hidden; background: #1A1A2E; }
   que llego a Montreuil-sur-Mer en 1815. Nadie conocia su pasado.
   En pocos anos, su industria de cuentas de azabache transformo
   una ciudad miserable en un centro prospero.<br><br>
-  <em>"Madeleine ganaba mucho dinero; pero, cosa singular en un simple
-  comerciante, no parecia que fuese ese su principal cuidado.
-  Pensaba mucho en los demas y poco en si mismo."</em>
+  <em>"Madeleine ganaba mucho dinero; pero no parecia que fuese ese su
+  principal cuidado. Pensaba mucho en los demas y poco en si mismo."</em>
   <br><br>
   <small style="color:#A0896E;">&mdash; Victor Hugo, Los Miserables, Parte I, Libro V, Cap. II</small>
 </div>
 
+<!-- PANELES ZONA 2 -->
+<div class="panel" id="p-carta">
+  <span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span>
+  <b style="color:#D4A574;font-size:20px;">&#128220; Carta de Fantine a los Thenardier</b><br><br>
+  <em>"Queridos Thenardier &mdash; Les suplico noticias de mi pequena Cosette.
+  &iquest;Come bien? &iquest;Duerme en una cama caliente? &iquest;Es feliz?
+  Les envio lo poco que tengo: diez francos. Se que no es suficiente.
+  Diganme que esta bien. Les pagare todo, lo prometo."</em>
+  <br><br>
+  <b style="color:#A0896E;">Su madre, Fantine.</b>
+  <br><br>
+  <small style="color:#FF5900;">Fantine enviaba casi todo su salario a los Thenardier,
+  quienes explotaban su desesperacion pidiendo cada vez mas dinero
+  mientras maltrataban a Cosette.</small>
+</div>
+
+<div class="panel" id="p-diario">
+  <span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span>
+  <b style="color:#D4A574;font-size:20px;">&#128213; Diario de una obrera</b><br><br>
+  <em>"Lunes. Entramos a las seis de la manana. La campana suena antes
+  del amanecer. Trabajamos hasta las ocho de la noche. Catorce horas
+  encorvadas sobre las cuentas de azabache. Mis dedos sangran.
+  Gano doce sous al dia &mdash; apenas suficiente para el pan."</em>
+  <br><br>
+  <em>"Las vigilantas nos observan. Si hablas, te descuentan.
+  Si llegas tarde, te descuentan. Si descubren que tienes un hijo
+  sin estar casada... te despiden."</em>
+  <br><br>
+  <small style="color:#A0896E;">Fragmento ficticio basado en las condiciones descritas
+  por Victor Hugo en Los Miserables, Parte I, Libro V.</small>
+</div>
+
+<div class="panel" id="p-cuentas">
+  <span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span>
+  <b style="color:#D4A574;font-size:20px;">&#9899; Las cuentas de azabache</b><br><br>
+  La industria de Montreuil-sur-Mer consistia en imitar las cuentas
+  de azabache ingles (jais negro) usando resina negra. Estas cuentas
+  se usaban para rosarios, collares y adornos de luto.<br><br>
+  <em>"Antes de la llegada de Madeleine, todo languidecia en el pais;
+  ahora todo vivia con vida sana de trabajo."</em><br><br>
+  La innovacion de Madeleine fue sustituir los broches de metal
+  por broches de resina, lo que abarato la produccion y
+  multiplico las ganancias.<br><br>
+  <small style="color:#A0896E;">&mdash; Victor Hugo, Los Miserables, Parte I, Libro V, Cap. I</small>
+</div>
+
 <script>
 var status = document.getElementById('status');
+var zonaIndicator = document.getElementById('zona-indicator');
 var s = document.createElement('script');
 s.src = 'https://aframe.io/releases/1.4.0/aframe.min.js';
 
@@ -169,94 +208,157 @@ s.onload = function() {
   scene.setAttribute('embedded', '');
   scene.setAttribute('vr-mode-ui', 'enabled: true');
   scene.setAttribute('renderer', 'antialias: true');
-  scene.setAttribute('fog', 'type: exponential; color: #8B8682; density: 0.008');
+  scene.setAttribute('fog', 'type: exponential; color: #8B8682; density: 0.006');
   scene.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;';
 
   scene.innerHTML =
     '<a-sky color="#8B8682"></a-sky>' +
+    '<a-plane position="0 0 0" rotation="-90 0 0" width="50" height="50" color="#6B635B"></a-plane>' +
 
-    /* SUELO */
-    '<a-plane position="0 0 0" rotation="-90 0 0" width="40" height="40" color="#6B635B"></a-plane>' +
+    /* ========== ZONA 1: ENTRADA ========== */
 
-    /* === ZONA 1: ENTRADA === */
-
-    /* MURO FRONTAL (fachada) */
     '<a-box position="0 3 -8" width="20" height="6" depth="0.5" color="#7A7068"></a-box>' +
-
-    /* PORTON DE HIERRO (interactivo) */
     '<a-box id="porton" class="clickable" position="0 1.8 -7.7" width="3.5" height="3.6" depth="0.15" color="#2C2C2C" material="metalness:0.7;emissive:#FFB347;emissiveIntensity:0.15"></a-box>' +
     '<a-text value="[ PORTON ]" color="#FFB347" align="center" width="3" position="0 3.8 -7.5"></a-text>' +
 
-    /* LETRERO FABRIQUE MADELEINE (interactivo) */
     '<a-box id="letrero" class="clickable" position="0 5 -7.7" width="6" height="1.2" depth="0.15" color="#5C3A1E" material="emissive:#D4A574;emissiveIntensity:0.2"></a-box>' +
     '<a-text value="FABRIQUE MADELEINE" color="#D4A574" align="center" width="5.5" position="0 5.2 -7.5"></a-text>' +
     '<a-text value="Montreuil-sur-Mer, 1823" color="#A0896E" align="center" width="3.5" position="0 4.7 -7.5"></a-text>' +
 
-    /* MUROS LATERALES */
-    '<a-box position="-10 3 -4" width="0.5" height="6" depth="12" color="#7A7068"></a-box>' +
-    '<a-box position="10 3 -4" width="0.5" height="6" depth="12" color="#7A7068"></a-box>' +
+    '<a-box position="-10 3 0" width="0.5" height="6" depth="20" color="#7A7068"></a-box>' +
+    '<a-box position="10 3 0" width="0.5" height="6" depth="20" color="#7A7068"></a-box>' +
 
-    /* MURO TRASERO (abierto al fondo para conectar con Zona 2) */
-    '<a-box position="-7 3 4" width="6" height="6" depth="0.5" color="#7A7068"></a-box>' +
-    '<a-box position="7 3 4" width="6" height="6" depth="0.5" color="#7A7068"></a-box>' +
-
-    /* CARTEL HISTORICO (pared izquierda - interactivo) */
     '<a-box id="cartel" class="clickable" position="-9.7 2.5 -2" width="0.15" height="1.8" depth="1.4" color="#C4A882" material="emissive:#C4A882;emissiveIntensity:0.3"></a-box>' +
     '<a-text value="[ CARTEL ]" color="#FFB347" align="center" width="2.5" position="-9.5 1.3 -2" rotation="0 90 0"></a-text>' +
     '<a-text value="Historia de\\nMontreuil-sur-Mer" color="#3A2A1A" align="center" width="2" position="-9.5 2.5 -2" rotation="0 90 0"></a-text>' +
 
-    /* PANEL DE INSTRUCCIONES (pared derecha - interactivo) */
     '<a-box id="instrucciones" class="clickable" position="9.7 2.5 0" width="0.15" height="1.8" depth="1.4" color="#1A1A2E" material="emissive:#FF5900;emissiveIntensity:0.2"></a-box>' +
     '<a-text value="[ AYUDA ]" color="#FF5900" align="center" width="2.5" position="9.5 1.3 0" rotation="0 -90 0"></a-text>' +
     '<a-text value="Como explorar\\neste mundo" color="#FFFDF8" align="center" width="1.8" position="9.5 2.5 0" rotation="0 -90 0"></a-text>' +
 
-    /* FAROLES DE GAS */
     '<a-cylinder position="-4 2 -6" radius="0.05" height="4" color="#3A3A3A"></a-cylinder>' +
     '<a-sphere position="-4 4.1 -6" radius="0.18" color="#FFB347" material="emissive:#FFB347;emissiveIntensity:0.6"></a-sphere>' +
     '<a-cylinder position="4 2 -6" radius="0.05" height="4" color="#3A3A3A"></a-cylinder>' +
     '<a-sphere position="4 4.1 -6" radius="0.18" color="#FFB347" material="emissive:#FFB347;emissiveIntensity:0.6"></a-sphere>' +
-    '<a-cylinder position="-4 2 0" radius="0.05" height="4" color="#3A3A3A"></a-cylinder>' +
-    '<a-sphere position="-4 4.1 0" radius="0.18" color="#FFB347" material="emissive:#FFB347;emissiveIntensity:0.6"></a-sphere>' +
-    '<a-cylinder position="4 2 0" radius="0.05" height="4" color="#3A3A3A"></a-cylinder>' +
-    '<a-sphere position="4 4.1 0" radius="0.18" color="#FFB347" material="emissive:#FFB347;emissiveIntensity:0.6"></a-sphere>' +
 
-    /* BARRILES DECORATIVOS */
     '<a-cylinder position="-3 0.4 -7" radius="0.3" height="0.8" color="#5C3A1E"></a-cylinder>' +
     '<a-cylinder position="-4.5 0.4 -7" radius="0.35" height="0.9" color="#4A2E15"></a-cylinder>' +
     '<a-cylinder position="3.5 0.4 -7" radius="0.3" height="0.8" color="#5C3A1E"></a-cylinder>' +
     '<a-cylinder position="5 0.4 -7" radius="0.25" height="0.7" color="#4A2E15"></a-cylinder>' +
 
-    /* BANCO DE MADERA */
-    '<a-box position="-6 0.25 -4" width="1.8" height="0.05" depth="0.4" color="#5C3A1E"></a-box>' +
-    '<a-box position="-6.8 0.12 -4" width="0.05" height="0.25" depth="0.35" color="#5C3A1E"></a-box>' +
-    '<a-box position="-5.2 0.12 -4" width="0.05" height="0.25" depth="0.35" color="#5C3A1E"></a-box>' +
-
-    /* CAJAS DE MADERA */
     '<a-box position="6 0.3 -5" width="0.6" height="0.6" depth="0.6" color="#5C3A1E"></a-box>' +
     '<a-box position="6.8 0.25 -5.3" width="0.5" height="0.5" depth="0.5" color="#4A2E15"></a-box>' +
-    '<a-box position="6.3 0.85 -5.1" width="0.45" height="0.45" depth="0.45" color="#5C3A1E" rotation="0 15 0"></a-box>' +
 
-    /* CARRETA */
-    '<a-box position="7 0.4 -2" width="2" height="0.1" depth="1" color="#5C3A1E"></a-box>' +
-    '<a-box position="7 0.7 -1.5" width="2" height="0.5" depth="0.08" color="#4A2E15"></a-box>' +
-    '<a-box position="7 0.7 -2.5" width="2" height="0.5" depth="0.08" color="#4A2E15"></a-box>' +
-    '<a-cylinder position="6 0.3 -2" radius="0.3" height="0.05" color="#3A3A3A" rotation="0 0 90"></a-cylinder>' +
-
-    /* TEXTO BIENVENIDA */
     '<a-text value="Bienvenido a la Fabrica de Fantine" color="#D4A574" align="center" width="6" position="0 5.8 -7.5"></a-text>' +
 
-    /* FLECHA DIRECCIONAL (hacia Zona 2) */
+    /* SEPARADOR ZONA 1 → ZONA 2 */
     '<a-text value=">>> Zona 2: Taller de las Obreras >>>" color="#FFB347" align="center" width="5" position="0 0.5 3.5"></a-text>' +
+    '<a-box position="-7 3 5" width="6" height="6" depth="0.5" color="#7A7068"></a-box>' +
+    '<a-box position="7 3 5" width="6" height="6" depth="0.5" color="#7A7068"></a-box>' +
+    '<a-text value="TALLER DE LAS OBRERAS" color="#D4A574" align="center" width="5" position="0 5.5 5.3"></a-text>' +
 
-    /* ILUMINACION */
-    '<a-light type="ambient" color="#8B7355" intensity="0.4"></a-light>' +
+    /* ========== ZONA 2: TALLER DE LAS OBRERAS ========== */
+
+    /* Muro fondo Zona 2 */
+    '<a-box position="0 3 18" width="20" height="6" depth="0.5" color="#6B5D52"></a-box>' +
+
+    /* Muros laterales extendidos */
+    '<a-box position="-10 3 11.5" width="0.5" height="6" depth="13" color="#6B5D52"></a-box>' +
+    '<a-box position="10 3 11.5" width="0.5" height="6" depth="13" color="#6B5D52"></a-box>' +
+
+    /* Techo parcial (vigas de madera) */
+    '<a-box position="-5 5.8 11" width="0.2" height="0.2" depth="12" color="#4A2E15"></a-box>' +
+    '<a-box position="0 5.8 11" width="0.2" height="0.2" depth="12" color="#4A2E15"></a-box>' +
+    '<a-box position="5 5.8 11" width="0.2" height="0.2" depth="12" color="#4A2E15"></a-box>' +
+
+    /* MESA DE TRABAJO 1 (con CARTA) */
+    '<a-box position="-4 0.75 9" width="2.5" height="0.08" depth="1" color="#5C3A1E"></a-box>' +
+    '<a-box position="-5.2 0.37 8.5" width="0.08" height="0.75" depth="0.08" color="#5C3A1E"></a-box>' +
+    '<a-box position="-2.8 0.37 8.5" width="0.08" height="0.75" depth="0.08" color="#5C3A1E"></a-box>' +
+    '<a-box position="-5.2 0.37 9.5" width="0.08" height="0.75" depth="0.08" color="#5C3A1E"></a-box>' +
+    '<a-box position="-2.8 0.37 9.5" width="0.08" height="0.75" depth="0.08" color="#5C3A1E"></a-box>' +
+
+    /* CARTA sobre mesa 1 (interactiva) */
+    '<a-box id="carta" class="clickable" position="-4 0.95 9" width="0.5" height="0.3" depth="0.4" color="#F5E6C8" material="emissive:#F5E6C8;emissiveIntensity:0.4"></a-box>' +
+    '<a-text value="[ CARTA ]" color="#FFB347" align="center" width="2.5" position="-4 1.5 9"></a-text>' +
+
+    /* Silla mesa 1 */
+    '<a-box position="-4 0.25 8" width="0.4" height="0.05" depth="0.4" color="#4A2E15"></a-box>' +
+    '<a-box position="-4 0.45 7.8" width="0.4" height="0.4" depth="0.05" color="#4A2E15"></a-box>' +
+
+    /* MESA DE TRABAJO 2 (con CUENTAS) */
+    '<a-box position="4 0.75 9" width="2.5" height="0.08" depth="1" color="#5C3A1E"></a-box>' +
+    '<a-box position="2.8 0.37 8.5" width="0.08" height="0.75" depth="0.08" color="#5C3A1E"></a-box>' +
+    '<a-box position="5.2 0.37 8.5" width="0.08" height="0.75" depth="0.08" color="#5C3A1E"></a-box>' +
+    '<a-box position="2.8 0.37 9.5" width="0.08" height="0.75" depth="0.08" color="#5C3A1E"></a-box>' +
+    '<a-box position="5.2 0.37 9.5" width="0.08" height="0.75" depth="0.08" color="#5C3A1E"></a-box>' +
+
+    /* CUENTAS DE AZABACHE sobre mesa 2 (interactiva) */
+    '<a-box id="cuentas" class="clickable" position="4 0.95 9" width="0.6" height="0.4" depth="0.5" color="#1A1A1A" material="emissive:#FFB347;emissiveIntensity:0.25"></a-box>' +
+    '<a-sphere position="3.7 1.2 8.8" radius="0.06" color="#0A0A0A" material="metalness:0.9"></a-sphere>' +
+    '<a-sphere position="4.0 1.2 8.7" radius="0.06" color="#0A0A0A" material="metalness:0.9"></a-sphere>' +
+    '<a-sphere position="4.3 1.2 8.9" radius="0.06" color="#0A0A0A" material="metalness:0.9"></a-sphere>' +
+    '<a-sphere position="3.85 1.2 9.1" radius="0.06" color="#0A0A0A" material="metalness:0.9"></a-sphere>' +
+    '<a-sphere position="4.15 1.2 9.2" radius="0.06" color="#0A0A0A" material="metalness:0.9"></a-sphere>' +
+    '<a-text value="[ CUENTAS ]" color="#FFB347" align="center" width="2.5" position="4 1.5 9"></a-text>' +
+
+    /* Silla mesa 2 */
+    '<a-box position="4 0.25 8" width="0.4" height="0.05" depth="0.4" color="#4A2E15"></a-box>' +
+    '<a-box position="4 0.45 7.8" width="0.4" height="0.4" depth="0.05" color="#4A2E15"></a-box>' +
+
+    /* MESA DE TRABAJO 3 (central, mas grande) */
+    '<a-box position="0 0.75 13" width="3" height="0.08" depth="1.2" color="#5C3A1E"></a-box>' +
+    '<a-box position="-1.4 0.37 12.4" width="0.08" height="0.75" depth="0.08" color="#5C3A1E"></a-box>' +
+    '<a-box position="1.4 0.37 12.4" width="0.08" height="0.75" depth="0.08" color="#5C3A1E"></a-box>' +
+    '<a-box position="-1.4 0.37 13.6" width="0.08" height="0.75" depth="0.08" color="#5C3A1E"></a-box>' +
+    '<a-box position="1.4 0.37 13.6" width="0.08" height="0.75" depth="0.08" color="#5C3A1E"></a-box>' +
+
+    /* Herramientas sobre mesa 3 */
+    '<a-cylinder position="-0.5 0.85 13" radius="0.03" height="0.3" color="#3A3A3A" rotation="0 0 80"></a-cylinder>' +
+    '<a-box position="0.5 0.82 13.2" width="0.15" height="0.08" depth="0.3" color="#3A3A3A"></a-box>' +
+
+    /* ESTANTE con DIARIO (pared izquierda Zona 2) */
+    '<a-box position="-9.7 1.5 12" width="0.15" height="0.08" depth="1.5" color="#5C3A1E"></a-box>' +
+    '<a-box position="-9.7 2.5 12" width="0.15" height="0.08" depth="1.5" color="#5C3A1E"></a-box>' +
+
+    /* DIARIO en estante (interactivo) */
+    '<a-box id="diario" class="clickable" position="-9.6 1.7 12" width="0.12" height="0.3" depth="0.25" color="#6B3A1E" material="emissive:#D4A574;emissiveIntensity:0.3"></a-box>' +
+    '<a-text value="[ DIARIO ]" color="#FFB347" align="center" width="2.5" position="-9.4 1.2 12" rotation="0 90 0"></a-text>' +
+
+    /* Velas (iluminacion tenue del taller) */
+    '<a-cylinder position="-4 0.85 9.4" radius="0.02" height="0.15" color="#F5E6C8"></a-cylinder>' +
+    '<a-sphere position="-4 0.95 9.4" radius="0.03" color="#FFB347" material="emissive:#FFB347;emissiveIntensity:0.8"></a-sphere>' +
+    '<a-cylinder position="4 0.85 9.4" radius="0.02" height="0.15" color="#F5E6C8"></a-cylinder>' +
+    '<a-sphere position="4 0.95 9.4" radius="0.03" color="#FFB347" material="emissive:#FFB347;emissiveIntensity:0.8"></a-sphere>' +
+    '<a-cylinder position="0 0.85 13.5" radius="0.02" height="0.15" color="#F5E6C8"></a-cylinder>' +
+    '<a-sphere position="0 0.95 13.5" radius="0.03" color="#FFB347" material="emissive:#FFB347;emissiveIntensity:0.8"></a-sphere>' +
+
+    /* Cestas en el suelo */
+    '<a-cylinder position="-7 0.25 10" radius="0.3" height="0.5" color="#8B7355" material="side:double"></a-cylinder>' +
+    '<a-cylinder position="-7 0.25 14" radius="0.35" height="0.5" color="#8B7355" material="side:double"></a-cylinder>' +
+    '<a-cylinder position="7 0.25 11" radius="0.3" height="0.5" color="#8B7355" material="side:double"></a-cylinder>' +
+
+    /* Faroles Zona 2 */
+    '<a-cylinder position="-4 2 12" radius="0.05" height="4" color="#3A3A3A"></a-cylinder>' +
+    '<a-sphere position="-4 4.1 12" radius="0.15" color="#FFB347" material="emissive:#FFB347;emissiveIntensity:0.5"></a-sphere>' +
+    '<a-cylinder position="4 2 12" radius="0.05" height="4" color="#3A3A3A"></a-cylinder>' +
+    '<a-sphere position="4 4.1 12" radius="0.15" color="#FFB347" material="emissive:#FFB347;emissiveIntensity:0.5"></a-sphere>' +
+
+    /* Texto ambiental Zona 2 */
+    '<a-text value="El silencio del taller solo se rompe\\npor el sonido de las cuentas" color="#A0896E" align="center" width="5" position="0 4.5 17.7"></a-text>' +
+
+    /* Flecha hacia Zona 3 */
+    '<a-text value=">>> Zona 3: Oficina del Padre Madeleine >>>" color="#FFB347" align="center" width="5" position="0 0.5 17.5"></a-text>' +
+
+    /* ========== ILUMINACION GLOBAL ========== */
+    '<a-light type="ambient" color="#8B7355" intensity="0.35"></a-light>' +
     '<a-light type="point" color="#FFB347" intensity="0.7" distance="12" position="-4 4 -6"></a-light>' +
     '<a-light type="point" color="#FFB347" intensity="0.7" distance="12" position="4 4 -6"></a-light>' +
-    '<a-light type="point" color="#FFB347" intensity="0.5" distance="10" position="-4 4 0"></a-light>' +
-    '<a-light type="point" color="#FFB347" intensity="0.5" distance="10" position="4 4 0"></a-light>' +
-    '<a-light type="directional" color="#D4A574" intensity="0.4" position="2 5 2"></a-light>' +
+    '<a-light type="point" color="#FFB347" intensity="0.5" distance="10" position="-4 4 12"></a-light>' +
+    '<a-light type="point" color="#FFB347" intensity="0.5" distance="10" position="4 4 12"></a-light>' +
+    '<a-light type="directional" color="#D4A574" intensity="0.3" position="2 5 2"></a-light>' +
 
-    /* CAMARA */
+    /* ========== CAMARA ========== */
     '<a-entity position="0 1.6 2">' +
       '<a-camera look-controls wasd-controls="acceleration:25">' +
         '<a-cursor color="#FF5900" raycaster="objects:.clickable" geometry="primitive:ring;radiusInner:0.02;radiusOuter:0.03" material="color:#FF5900;shader:flat"></a-cursor>' +
@@ -266,73 +368,56 @@ s.onload = function() {
   document.body.appendChild(scene);
 
   scene.addEventListener('loaded', function() {
-    status.textContent = 'Zona 1: Entrada de la Fabrica. Explora los objetos que brillan.';
+    status.textContent = 'Listo. Explora los objetos que brillan.';
     setTimeout(function() { status.style.display = 'none'; }, 6000);
 
     setTimeout(function() {
-      var cartel = document.getElementById('cartel');
-      var porton = document.getElementById('porton');
-      var instrucciones = document.getElementById('instrucciones');
-      var letrero = document.getElementById('letrero');
+      /* Todos los paneles */
+      var panels = ['p-cartel','p-porton','p-instrucciones','p-letrero','p-carta','p-diario','p-cuentas'];
 
       function closeAll() {
-        document.getElementById('p-cartel').style.display = 'none';
-        document.getElementById('p-porton').style.display = 'none';
-        document.getElementById('p-instrucciones').style.display = 'none';
-        document.getElementById('p-letrero').style.display = 'none';
+        for (var i = 0; i < panels.length; i++) {
+          document.getElementById(panels[i]).style.display = 'none';
+        }
       }
 
-      if (cartel) {
-        cartel.addEventListener('click', function() {
-          closeAll();
-          document.getElementById('p-cartel').style.display = 'block';
-        });
-        cartel.addEventListener('mouseenter', function() {
-          cartel.setAttribute('material', 'emissive:#FFB347;emissiveIntensity:0.8');
-        });
-        cartel.addEventListener('mouseleave', function() {
-          cartel.setAttribute('material', 'emissive:#C4A882;emissiveIntensity:0.3');
-        });
+      function setupClick(id, panelId, emissiveColor, baseIntensity) {
+        var el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('click', function() {
+            closeAll();
+            document.getElementById(panelId).style.display = 'block';
+          });
+          el.addEventListener('mouseenter', function() {
+            el.setAttribute('material', 'emissive:' + emissiveColor + ';emissiveIntensity:0.8');
+          });
+          el.addEventListener('mouseleave', function() {
+            el.setAttribute('material', 'emissive:' + emissiveColor + ';emissiveIntensity:' + baseIntensity);
+          });
+        }
       }
 
-      if (porton) {
-        porton.addEventListener('click', function() {
-          closeAll();
-          document.getElementById('p-porton').style.display = 'block';
-        });
-        porton.addEventListener('mouseenter', function() {
-          porton.setAttribute('material', 'metalness:0.7;emissive:#FFB347;emissiveIntensity:0.6');
-        });
-        porton.addEventListener('mouseleave', function() {
-          porton.setAttribute('material', 'metalness:0.7;emissive:#FFB347;emissiveIntensity:0.15');
-        });
-      }
+      /* Zona 1 */
+      setupClick('cartel', 'p-cartel', '#C4A882', '0.3');
+      setupClick('porton', 'p-porton', '#FFB347', '0.15');
+      setupClick('instrucciones', 'p-instrucciones', '#FF5900', '0.2');
+      setupClick('letrero', 'p-letrero', '#D4A574', '0.2');
 
-      if (instrucciones) {
-        instrucciones.addEventListener('click', function() {
-          closeAll();
-          document.getElementById('p-instrucciones').style.display = 'block';
-        });
-        instrucciones.addEventListener('mouseenter', function() {
-          instrucciones.setAttribute('material', 'emissive:#FF5900;emissiveIntensity:0.7');
-        });
-        instrucciones.addEventListener('mouseleave', function() {
-          instrucciones.setAttribute('material', 'emissive:#FF5900;emissiveIntensity:0.2');
-        });
-      }
+      /* Zona 2 */
+      setupClick('carta', 'p-carta', '#F5E6C8', '0.4');
+      setupClick('diario', 'p-diario', '#D4A574', '0.3');
+      setupClick('cuentas', 'p-cuentas', '#FFB347', '0.25');
 
-      if (letrero) {
-        letrero.addEventListener('click', function() {
-          closeAll();
-          document.getElementById('p-letrero').style.display = 'block';
-        });
-        letrero.addEventListener('mouseenter', function() {
-          letrero.setAttribute('material', 'emissive:#D4A574;emissiveIntensity:0.6');
-        });
-        letrero.addEventListener('mouseleave', function() {
-          letrero.setAttribute('material', 'emissive:#D4A574;emissiveIntensity:0.2');
-        });
-      }
+      /* Detector de zona */
+      var cam = document.querySelector('a-camera');
+      setInterval(function() {
+        var pos = cam.object3D.getWorldPosition(new THREE.Vector3());
+        if (pos.z < 5) {
+          zonaIndicator.textContent = 'ZONA 1: Entrada de la Fabrica';
+        } else {
+          zonaIndicator.textContent = 'ZONA 2: Taller de las Obreras';
+        }
+      }, 1000);
 
     }, 2000);
   });
