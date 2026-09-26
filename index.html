@@ -654,3 +654,110 @@ s.onload = function() {
     '<a-cylinder position="-11.5 2 -14" radius="0.05" height="4" color="#3A3A3A"></a-cylinder>' +
     '<a-sphere position="-11.5 4.1 -14" radius="0.15" color="#FFB347" material="emissive:#FFB347;emissiveIntensity:0.6"></a-sphere>' +
     '<a-
+    /* ===== ILUMINACION ===== */
+    '<a-light type="ambient" color="#8B7355" intensity="0.3"></a-light>' +
+    '<a-light type="point" color="#FFB347" intensity="0.7" distance="12" position="-4 4 -6"></a-light>' +
+    '<a-light type="point" color="#FFB347" intensity="0.7" distance="12" position="4 4 -6"></a-light>' +
+    '<a-light type="point" color="#FFB347" intensity="0.5" distance="10" position="-4 4 12"></a-light>' +
+    '<a-light type="point" color="#FFB347" intensity="0.5" distance="10" position="4 4 12"></a-light>' +
+    '<a-light type="point" color="#FFB347" intensity="0.6" distance="8" position="14 3.5 25"></a-light>' +
+    '<a-light type="point" color="#FFB347" intensity="0.5" distance="12" position="-6 4 28"></a-light>' +
+    '<a-light type="point" color="#FFB347" intensity="0.5" distance="12" position="6 4 28"></a-light>' +
+    '<a-light type="point" color="#FFB347" intensity="0.5" distance="8" position="-13 4 -12"></a-light>' +
+    '<a-light type="point" color="#DAA520" intensity="0.6" distance="15" position="0 4 -22"></a-light>' +
+    '<a-light type="directional" color="#B8C4D0" intensity="0.4" position="0 8 28"></a-light>' +
+
+    /* ===== CAMARA (inicia en Sala de Cine) ===== */
+    '<a-entity position="0 1.6 -15">' +
+      '<a-camera look-controls wasd-controls="acceleration:25">' +
+        '<a-cursor color="#FF5900" raycaster="objects:.clickable" geometry="primitive:ring;radiusInner:0.02;radiusOuter:0.03" material="color:#FF5900;shader:flat"></a-cursor>' +
+      '</a-camera>' +
+    '</a-entity>';
+
+  document.body.appendChild(scene);
+
+  scene.addEventListener('loaded', function() {
+    status.textContent = 'Bienvenido a la Sala de Cine. Haz clic en la pantalla.';
+    setTimeout(function() { status.style.display = 'none'; }, 8000);
+
+    setTimeout(function() {
+      var panels = ['p-cartel','p-porton','p-instrucciones','p-letrero','p-carta','p-diario','p-cuentas','p-decreto','p-espejo','p-reloj','p-campana','p-muro','p-puerta','p-pantalla'];
+
+      function closeAll() {
+        for (var i = 0; i < panels.length; i++) {
+          document.getElementById(panels[i]).style.display = 'none';
+        }
+      }
+
+      function setupClick(id, panelId, emissiveColor, baseIntensity) {
+        var el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('click', function() {
+            closeAll();
+            document.getElementById(panelId).style.display = 'block';
+            if (!discovered[id]) {
+              discovered[id] = true;
+              discoverCount++;
+              objCounter.textContent = 'Objetos descubiertos: ' + discoverCount + ' / 14';
+              var fc = document.getElementById('final-count');
+              if (fc) fc.textContent = discoverCount;
+            }
+          });
+          el.addEventListener('mouseenter', function() {
+            el.setAttribute('material', 'emissive:' + emissiveColor + ';emissiveIntensity:0.8');
+          });
+          el.addEventListener('mouseleave', function() {
+            el.setAttribute('material', 'emissive:' + emissiveColor + ';emissiveIntensity:' + baseIntensity);
+          });
+        }
+      }
+
+      /* Sala de Cine */
+      setupClick('pantalla', 'p-pantalla', '#333333', '0.3');
+      /* Zona 1 */
+      setupClick('cartel', 'p-cartel', '#C4A882', '0.3');
+      setupClick('porton', 'p-porton', '#FFB347', '0.15');
+      setupClick('instrucciones', 'p-instrucciones', '#FF5900', '0.2');
+      setupClick('letrero', 'p-letrero', '#D4A574', '0.2');
+      /* Zona 2 */
+      setupClick('carta', 'p-carta', '#F5E6C8', '0.4');
+      setupClick('diario', 'p-diario', '#D4A574', '0.3');
+      setupClick('cuentas', 'p-cuentas', '#FFB347', '0.25');
+      /* Zona 3 */
+      setupClick('decreto', 'p-decreto', '#D4A574', '0.4');
+      setupClick('espejo', 'p-espejo', '#B8C4D0', '0.15');
+      /* Zona 4 */
+      setupClick('reloj', 'p-reloj', '#FFB347', '0.25');
+      setupClick('campana', 'p-campana', '#D4A574', '0.25');
+      setupClick('muro', 'p-muro', '#FF5900', '0.15');
+      /* Zona 5 */
+      setupClick('puerta', 'p-puerta', '#FF5900', '0.2');
+
+      var cam = document.querySelector('a-camera');
+      setInterval(function() {
+        var pos = cam.object3D.getWorldPosition(new THREE.Vector3());
+        if (pos.z < -12 && pos.x > -10) {
+          zonaIndicator.textContent = 'SALA DE CINE: At the End of the Day';
+        } else if (pos.x < -10) {
+          zonaIndicator.textContent = 'ZONA 5: La Puerta de Salida';
+        } else if (pos.z < 5 && pos.x <= 10) {
+          zonaIndicator.textContent = 'ZONA 1: Entrada de la Fabrica';
+        } else if (pos.x > 10) {
+          zonaIndicator.textContent = 'ZONA 3: Oficina del Padre Madeleine';
+        } else if (pos.z >= 18) {
+          zonaIndicator.textContent = 'ZONA 4: El Patio';
+        } else if (pos.z >= 5) {
+          zonaIndicator.textContent = 'ZONA 2: Taller de las Obreras';
+        }
+      }, 1000);
+
+    }, 2000);
+  });
+};
+
+document.head.appendChild(s);
+</script>
+</body>
+</html>
+
+
