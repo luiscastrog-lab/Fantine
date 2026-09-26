@@ -4,174 +4,106 @@
 <head>
 <meta charset="utf-8">
 <title>UV1: La Fabrica de Fantine</title>
-<script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-<style>
-  body { margin: 0; }
-  .info-panel {
-    position: fixed; bottom: 20px; left: 50%;
-    transform: translateX(-50%);
-    background: rgba(26,26,46,0.9); color: #FFFDF8;
-    padding: 15px 25px; border-radius: 12px;
-    font-family: Georgia, serif; font-size: 16px;
-    text-align: center; z-index: 999;
-    max-width: 500px; display: none;
-    border: 2px solid #D4A574;
-  }
-  .info-panel.active { display: block; }
-  .close-btn {
-    position: absolute; top: 5px; right: 10px;
-    color: #FF5900; cursor: pointer; font-size: 20px;
-    font-weight: bold;
-  }
-  .welcome {
-    position: fixed; top: 20px; left: 50%;
-    transform: translateX(-50%);
-    background: rgba(26,26,46,0.85); color: #D4A574;
-    padding: 12px 24px; border-radius: 10px;
-    font-family: Georgia, serif; font-size: 18px;
-    text-align: center; z-index: 999;
-    border: 1px solid #D4A574;
-  }
-</style>
 </head>
-<body>
+<body style="margin:0; overflow:hidden; background:#1A1A2E;">
 
-<div class="welcome" id="welcome">
-  🏭 Bienvenido a la Fabrica de Fantine<br>
-  <small style="color:#A0896E">Haz clic en los objetos brillantes para interactuar</small>
+<div id="msg" style="position:fixed;top:20px;left:20px;color:#D4A574;font-family:Georgia;font-size:18px;z-index:9999;">
+  Cargando A-Frame...
 </div>
 
-<div class="info-panel" id="panel-carta">
-  <span class="close-btn" onclick="this.parentElement.classList.remove('active')">&times;</span>
-  <strong style="color:#D4A574">📜 Carta de Fantine</strong><br><br>
-  "Queridos Thenardier — Les suplico noticias de mi pequena Cosette.
-  Les envio lo poco que tengo. Diganme que esta bien.<br>
-  Su madre, Fantine."
+<div id="panel-carta" style="display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(26,26,46,0.95);color:#FFFDF8;padding:20px 30px;border-radius:12px;font-family:Georgia;font-size:16px;text-align:center;z-index:9999;max-width:500px;border:2px solid #D4A574;">
+  <span onclick="this.parentElement.style.display='none'" style="position:absolute;top:5px;right:12px;color:#FF5900;cursor:pointer;font-size:22px;font-weight:bold;">&times;</span>
+  <b style="color:#D4A574;">Carta de Fantine</b><br><br>
+  "Queridos Thenardier — Les suplico noticias de mi pequena Cosette. Les envio lo poco que tengo. Diganme que esta bien. Su madre, Fantine."
 </div>
 
-<div class="info-panel" id="panel-contexto">
-  <span class="close-btn" onclick="this.parentElement.classList.remove('active')">&times;</span>
-  <strong style="color:#D4A574">📋 Contexto Historico</strong><br><br>
-  Montreuil-sur-Mer prospero gracias a la industria de cuentas de azabache.
-  El Padre Madeleine transformo la ciudad: cualquiera que tuviera hambre
-  encontraba empleo y pan en su fabrica.<br>
-  <small style="color:#A0896E">— Victor Hugo, Los Miserables, 1862</small>
+<div id="panel-contexto" style="display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(26,26,46,0.95);color:#FFFDF8;padding:20px 30px;border-radius:12px;font-family:Georgia;font-size:16px;text-align:center;z-index:9999;max-width:500px;border:2px solid #D4A574;">
+  <span onclick="this.parentElement.style.display='none'" style="position:absolute;top:5px;right:12px;color:#FF5900;cursor:pointer;font-size:22px;font-weight:bold;">&times;</span>
+  <b style="color:#D4A574;">Contexto Historico</b><br><br>
+  Montreuil-sur-Mer prospero gracias a la industria de cuentas de azabache. El Padre Madeleine transformo la ciudad: cualquiera que tuviera hambre encontraba empleo y pan en su fabrica.<br>
+  <small style="color:#A0896E;">— Victor Hugo, Los Miserables, 1862</small>
 </div>
 
-<div class="info-panel" id="panel-reloj">
-  <span class="close-btn" onclick="this.parentElement.classList.remove('active')">&times;</span>
-  <strong style="color:#D4A574">🕐 5:45 AM</strong><br><br>
-  Inicio de jornada en la fabrica. Las obreras trabajan
-  desde el amanecer hasta el anochecer por un salario miserable.
+<div id="panel-reloj" style="display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(26,26,46,0.95);color:#FFFDF8;padding:20px 30px;border-radius:12px;font-family:Georgia;font-size:16px;text-align:center;z-index:9999;max-width:500px;border:2px solid #D4A574;">
+  <span onclick="this.parentElement.style.display='none'" style="position:absolute;top:5px;right:12px;color:#FF5900;cursor:pointer;font-size:22px;font-weight:bold;">&times;</span>
+  <b style="color:#D4A574;">5:45 AM — Inicio de Jornada</b><br><br>
+  Las obreras trabajan desde el amanecer hasta el anochecer por un salario miserable.
 </div>
-
-<a-scene renderer="antialias: true" fog="type: exponential; color: #8B8682; density: 0.012">
-
-  <a-sky color="#8B8682"></a-sky>
-
-  <a-plane position="0 0 0" rotation="-90 0 0" width="20" height="20"
-           color="#6B635B"></a-plane>
-
-  <!-- MURO FRONTAL -->
-  <a-box position="0 3 -8" width="16" height="6" depth="0.5" color="#7A7068"></a-box>
-
-  <!-- PORTON -->
-  <a-box position="0 1.5 -7.7" width="3" height="3" depth="0.1"
-         color="#2C2C2C" material="metalness: 0.7"></a-box>
-
-  <!-- MUROS LATERALES -->
-  <a-box position="-8 3 -4" width="0.5" height="6" depth="8" color="#7A7068"></a-box>
-  <a-box position="8 3 -4" width="0.5" height="6" depth="8" color="#7A7068"></a-box>
-
-  <!-- MURO TRASERO -->
-  <a-box position="0 3 4" width="16" height="6" depth="0.5" color="#7A7068"></a-box>
-
-  <!-- LETRERO -->
-  <a-text value="FABRIQUE MADELEINE" color="#D4A574" align="center"
-          width="6" position="0 4.5 -7.6"></a-text>
-  <a-text value="Montreuil-sur-Mer, 1823" color="#A0896E" align="center"
-          width="4" position="0 4.0 -7.6"></a-text>
-
-  <!-- MESA -->
-  <a-box position="3 0.4 -3" width="1.2" height="0.05" depth="0.7" color="#5C3A1E"></a-box>
-  <a-box position="2.5 0.2 -2.7" width="0.05" height="0.4" depth="0.05" color="#5C3A1E"></a-box>
-  <a-box position="3.5 0.2 -2.7" width="0.05" height="0.4" depth="0.05" color="#5C3A1E"></a-box>
-  <a-box position="2.5 0.2 -3.3" width="0.05" height="0.4" depth="0.05" color="#5C3A1E"></a-box>
-  <a-box position="3.5 0.2 -3.3" width="0.05" height="0.4" depth="0.05" color="#5C3A1E"></a-box>
-
-  <!-- CARTA (interactiva - brilla) -->
-  <a-plane class="clickable" id="carta" position="3 0.46 -3" rotation="-90 15 0"
-           width="0.35" height="0.5" color="#F5E6C8"
-           material="emissive: #F5E6C8; emissiveIntensity: 0.3">
-  </a-plane>
-  <a-text value="Carta de Fantine" color="#D4A574" align="center"
-          width="1.5" position="3 0.8 -3"></a-text>
-
-  <!-- RELOJ (interactivo - brilla) -->
-  <a-circle class="clickable" id="reloj" position="7.7 3.5 -4" rotation="0 -90 0"
-            radius="0.5" color="#2C2C2C"
-            material="emissive: #FFB347; emissiveIntensity: 0.2">
-  </a-circle>
-  <a-text value="5:45 AM" color="#D4A574" align="center"
-          width="1.5" position="7.6 3.5 -4" rotation="0 -90 0"></a-text>
-
-  <!-- CARTEL (interactivo - brilla) -->
-  <a-plane class="clickable" id="cartel" position="-7.7 2.5 -4" rotation="0 90 0"
-           width="1.2" height="1.6" color="#C4A882"
-           material="emissive: #C4A882; emissiveIntensity: 0.2">
-  </a-plane>
-  <a-text value="Industria de\ncuentas de\nazabache" color="#3A2A1A" align="center"
-          width="2" position="-7.6 2.5 -4" rotation="0 90 0"></a-text>
-
-  <!-- FAROLES -->
-  <a-cylinder position="-6 2 -2" radius="0.05" height="4" color="#3A3A3A"></a-cylinder>
-  <a-sphere position="-6 4.1 -2" radius="0.15" color="#FFB347"
-            material="emissive: #FFB347; emissiveIntensity: 0.6"></a-sphere>
-  <a-cylinder position="6 2 -2" radius="0.05" height="4" color="#3A3A3A"></a-cylinder>
-  <a-sphere position="6 4.1 -2" radius="0.15" color="#FFB347"
-            material="emissive: #FFB347; emissiveIntensity: 0.6"></a-sphere>
-
-  <!-- BARRILES -->
-  <a-cylinder position="-3 0.4 -7" radius="0.3" height="0.8" color="#5C3A1E"></a-cylinder>
-  <a-cylinder position="-4 0.4 -7" radius="0.3" height="0.8" color="#4A2E15"></a-cylinder>
-  <a-cylinder position="4 0.4 -7" radius="0.3" height="0.8" color="#5C3A1E"></a-cylinder>
-
-  <!-- BANCO -->
-  <a-box position="-3 0.25 -2" width="1.5" height="0.05" depth="0.4" color="#5C3A1E"></a-box>
-  <a-box position="-3.6 0.12 -2" width="0.05" height="0.25" depth="0.35" color="#5C3A1E"></a-box>
-  <a-box position="-2.4 0.12 -2" width="0.05" height="0.25" depth="0.35" color="#5C3A1E"></a-box>
-
-  <!-- ILUMINACION -->
-  <a-light type="ambient" color="#8B7355" intensity="0.5"></a-light>
-  <a-light type="point" color="#FFB347" intensity="0.8" distance="10" position="-6 4 -2"></a-light>
-  <a-light type="point" color="#FFB347" intensity="0.8" distance="10" position="6 4 -2"></a-light>
-  <a-light type="directional" color="#D4A574" intensity="0.5" position="2 5 2"></a-light>
-
-  <!-- CAMARA -->
-  <a-entity position="0 1.6 2">
-    <a-camera look-controls wasd-controls="acceleration: 20">
-      <a-cursor color="#FF5900" fuse="true" fuse-timeout="1500"
-                raycaster="objects: .clickable"></a-cursor>
-    </a-camera>
-  </a-entity>
-
-</a-scene>
 
 <script>
-document.querySelector('a-scene').addEventListener('loaded', function() {
-  document.getElementById('carta').addEventListener('click', function() {
-    document.getElementById('panel-carta').classList.toggle('active');
+var msg = document.getElementById('msg');
+
+var s = document.createElement('script');
+s.src = 'https://aframe.io/releases/1.4.0/aframe.min.js';
+
+s.onerror = function() {
+  msg.innerHTML = 'ERROR: No se pudo cargar A-Frame. Recarga la pagina.';
+  msg.style.color = 'red';
+};
+
+s.onload = function() {
+  msg.innerHTML = 'A-Frame cargado. Construyendo escena...';
+
+  var scene = document.createElement('a-scene');
+  scene.setAttribute('embedded', '');
+  scene.setAttribute('vr-mode-ui', 'enabled: true');
+  scene.setAttribute('style', 'position:fixed;top:0;left:0;width:100%;height:100%;');
+  scene.setAttribute('renderer', 'antialias: true');
+  scene.setAttribute('fog', 'type: exponential; color: #8B8682; density: 0.012');
+
+  scene.innerHTML = '' +
+    '<a-sky color="#8B8682"></a-sky>' +
+    '<a-plane position="0 0 0" rotation="-90 0 0" width="20" height="20" color="#6B635B"></a-plane>' +
+    '<a-box position="0 3 -8" width="16" height="6" depth="0.5" color="#7A7068"></a-box>' +
+    '<a-box position="0 1.5 -7.7" width="3" height="3" depth="0.1" color="#2C2C2C" material="metalness:0.7"></a-box>' +
+    '<a-box position="-8 3 -4" width="0.5" height="6" depth="8" color="#7A7068"></a-box>' +
+    '<a-box position="8 3 -4" width="0.5" height="6" depth="8" color="#7A7068"></a-box>' +
+    '<a-box position="0 3 4" width="16" height="6" depth="0.5" color="#7A7068"></a-box>' +
+    '<a-text value="FABRIQUE MADELEINE" color="#D4A574" align="center" width="6" position="0 4.5 -7.6"></a-text>' +
+    '<a-text value="Montreuil-sur-Mer, 1823" color="#A0896E" align="center" width="4" position="0 4.0 -7.6"></a-text>' +
+    '<a-text value="Bienvenido a la Fabrica de Fantine" color="#D4A574" align="center" width="5" position="0 5.5 -7.6"></a-text>' +
+    '<a-box position="3 0.4 -3" width="1.2" height="0.05" depth="0.7" color="#5C3A1E"></a-box>' +
+    '<a-box position="2.5 0.2 -2.7" width="0.05" height="0.4" depth="0.05" color="#5C3A1E"></a-box>' +
+    '<a-box position="3.5 0.2 -2.7" width="0.05" height="0.4" depth="0.05" color="#5C3A1E"></a-box>' +
+    '<a-box position="2.5 0.2 -3.3" width="0.05" height="0.4" depth="0.05" color="#5C3A1E"></a-box>' +
+    '<a-box position="3.5 0.2 -3.3" width="0.05" height="0.4" depth="0.05" color="#5C3A1E"></a-box>' +
+    '<a-plane id="carta" position="3 0.46 -3" rotation="-90 15 0" width="0.35" height="0.5" color="#F5E6C8" class="clickable" material="emissive:#F5E6C8;emissiveIntensity:0.3"></a-plane>' +
+    '<a-text value="Carta" color="#D4A574" align="center" width="1.5" position="3 0.8 -3"></a-text>' +
+    '<a-circle id="reloj" position="7.7 3.5 -4" rotation="0 -90 0" radius="0.5" color="#2C2C2C" class="clickable" material="emissive:#FFB347;emissiveIntensity:0.2"></a-circle>' +
+    '<a-text value="5:45 AM" color="#D4A574" align="center" width="1.5" position="7.6 3.5 -4" rotation="0 -90 0"></a-text>' +
+    '<a-plane id="cartel" position="-7.7 2.5 -4" rotation="0 90 0" width="1.2" height="1.6" color="#C4A882" class="clickable" material="emissive:#C4A882;emissiveIntensity:0.2"></a-plane>' +
+    '<a-text value="Industria de\\ncuentas de\\nazabache" color="#3A2A1A" align="center" width="2" position="-7.6 2.5 -4" rotation="0 90 0"></a-text>' +
+    '<a-light type="ambient" color="#8B7355" intensity="0.5"></a-light>' +
+    '<a-light type="point" color="#FFB347" intensity="0.8" distance="10" position="-6 4 -2"></a-light>' +
+    '<a-light type="point" color="#FFB347" intensity="0.8" distance="10" position="6 4 -2"></a-light>' +
+    '<a-light type="directional" color="#D4A574" intensity="0.5" position="2 5 2"></a-light>' +
+    '<a-cylinder position="-6 2 -2" radius="0.05" height="4" color="#3A3A3A"></a-cylinder>' +
+    '<a-sphere position="-6 4.1 -2" radius="0.15" color="#FFB347" material="emissive:#FFB347;emissiveIntensity:0.6"></a-sphere>' +
+    '<a-cylinder position="6 2 -2" radius="0.05" height="4" color="#3A3A3A"></a-cylinder>' +
+    '<a-sphere position="6 4.1 -2" radius="0.15" color="#FFB347" material="emissive:#FFB347;emissiveIntensity:0.6"></a-sphere>' +
+    '<a-cylinder position="-3 0.4 -7" radius="0.3" height="0.8" color="#5C3A1E"></a-cylinder>' +
+    '<a-cylinder position="4 0.4 -7" radius="0.3" height="0.8" color="#5C3A1E"></a-cylinder>' +
+    '<a-entity position="0 1.6 2"><a-camera look-controls wasd-controls="acceleration:20"><a-cursor color="#FF5900" fuse="true" fuse-timeout="1500" raycaster="objects:.clickable" geometry="primitive:ring;radiusInner:0.02;radiusOuter:0.03"></a-cursor></a-camera></a-entity>';
+
+  document.body.appendChild(scene);
+
+  scene.addEventListener('loaded', function() {
+    msg.innerHTML = 'Escena lista. Mueve el mouse para explorar.';
+    setTimeout(function() { msg.style.display = 'none'; }, 4000);
+
+    document.getElementById('carta').addEventListener('click', function() {
+      document.getElementById('panel-carta').style.display = 'block';
+    });
+    document.getElementById('cartel').addEventListener('click', function() {
+      document.getElementById('panel-contexto').style.display = 'block';
+    });
+    document.getElementById('reloj').addEventListener('click', function() {
+      document.getElementById('panel-reloj').style.display = 'block';
+    });
   });
-  document.getElementById('cartel').addEventListener('click', function() {
-    document.getElementById('panel-contexto').classList.toggle('active');
-  });
-  document.getElementById('reloj').addEventListener('click', function() {
-    document.getElementById('panel-reloj').classList.toggle('active');
-  });
-  setTimeout(function() {
-    document.getElementById('welcome').style.opacity = '0.5';
-  }, 5000);
-});
+};
+
+document.head.appendChild(s);
 </script>
 </body>
 </html>
