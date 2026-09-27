@@ -10,7 +10,12 @@ body{margin:0;overflow:hidden;background:#0a0a0a}
 #status{position:fixed;top:20px;left:50%;transform:translateX(-50%);color:#D4A574;font-family:Georgia,serif;font-size:18px;z-index:99999;text-align:center;background:rgba(26,26,46,0.85);padding:14px 28px;border-radius:12px;border:1px solid #D4A574}
 #zona-indicator{position:fixed;top:80px;left:50%;transform:translateX(-50%);color:#FFB347;font-family:Georgia,serif;font-size:14px;z-index:99999;text-align:center;background:rgba(26,26,46,0.7);padding:8px 20px;border-radius:8px}
 #obj-counter{position:fixed;top:110px;left:50%;transform:translateX(-50%);color:#A0896E;font-family:Georgia,serif;font-size:12px;z-index:99999;text-align:center;background:rgba(26,26,46,0.6);padding:5px 14px;border-radius:6px}
+#online-counter{position:fixed;top:138px;left:50%;transform:translateX(-50%);color:#4CAF50;font-family:Georgia,serif;font-size:12px;z-index:99999;text-align:center;background:rgba(26,26,46,0.6);padding:5px 14px;border-radius:6px}
 #controles{position:fixed;bottom:20px;right:20px;color:#A0896E;font-family:Georgia,serif;font-size:12px;z-index:99998;text-align:right;background:rgba(26,26,46,0.7);padding:10px 14px;border-radius:8px;line-height:1.6}
+#reactions-bar{display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(26,26,46,0.9);padding:10px 20px;border-radius:12px;border:1px solid #D4A574;z-index:99998;text-align:center}
+.react-btn{font-size:28px;cursor:pointer;margin:0 8px;padding:5px;border:none;background:none;transition:transform 0.2s}
+.react-btn:hover{transform:scale(1.4)}
+#floating-reactions{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99997;overflow:hidden}
 #video-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:100000;justify-content:center;align-items:center;flex-direction:column}
 #video-overlay.active{display:flex}
 #video-container{width:90%;max-width:900px;background:#0a0a0a;border-radius:12px;overflow:hidden;border:3px solid #DAA520}
@@ -19,14 +24,30 @@ body{margin:0;overflow:hidden;background:#0a0a0a}
 #video-footer{background:#0a0a0a;padding:16px 24px;text-align:center;border-top:2px solid #DAA520}
 #video-footer p{font-family:Georgia,serif;font-size:12px;color:#ccc;font-style:italic;line-height:1.5;margin:0 0 10px 0}
 #close-video{background:#FF5900;color:white;border:none;padding:12px 30px;border-radius:8px;font-family:Georgia,serif;font-size:16px;cursor:pointer;margin-top:16px}
+#login-screen{display:flex;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,10,10,0.98);z-index:100002;justify-content:center;align-items:center;flex-direction:column}
+#login-box{text-align:center;max-width:400px;width:90%}
+#login-box h1{font-family:Georgia,serif;font-size:28px;color:#D4A574;margin-bottom:8px}
+#login-box p{font-family:Georgia,serif;font-size:14px;color:#A0896E;margin-bottom:25px}
+#name-input{width:80%;padding:14px 20px;font-family:Georgia,serif;font-size:18px;border:2px solid #D4A574;border-radius:10px;background:#1a1a2e;color:#FFFDF8;text-align:center;outline:none}
+#name-input:focus{border-color:#FFB347}
+#enter-btn{margin-top:20px;padding:14px 40px;font-family:Georgia,serif;font-size:18px;background:#FF5900;color:white;border:none;border-radius:10px;cursor:pointer}
+#enter-btn:hover{background:#cc4700}
+#muro-input-box{display:none;position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:rgba(26,26,46,0.95);padding:20px;border-radius:12px;border:2px solid #FF5900;z-index:99999;text-align:center;width:88%;max-width:500px}
+#muro-text{width:85%;padding:10px;font-family:Georgia,serif;font-size:14px;border:1px solid #D4A574;border-radius:8px;background:#1a1a2e;color:#FFFDF8;resize:none;outline:none}
+#muro-send{margin-top:10px;padding:10px 30px;font-family:Georgia,serif;font-size:14px;background:#FF5900;color:white;border:none;border-radius:8px;cursor:pointer}
 </style>
 </head>
 <body>
+<div id="login-screen"><div id="login-box"><h1>&#127981; La Fabrica de Fantine</h1><p>Escribe tu nombre para entrar</p><input id="name-input" type="text" placeholder="Tu nombre completo" maxlength="40"><br><button id="enter-btn" onclick="enterVR()">Entrar al Universo VR</button></div></div>
 <div id="status">&#127916; Cargando...</div>
 <div id="zona-indicator">SALA DE CINE</div>
 <div id="obj-counter">Objetos: 0 / 14</div>
+<div id="online-counter">&#128994; Conectados: 1</div>
 <div id="controles"><strong style="color:#D4A574;">Controles:</strong><br>WASD=caminar<br>Mouse=mirar<br>Clic=interactuar</div>
+<div id="reactions-bar"><span class="react-btn" onclick="sendReaction('asombro')">&#128558;</span><span class="react-btn" onclick="sendReaction('tristeza')">&#128546;</span><span class="react-btn" onclick="sendReaction('injusticia')">&#128545;</span><span class="react-btn" onclick="sendReaction('reflexion')">&#129300;</span><span class="react-btn" onclick="sendReaction('descubrimiento')">&#128161;</span><span class="react-btn" onclick="sendReaction('empatia')">&#10084;&#65039;</span></div>
+<div id="floating-reactions"></div>
 <div id="video-overlay"><div id="video-container"><div id="video-header"><span>&#9733; Now Showing &#9733;</span></div><div style="position:relative;padding-bottom:56.25%;height:0;background:#000;"><iframe id="yt-player" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" src="" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div id="video-footer"><p>"At the End of the Day" - Les Miserables (2012)</p><button id="close-video" onclick="closeVideo()">&#127981; Entrar a la Fabrica</button></div></div></div>
+<div id="muro-input-box"><div style="font-family:Georgia,serif;color:#D4A574;font-size:16px;margin-bottom:10px;">Escribe tu reflexion en el muro:</div><textarea id="muro-text" rows="3" maxlength="200" placeholder="Tu reflexion sobre Fantine..."></textarea><br><button id="muro-send" onclick="sendMuroMessage()">Publicar en el Muro</button><span style="color:#FF5900;cursor:pointer;margin-left:15px;font-size:20px;" onclick="document.getElementById('muro-input-box').style.display='none'">&times; Cerrar</span></div>
 <div class="panel" id="p-cartel"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#D4A574;font-size:20px;">Contexto Historico</b><br><br>En 1817, Montreuil-sur-Mer era una ciudad empobrecida. La llegada del Padre Madeleine la transformo: fundo una fabrica de cuentas de azabache que dio empleo a toda la region.<br><br><em>"Cualquiera que tuviera hambre podia presentarse en la fabrica del Padre Madeleine y estaba seguro de encontrar alli empleo y pan."</em><br><br><small style="color:#A0896E;">- Victor Hugo, Los Miserables, Parte I, Libro V, Cap. II</small></div>
 <div class="panel" id="p-porton"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#D4A574;font-size:20px;">El Porton de la Fabrica</b><br><br>Por esta puerta entraban cada manana cientos de obreras. Madeleine separo a hombres y mujeres en talleres distintos. A las mujeres les exigia <em>"buenas costumbres"</em> - una condicion que destruiria a Fantine.<br><br><b style="color:#FF5900;">Avanza hacia el interior (tecla W).</b></div>
 <div class="panel" id="p-instrucciones"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#D4A574;font-size:20px;">Como explorar</b><br><br><b>Movimiento:</b> W A S D<br><b>Mirar:</b> Mouse / controlador<br><b>Interactuar:</b> Clic en objetos que brillan<br><b>Paneles:</b> Cierra con la X roja<br><br><b style="color:#FFB347;">6 zonas, 14 objetos. Tiempo: 20-25 min.</b></div>
@@ -38,56 +59,44 @@ body{margin:0;overflow:hidden;background:#0a0a0a}
 <div class="panel" id="p-espejo"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#D4A574;font-size:20px;">El espejo de Madeleine</b><br><br>El hombre que se mira en este espejo tiene dos nombres: <b>Jean Valjean</b>, expresidiario, y <b>Padre Madeleine</b>, alcalde y benefactor.<br><br><em>"Somos lo que fuimos, o lo que elegimos ser?"</em></div>
 <div class="panel" id="p-reloj"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#D4A574;font-size:20px;">5:45 AM - El reloj de la fabrica</b><br><br>Cada manana, antes del amanecer, el reloj marca las 5:45. Las obreras caminan por calles heladas hacia sus puestos.<br><br><em>"El trabajo era su unica esperanza. Perderlo significaba perderlo todo."</em></div>
 <div class="panel" id="p-campana"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#D4A574;font-size:20px;">La campana de la fabrica</b><br><br>La campana marca el ritmo de la vida en Montreuil-sur-Mer.<br><br><em>Mientras suene, hay trabajo. El dia que deje de sonar para Fantine, comenzara su caida.</em><br><br><b style="color:#FF5900;">Que significa el trabajo para la dignidad de una persona?</b></div>
-<div class="panel" id="p-muro"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#FF5900;font-size:22px;">PREGUNTA CENTRAL</b><br><br><b style="color:#D4A574;font-size:19px;">La miseria de Fantine es causada por la pobreza material o por el juicio moral de los otros?</b><br><br>Fantine tenia trabajo. Pero fue expulsada no por incompetencia, sino porque la sociedad juzgo su vida privada.<br><br><b style="color:#FFB347;">Lleva esta reflexion al Foro 1 en Brightspace.</b></div>
+<div class="panel" id="p-muro"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#FF5900;font-size:22px;">MURO COLABORATIVO</b><br><br><b style="color:#D4A574;">La miseria de Fantine es causada por la pobreza material o por el juicio moral de los otros?</b><br><br><b style="color:#FFB347;cursor:pointer;" onclick="document.getElementById('muro-input-box').style.display='block';this.parentElement.style.display='none';">&#9998; ESCRIBE TU REFLEXION EN EL MURO</b><br><br><div id="muro-messages" style="text-align:left;max-height:150px;overflow-y:auto;font-size:13px;margin-top:10px;"></div></div>
 <div class="panel" id="p-puerta"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#FF5900;font-size:22px;">FIN DEL RECORRIDO</b><br><br>Fantine fue expulsada de esta fabrica. Sin trabajo, sin dinero, sin esperanza, vendio su cabello, sus dientes y finalmente su cuerpo.<br><br><b style="color:#FFB347;">Has descubierto <span id="final-count">0</span> de 14 objetos.</b><br><br><b style="color:#FF5900;">Ahora regresa a Brightspace y participa en el Foro 1.</b></div>
 <div class="panel" id="p-pantalla"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#DAA520;font-size:22px;">PANTALLA DE CINE</b><br><br><b style="color:#D4A574;">"At the End of the Day"</b><br><em>Les Miserables</em> (2012)<br><br><b style="color:#FF5900;font-size:18px;cursor:pointer;" onclick="openVideo()">HAZ CLIC AQUI PARA VER EL VIDEO</b></div>
 
-<div id="teleport-menu" style="display:flex;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,10,10,0.95);z-index:100001;justify-content:center;align-items:center;flex-direction:column;">
+<div id="teleport-menu" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,10,10,0.95);z-index:100001;justify-content:center;align-items:center;flex-direction:column;">
 <div style="text-align:center;max-width:700px;width:90%;">
 <div style="font-family:Georgia,serif;font-size:28px;color:#D4A574;margin-bottom:8px;">&#127981; La Fabrica de Fantine &#127981;</div>
-<div style="font-family:Georgia,serif;font-size:14px;color:#A0896E;margin-bottom:30px;">Selecciona tu destino para teletransportarte</div>
+<div id="welcome-name" style="font-family:Georgia,serif;font-size:14px;color:#FFB347;margin-bottom:5px;"></div>
+<div style="font-family:Georgia,serif;font-size:14px;color:#A0896E;margin-bottom:30px;">Selecciona tu destino</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
-<div class="tp-btn" onclick="teleport(0,-15,'SALA DE CINE')" style="background:linear-gradient(135deg,#1a1a2e,#2C1A1A);border:2px solid #DAA520;border-radius:12px;padding:20px;cursor:pointer;text-align:center;">
-<div style="font-size:32px;">&#127916;</div>
-<div style="font-family:Georgia,serif;font-size:16px;color:#DAA520;margin-top:8px;">Sala de Cine</div>
-<div style="font-family:Georgia,serif;font-size:11px;color:#A0896E;margin-top:4px;">Ver el video primero</div>
-</div>
-<div class="tp-btn" onclick="teleport(0,-5,'ZONA 1: Entrada')" style="background:linear-gradient(135deg,#1a1a2e,#2C1A1A);border:2px solid #FFB347;border-radius:12px;padding:20px;cursor:pointer;text-align:center;">
-<div style="font-size:32px;">&#127963;</div>
-<div style="font-family:Georgia,serif;font-size:16px;color:#FFB347;margin-top:8px;">Entrada</div>
-<div style="font-family:Georgia,serif;font-size:11px;color:#A0896E;margin-top:4px;">Porton y cartel historico</div>
-</div>
-<div class="tp-btn" onclick="teleport(0,10,'ZONA 2: Taller')" style="background:linear-gradient(135deg,#1a1a2e,#2C1A1A);border:2px solid #D4A574;border-radius:12px;padding:20px;cursor:pointer;text-align:center;">
-<div style="font-size:32px;">&#129525;</div>
-<div style="font-family:Georgia,serif;font-size:16px;color:#D4A574;margin-top:8px;">Taller de Obreras</div>
-<div style="font-family:Georgia,serif;font-size:11px;color:#A0896E;margin-top:4px;">Carta, diario y cuentas</div>
-</div>
-<div class="tp-btn" onclick="teleport(13,25,'ZONA 3: Oficina')" style="background:linear-gradient(135deg,#1a1a2e,#2C1A1A);border:2px solid #C4A882;border-radius:12px;padding:20px;cursor:pointer;text-align:center;">
-<div style="font-size:32px;">&#128203;</div>
-<div style="font-family:Georgia,serif;font-size:16px;color:#C4A882;margin-top:8px;">Oficina Madeleine</div>
-<div style="font-family:Georgia,serif;font-size:11px;color:#A0896E;margin-top:4px;">Decreto y espejo</div>
-</div>
-<div class="tp-btn" onclick="teleport(0,28,'ZONA 4: El Patio')" style="background:linear-gradient(135deg,#1a1a2e,#2C1A1A);border:2px solid #8B8682;border-radius:12px;padding:20px;cursor:pointer;text-align:center;">
-<div style="font-size:32px;">&#9970;</div>
-<div style="font-family:Georgia,serif;font-size:16px;color:#8B8682;margin-top:8px;">El Patio</div>
-<div style="font-family:Georgia,serif;font-size:11px;color:#A0896E;margin-top:4px;">Reloj, campana y muro</div>
-</div>
-<div class="tp-btn" onclick="teleport(-13,-12,'ZONA 5: Salida')" style="background:linear-gradient(135deg,#1a1a2e,#2C1A1A);border:2px solid #FF5900;border-radius:12px;padding:20px;cursor:pointer;text-align:center;">
-<div style="font-size:32px;">&#128682;</div>
-<div style="font-family:Georgia,serif;font-size:16px;color:#FF5900;margin-top:8px;">Salida</div>
-<div style="font-family:Georgia,serif;font-size:11px;color:#A0896E;margin-top:4px;">Fin del recorrido</div>
-</div>
-</div>
-</div>
-</div>
+<div onclick="teleport(0,-15,'SALA DE CINE')" style="background:linear-gradient(135deg,#1a1a2e,#2C1A1A);border:2px solid #DAA520;border-radius:12px;padding:20px;cursor:pointer;text-align:center;"><div style="font-size:32px;">&#127916;</div><div style="font-family:Georgia,serif;font-size:16px;color:#DAA520;margin-top:8px;">Sala de Cine</div><div style="font-family:Georgia,serif;font-size:11px;color:#A0896E;margin-top:4px;">Ver el video primero</div></div>
+<div onclick="teleport(0,-5,'ZONA 1: Entrada')" style="background:linear-gradient(135deg,#1a1a2e,#2C1A1A);border:2px solid #FFB347;border-radius:12px;padding:20px;cursor:pointer;text-align:center;"><div style="font-size:32px;">&#127963;</div><div style="font-family:Georgia,serif;font-size:16px;color:#FFB347;margin-top:8px;">Entrada</div><div style="font-family:Georgia,serif;font-size:11px;color:#A0896E;margin-top:4px;">Porton y cartel historico</div></div>
+<div onclick="teleport(0,10,'ZONA 2: Taller')" style="background:linear-gradient(135deg,#1a1a2e,#2C1A1A);border:2px solid #D4A574;border-radius:12px;padding:20px;cursor:pointer;text-align:center;"><div style="font-size:32px;">&#129525;</div><div style="font-family:Georgia,serif;font-size:16px;color:#D4A574;margin-top:8px;">Taller de Obreras</div><div style="font-family:Georgia,serif;font-size:11px;color:#A0896E;margin-top:4px;">Carta, diario y cuentas</div></div>
+<div onclick="teleport(13,25,'ZONA 3: Oficina')" style="background:linear-gradient(135deg,#1a1a2e,#2C1A1A);border:2px solid #C4A882;border-radius:12px;padding:20px;cursor:pointer;text-align:center;"><div style="font-size:32px;">&#128203;</div><div style="font-family:Georgia,serif;font-size:16px;color:#C4A882;margin-top:8px;">Oficina Madeleine</div><div style="font-family:Georgia,serif;font-size:11px;color:#A0896E;margin-top:4px;">Decreto y espejo</div></div>
+<div onclick="teleport(0,28,'ZONA 4: El Patio')" style="background:linear-gradient(135deg,#1a1a2e,#2C1A1A);border:2px solid #8B8682;border-radius:12px;padding:20px;cursor:pointer;text-align:center;"><div style="font-size:32px;">&#9970;</div><div style="font-family:Georgia,serif;font-size:16px;color:#8B8682;margin-top:8px;">El Patio</div><div style="font-family:Georgia,serif;font-size:11px;color:#A0896E;margin-top:4px;">Reloj, campana y muro</div></div>
+<div onclick="teleport(-13,-12,'ZONA 5: Salida')" style="background:linear-gradient(135deg,#1a1a2e,#2C1A1A);border:2px solid #FF5900;border-radius:12px;padding:20px;cursor:pointer;text-align:center;"><div style="font-size:32px;">&#128682;</div><div style="font-family:Georgia,serif;font-size:16px;color:#FF5900;margin-top:8px;">Salida</div><div style="font-family:Georgia,serif;font-size:11px;color:#A0896E;margin-top:4px;">Fin del recorrido</div></div>
+</div></div></div>
 <div id="tp-button" onclick="showMenu()" style="display:none;position:fixed;top:150px;left:50%;transform:translateX(-50%);background:rgba(26,26,46,0.9);color:#FFB347;font-family:Georgia,serif;font-size:14px;padding:10px 20px;border-radius:8px;border:1px solid #FFB347;cursor:pointer;z-index:99999;">&#128205; Menu de Zonas</div>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <script>
-var status=document.getElementById('status'),zonaIndicator=document.getElementById('zona-indicator'),objCounter=document.getElementById('obj-counter'),discovered={},discoverCount=0;
-var cameraRig=null;
-function teleport(x,z,zona){document.getElementById('teleport-menu').style.display='none';document.getElementById('tp-button').style.display='block';if(cameraRig){cameraRig.setAttribute('position',x+' 0 '+z);}zonaIndicator.textContent=zona;status.textContent='Teletransportado a: '+zona;status.style.display='block';setTimeout(function(){status.style.display='none';},4000);}
+firebase.initializeApp({databaseURL:'https://fantine-vr-default-rtdb.firebaseio.com/'});
+var db=firebase.database(),myName='',myId='',sessionRef,cameraRig=null;
+var status=document.getElementById('status'),zonaIndicator=document.getElementById('zona-indicator'),objCounter=document.getElementById('obj-counter'),onlineCounter=document.getElementById('online-counter'),discovered={},discoverCount=0;
+var emojiMap={asombro:'\uD83D\uDE2E',tristeza:'\uD83D\uDE22',injusticia:'\uD83D\uDE21',reflexion:'\uD83E\uDD14',descubrimiento:'\uD83D\uDCA1',empatia:'\u2764\uFE0F'};
+function enterVR(){var n=document.getElementById('name-input').value.trim();if(!n){alert('Escribe tu nombre para entrar');return;}myName=n;myId=n.replace(/\s/g,'_')+'_'+Date.now();document.getElementById('login-screen').style.display='none';document.getElementById('teleport-menu').style.display='flex';document.getElementById('welcome-name').textContent='Bienvenido, '+myName;document.getElementById('reactions-bar').style.display='block';sessionRef=db.ref('sessions/'+myId);sessionRef.set({name:myName,joinedAt:new Date().toISOString(),zone:'MENU',objectsFound:0,reactions:{}});sessionRef.onDisconnect().update({leftAt:new Date().toISOString(),status:'offline'});db.ref('online/'+myId).set(true);db.ref('online/'+myId).onDisconnect().remove();logActivity('joined','Entro al universo VR');}
+document.getElementById('name-input').addEventListener('keypress',function(e){if(e.key==='Enter')enterVR();});
+db.ref('online').on('value',function(snap){var count=snap.numChildren();onlineCounter.innerHTML='&#128994; Conectados: '+count;});
+function logActivity(type,detail){if(!myId)return;db.ref('activity').push({user:myName,userId:myId,type:type,detail:detail,timestamp:new Date().toISOString()});}
+function sendReaction(type){if(!myId)return;var emoji=emojiMap[type]||type;db.ref('reactions').push({user:myName,emoji:emoji,type:type,zone:zonaIndicator.textContent,timestamp:new Date().toISOString()});logActivity('reaction',type+' en '+zonaIndicator.textContent);}
+db.ref('reactions').orderByChild('timestamp').limitToLast(1).on('child_added',function(snap){var d=snap.val();if(!d)return;var el=document.createElement('div');el.style.cssText='position:absolute;font-size:48px;pointer-events:none;animation:floatUp 4s ease-out forwards;';el.style.left=Math.random()*80+10+'%';el.style.bottom='10%';el.innerHTML=d.emoji+'<div style="font-size:11px;color:#D4A574;font-family:Georgia,serif;">'+d.user+'</div>';document.getElementById('floating-reactions').appendChild(el);setTimeout(function(){el.remove();},4500);});
+var styleAnim=document.createElement('style');styleAnim.textContent='@keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-300px) scale(1.5)}}';document.head.appendChild(styleAnim);
+function sendMuroMessage(){var txt=document.getElementById('muro-text').value.trim();if(!txt){alert('Escribe tu reflexion');return;}db.ref('muro').push({user:myName,text:txt,timestamp:new Date().toISOString()});document.getElementById('muro-text').value='';document.getElementById('muro-input-box').style.display='none';status.textContent='Tu reflexion fue publicada en el muro';status.style.display='block';setTimeout(function(){status.style.display='none';},4000);logActivity('muro',txt);}
+db.ref('muro').orderByChild('timestamp').limitToLast(20).on('value',function(snap){var box=document.getElementById('muro-messages');if(!box)return;box.innerHTML='';snap.forEach(function(c){var d=c.val();var div=document.createElement('div');div.style.cssText='margin:6px 0;padding:6px 10px;background:rgba(90,70,50,0.3);border-radius:6px;border-left:3px solid #FF5900;';div.innerHTML='<b style="color:#FFB347;">'+d.user+':</b> <span style="color:#FFFDF8;">'+d.text+'</span>';box.appendChild(div);});box.scrollTop=box.scrollHeight;});
+function teleport(x,z,zona){document.getElementById('teleport-menu').style.display='none';document.getElementById('tp-button').style.display='block';if(cameraRig){cameraRig.setAttribute('position',x+' 0 '+z);}zonaIndicator.textContent=zona;status.textContent='Teletransportado a: '+zona;status.style.display='block';setTimeout(function(){status.style.display='none';},4000);if(sessionRef)sessionRef.update({zone:zona});logActivity('teleport',zona);}
 function showMenu(){document.getElementById('teleport-menu').style.display='flex';}
-function openVideo(){document.getElementById('p-pantalla').style.display='none';document.getElementById('video-overlay').classList.add('active');document.getElementById('yt-player').src='https://www.youtube.com/embed/xOyrZSaeZa0?autoplay=1&rel=0';}
-function closeVideo(){document.getElementById('yt-player').src='';document.getElementById('video-overlay').classList.remove('active');status.textContent='Video terminado. Camina hacia la puerta dorada.';setTimeout(function(){status.style.display='none';},8000);}
+function openVideo(){document.getElementById('p-pantalla').style.display='none';document.getElementById('video-overlay').classList.add('active');document.getElementById('yt-player').src='https://www.youtube.com/embed/xOyrZSaeZa0?autoplay=1&rel=0';logActivity('video','Inicio video');}
+function closeVideo(){document.getElementById('yt-player').src='';document.getElementById('video-overlay').classList.remove('active');status.textContent='Video terminado. Camina hacia la puerta dorada.';setTimeout(function(){status.style.display='none';},8000);logActivity('video','Termino video');}
 var s=document.createElement('script');s.src='https://aframe.io/releases/1.4.0/aframe.min.js';
 s.onerror=function(){status.innerHTML='Error al cargar. Recarga la pagina.';};
 s.onload=function(){
@@ -224,7 +233,7 @@ setTimeout(function(){status.style.display='none';},5000);
 setTimeout(function(){
 var panels=['p-cartel','p-porton','p-instrucciones','p-letrero','p-carta','p-diario','p-cuentas','p-decreto','p-espejo','p-reloj','p-campana','p-muro','p-puerta','p-pantalla'];
 function closeAll(){for(var i=0;i<panels.length;i++){document.getElementById(panels[i]).style.display='none';}}
-function setupClick(id,panelId,ec,bi){var el=document.getElementById(id);if(el){el.addEventListener('click',function(){closeAll();document.getElementById(panelId).style.display='block';if(!discovered[id]){discovered[id]=true;discoverCount++;objCounter.textContent='Objetos: '+discoverCount+' / 14';var fc=document.getElementById('final-count');if(fc)fc.textContent=discoverCount;}});el.addEventListener('mouseenter',function(){el.setAttribute('material','emissive:'+ec+';emissiveIntensity:0.8');});el.addEventListener('mouseleave',function(){el.setAttribute('material','emissive:'+ec+';emissiveIntensity:'+bi);});}}
+function setupClick(id,panelId,ec,bi){var el=document.getElementById(id);if(el){el.addEventListener('click',function(){closeAll();document.getElementById(panelId).style.display='block';if(!discovered[id]){discovered[id]=true;discoverCount++;objCounter.textContent='Objetos: '+discoverCount+' / 14';if(sessionRef)sessionRef.update({objectsFound:discoverCount});logActivity('discover',id);var fc=document.getElementById('final-count');if(fc)fc.textContent=discoverCount;}});el.addEventListener('mouseenter',function(){el.setAttribute('material','emissive:'+ec+';emissiveIntensity:0.8');});el.addEventListener('mouseleave',function(){el.setAttribute('material','emissive:'+ec+';emissiveIntensity:'+bi);});}}
 setupClick('pantalla','p-pantalla','#333','0.3');
 setupClick('cartel','p-cartel','#C4A882','0.3');
 setupClick('porton','p-porton','#FFB347','0.15');
@@ -240,7 +249,7 @@ setupClick('campana','p-campana','#D4A574','0.25');
 setupClick('muro','p-muro','#FF5900','0.15');
 setupClick('puerta','p-puerta','#FF5900','0.2');
 var cam=document.querySelector('a-camera');
-setInterval(function(){var pos=cam.object3D.getWorldPosition(new THREE.Vector3());if(pos.z<-12&&pos.x>-10){zonaIndicator.textContent='SALA DE CINE';}else if(pos.x<-10){zonaIndicator.textContent='ZONA 5: Salida';}else if(pos.z<5&&pos.x<=10){zonaIndicator.textContent='ZONA 1: Entrada';}else if(pos.x>10){zonaIndicator.textContent='ZONA 3: Oficina';}else if(pos.z>=18){zonaIndicator.textContent='ZONA 4: El Patio';}else if(pos.z>=5){zonaIndicator.textContent='ZONA 2: Taller';}},1000);
+setInterval(function(){var pos=cam.object3D.getWorldPosition(new THREE.Vector3());var z=zonaIndicator.textContent;var nz='';if(pos.z<-12&&pos.x>-10){nz='SALA DE CINE';}else if(pos.x<-10){nz='ZONA 5: Salida';}else if(pos.z<5&&pos.x<=10){nz='ZONA 1: Entrada';}else if(pos.x>10){nz='ZONA 3: Oficina';}else if(pos.z>=18){nz='ZONA 4: El Patio';}else if(pos.z>=5){nz='ZONA 2: Taller';}if(nz&&nz!==z){zonaIndicator.textContent=nz;if(sessionRef)sessionRef.update({zone:nz});logActivity('move',nz);}},2000);
 },2000);});};
 document.head.appendChild(s);
 </script>
