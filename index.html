@@ -103,7 +103,7 @@ s.onerror=function(){status.innerHTML='Error al cargar. Recarga la pagina.';};
 s.onload=function(){
 status.textContent='Construyendo escena...';
 var sc=document.createElement('a-scene');
-sc.setAttribute('embedded','');sc.setAttribute('vr-mode-ui','enabled:true');sc.setAttribute('renderer','antialias:true');sc.setAttribute('fog','type:exponential;color:#4A3A2A;density:0.004');
+sc.setAttribute('embedded','');sc.setAttribute('vr-mode-ui','enabled:true');sc.setAttribute('renderer','antialias:true');sc.setAttribute('fog','type:exponential;color:#4A3A2A;density:0.002');
 sc.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;';
 var h='';
 h+='<a-sky color="#1a1a2e" material="shader:flat"></a-sky>';
@@ -214,7 +214,7 @@ h+='<a-text value="SALIDA" color="#FF5900" align="center" width="4" position="-1
 h+='<a-box id="puerta" class="clickable" position="-13 2.5 -15.7" width="3" height="4.5" depth="0.3" material="color:#4A2E15;roughness:0.6;emissive:#FF5900;emissiveIntensity:0.2"></a-box>';
 h+='<a-text value="[ PUERTA ]" color="#FF5900" align="center" width="3" position="-13 0.5 -15.3"></a-text>';
 h+='<a-text value="Fin del recorrido" color="#D4A574" align="center" width="3" position="-13 4.8 -15.3"></a-text>';
-h+='<a-light type="ambient" color="#8B7355" intensity="0.25"></a-light>';
+h+='<a-light type="ambient" color="#C4A882" intensity="0.45"></a-light>';
 h+='<a-light type="point" color="#FFB347" intensity="0.7" distance="12" position="-4 4 -6"></a-light>';
 h+='<a-light type="point" color="#FFB347" intensity="0.7" distance="12" position="4 4 -6"></a-light>';
 h+='<a-light type="point" color="#FFB347" intensity="0.5" distance="10" position="0 4 12"></a-light>';
@@ -223,6 +223,10 @@ h+='<a-light type="point" color="#FFB347" intensity="0.5" distance="12" position
 h+='<a-light type="point" color="#DAA520" intensity="0.6" distance="15" position="0 4 -22"></a-light>';
 h+='<a-light type="directional" color="#B8C4D0" intensity="0.3" position="0 8 28"></a-light>';
 h+='<a-light type="point" color="#FF5900" intensity="0.3" distance="8" position="-13 3 -12"></a-light>';
+h+='<a-light type="point" color="#D4A574" intensity="0.5" distance="15" position="0 4 -9"></a-light>';
+h+='<a-light type="point" color="#D4A574" intensity="0.5" distance="15" position="0 4 4"></a-light>';
+h+='<a-light type="point" color="#D4A574" intensity="0.4" distance="12" position="5 4 17"></a-light>';
+h+='<a-light type="point" color="#C4A882" intensity="0.4" distance="10" position="-5 3 -7"></a-light>';
 h+='<a-entity id="rig" position="0 0 0"><a-camera look-controls wasd-controls="acceleration:25"><a-cursor color="#FF5900" raycaster="objects:.clickable" geometry="primitive:ring;radiusInner:0.02;radiusOuter:0.03" material="color:#FF5900;shader:flat"></a-cursor></a-camera></a-entity>';
 sc.innerHTML=h;
 document.body.appendChild(sc);
