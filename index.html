@@ -177,24 +177,38 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-camera look-controls wasd-controls="acceleration:25">
 <a-cursor fuse="true" fuse-timeout="1500" color="#FF5900" raycaster="objects:.clickable" geometry="primitive:ring;radiusInner:0.02;radiusOuter:0.03" material="color:#FF5900;shader:flat"></a-cursor>
 </a-camera>
-<a-entity laser-controls="hand:right" raycaster="objects:.clickable;far:30" line="color:#FF5900;opacity:0.75"></a-entity>
-<a-entity laser-controls="hand:left" raycaster="objects:.clickable;far:30" line="color:#FFB347;opacity:0.75"></a-entity>
+<a-entity id="rhand" laser-controls="hand:right" raycaster="objects:.clickable;far:30;lineColor:#FF5900;lineOpacity:0.75"></a-entity>
+<a-entity id="lhand" laser-controls="hand:left" raycaster="objects:.clickable;far:30;lineColor:#FFB347;lineOpacity:0.75"></a-entity>
 </a-entity>
-</a-scene>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-<script src="app.js"></script>
+
 <script>
 var ids=['pantalla','cartel','porton','instrucciones','letrero','carta','diario','cuentas','decreto','espejo','reloj','campana','muro','puerta'];
 var pids=['p0','p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12','p13'];
 var bis=[0.3,0.3,0.15,0.2,0.2,0.4,0.3,0.25,0.4,0.15,0.25,0.25,0.15,0.2];
-document.querySelector('a-scene').addEventListener('loaded',function(){
+
+function setupClicks(){
 cr=document.getElementById('rig');
-for(var i=0;i<ids.length;i++){(function(idx){var el=document.getElementById(ids[idx]);if(el){el.addEventListener('click',function(){for(var j=0;j<pids.length;j++)document.getElementById(pids[j]).style.display='none';document.getElementById(pids[idx]).style.display='block';if(ids[idx]==='campana'){try{ca.currentTime=0;ca.play()}catch(e){}}if(!disc[ids[idx]]){disc[ids[idx]]=true;dc++;oi.textContent=dc+'/14';if(sr)sr.update({objectsFound:dc});var f=document.getElementById('fc');if(f)f.textContent=dc;}});el.addEventListener('mouseenter',function(){el.setAttribute('material','emissiveIntensity','0.8')});el.addEventListener('mouseleave',function(){el.setAttribute('material','emissiveIntensity',String(bis[idx]))})}})(i)}
+for(var i=0;i<ids.length;i++){(function(idx){
+var el=document.getElementById(ids[idx]);
+if(el){
+el.addEventListener('click',function(){
+for(var j=0;j<pids.length;j++)document.getElementById(pids[j]).style.display='none';
+document.getElementById(pids[idx]).style.display='block';
+if(ids[idx]==='campana'){try{ca.currentTime=0;ca.play()}catch(e){}}
+if(!disc[ids[idx]]){disc[ids[idx]]=true;dc++;oi.textContent=dc+'/14';if(sr)sr.update({objectsFound:dc});var f=document.getElementById('fc');if(f)f.textContent=dc;}
+});
+el.addEventListener('mouseenter',function(){el.setAttribute('material','emissiveIntensity','0.8')});
+el.addEventListener('mouseleave',function(){el.setAttribute('material','emissiveIntensity',String(bis[idx]))});
+el.addEventListener('raycaster-intersected',function(){el.setAttribute('material','emissiveIntensity','0.8')});
+el.addEventListener('raycaster-intersected-cleared',function(){el.setAttribute('material','emissiveIntensity',String(bis[idx]))});
+}
+})(i)}
 var cm=document.querySelector('a-camera');
 setInterval(function(){var p=cm.object3D.getWorldPosition(new THREE.Vector3());var z=zi.textContent;var n='';if(p.z<-12&&p.x>-10)n='CINE';else if(p.x<-10)n='ZONA 5';else if(p.z<5&&p.x<=10)n='ZONA 1';else if(p.x>10)n='ZONA 3';else if(p.z>=18)n='ZONA 4';else if(p.z>=5)n='ZONA 2';if(n&&n!==z){zi.textContent=n;if(sr)sr.update({zone:n})}},2000);
-});
+}
+
+document.querySelector('a-scene').addEventListener('loaded',setupClicks);
 </script>
 </body>
 </html>
