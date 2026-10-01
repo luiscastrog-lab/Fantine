@@ -334,3 +334,72 @@ h+='<a-cone id="campana" class="clickable" position="5 3.7 32" radius-bottom="0.
 h+='<a-text value="[ CAMPANA ]" color="#FFB347" align="center" width="2.5" position="5 3 32"></a-text>';
 h+='<a-box id="muro" class="clickable" position="0 2 36.7" width="6" height="3.5" depth="0.3" material="color:#5C4A3A;roughness:0.85;emissive:#FF5900;emissiveIntensity:0.15"></a-box>';
 
+h+='<a-box id="muro" class="clickable" position="0 2 36.7" width="6" height="3.5" depth="0.3" material="color:#5C4A3A;roughness:0.85;emissive:#FF5900;emissiveIntensity:0.15"></a-box>';
+h+='<a-text value="La miseria que\\nviene del otro" color="#D4A574" align="center" width="4" position="0 2.5 36.4"></a-text>';
+h+='<a-text value="[ MURO ]" color="#FF5900" align="center" width="4" position="0 0.8 36.4"></a-text>';
+h+='<a-box position="-5 0.005 -7.5" width="3.6" height="0.01" depth="1.4" material="color:#0a0a0a;roughness:0.3"></a-box>';
+h+='<a-box position="-5 0.015 -7.5" width="3.2" height="0.02" depth="1" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.6;opacity:0.9;transparent:true"></a-box>';
+h+='<a-text value="ZONA 5: SALIDA" color="#FFFFFF" align="center" width="4.5" position="-5 0.15 -7.5" rotation="-90 0 0"></a-text>';
+h+='<a-cone position="-5 0.08 -8.7" rotation="90 0 0" radius-bottom="0.35" radius-top="0" height="0.6" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.6;opacity:0.9;transparent:true"></a-cone>';
+h+='<a-sphere position="-6 0.08 -7" radius="0.08" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:1"></a-sphere>';
+h+='<a-sphere position="-7 0.08 -7.5" radius="0.08" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:1"></a-sphere>';
+h+='<a-sphere position="-8 0.08 -8" radius="0.08" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:1"></a-sphere>';
+h+='<a-box position="-9.7 2.5 -5" width="0.1" height="1.4" depth="1.2" material="color:#0a0a0a;roughness:0.3"></a-box>';
+h+='<a-text value="<<< Salida" color="#FFFFFF" align="center" width="2.5" position="-9.5 2.5 -5" rotation="0 90 0"></a-text>';
+h+='<a-plane position="-13 0.01 -12" rotation="-90 0 0" width="6" height="8" material="color:#3A2A1A;roughness:0.9"></a-plane>';
+h+='<a-box position="-13 3 -8" width="6" height="6" depth="0.5" material="color:#5C4A3A;roughness:0.85"></a-box>';
+h+='<a-box position="-16 3 -12" width="0.5" height="6" depth="8" material="color:#5C4A3A;roughness:0.85"></a-box>';
+h+='<a-box position="-10 3 -12" width="0.5" height="6" depth="8" material="color:#5C4A3A;roughness:0.85"></a-box>';
+h+='<a-box position="-13 3 -16" width="6" height="6" depth="0.5" material="color:#5C4A3A;roughness:0.85"></a-box>';
+h+='<a-text value="SALIDA" color="#FF5900" align="center" width="4" position="-10.3 5 -12" rotation="0 -90 0"></a-text>';
+h+='<a-box id="puerta" class="clickable" position="-13 2.5 -15.7" width="3" height="4.5" depth="0.3" material="color:#4A2E15;roughness:0.6;emissive:#FF5900;emissiveIntensity:0.2"></a-box>';
+h+='<a-text value="[ PUERTA ]" color="#FF5900" align="center" width="3" position="-13 0.5 -15.3"></a-text>';
+h+='<a-text value="Fin del recorrido" color="#D4A574" align="center" width="3" position="-13 4.8 -15.3"></a-text>';
+h+='<a-light type="ambient" color="#C4A882" intensity="0.45"></a-light>';
+h+='<a-light type="point" color="#FFB347" intensity="0.7" distance="12" position="-4 4 -6"></a-light>';
+h+='<a-light type="point" color="#FFB347" intensity="0.7" distance="12" position="4 4 -6"></a-light>';
+h+='<a-light type="point" color="#FFB347" intensity="0.5" distance="10" position="0 4 12"></a-light>';
+h+='<a-light type="point" color="#FFB347" intensity="0.6" distance="8" position="14 3.5 25"></a-light>';
+h+='<a-light type="point" color="#FFB347" intensity="0.5" distance="12" position="0 4 28"></a-light>';
+h+='<a-light type="point" color="#DAA520" intensity="0.3" distance="10" position="0 4 -22"></a-light>';
+h+='<a-light type="point" color="#B8C4D0" intensity="0.4" distance="20" position="0 6 28"></a-light>';
+h+='<a-light type="point" color="#FF5900" intensity="0.3" distance="8" position="-13 3 -12"></a-light>';
+h+='<a-light type="point" color="#D4A574" intensity="0.5" distance="15" position="0 4 -9"></a-light>';
+h+='<a-light type="point" color="#D4A574" intensity="0.5" distance="15" position="0 4 4"></a-light>';
+h+='<a-light type="point" color="#D4A574" intensity="0.4" distance="12" position="5 4 17"></a-light>';
+h+='<a-light type="point" color="#C4A882" intensity="0.4" distance="10" position="-5 3 -7"></a-light>';
+h+='<a-entity id="rig" position="0 0 0"><a-camera look-controls wasd-controls="acceleration:25"><a-cursor fuse="true" fuse-timeout="1500" color="#FF5900" raycaster="objects:.clickable" geometry="primitive:ring;radiusInner:0.02;radiusOuter:0.03" material="color:#FF5900;shader:flat"></a-cursor></a-camera>';
+h+='<a-entity laser-controls="hand:right" raycaster="objects:.clickable;far:30" line="color:#FF5900;opacity:0.75"></a-entity><a-entity laser-controls="hand:left" raycaster="objects:.clickable;far:30" line="color:#FFB347;opacity:0.75"></a-entity></a-entity>';
+sc.innerHTML=h;
+document.body.appendChild(sc);
+sc.addEventListener('loaded',function(){
+cameraRig=document.getElementById('rig');
+status.textContent='Selecciona una zona en el menu.';
+setTimeout(function(){status.style.display='none';},5000);
+setTimeout(function(){
+var panels=['p-cartel','p-porton','p-instrucciones','p-letrero','p-carta','p-diario','p-cuentas','p-decreto','p-espejo','p-reloj','p-campana','p-muro','p-puerta','p-pantalla'];
+function closeAll(){for(var i=0;i<panels.length;i++){document.getElementById(panels[i]).style.display='none';}}
+function setupClick(id,panelId,ec,bi){var el=document.getElementById(id);if(el){el.addEventListener('click',function(){closeAll();document.getElementById(panelId).style.display='block';if(id==='campana'){playCampana();}if(!discovered[id]){discovered[id]=true;discoverCount++;objCounter.textContent='Objetos: '+discoverCount+' / 14';if(sessionRef)sessionRef.update({objectsFound:discoverCount});logActivity('discover',id);var fc=document.getElementById('final-count');if(fc)fc.textContent=discoverCount;}});el.addEventListener('mouseenter',function(){el.setAttribute('material','emissive',ec);el.setAttribute('material','emissiveIntensity','0.8');});el.addEventListener('mouseleave',function(){el.setAttribute('material','emissive',ec);el.setAttribute('material','emissiveIntensity',bi);});}}
+setupClick('pantalla','p-pantalla','#333','0.3');
+setupClick('cartel','p-cartel','#C4A882','0.3');
+setupClick('porton','p-porton','#FFB347','0.15');
+setupClick('instrucciones','p-instrucciones','#FF5900','0.2');
+setupClick('letrero','p-letrero','#D4A574','0.2');
+setupClick('carta','p-carta','#F5E6C8','0.4');
+setupClick('diario','p-diario','#D4A574','0.3');
+setupClick('cuentas','p-cuentas','#FFB347','0.25');
+setupClick('decreto','p-decreto','#D4A574','0.4');
+setupClick('espejo','p-espejo','#B8C4D0','0.15');
+setupClick('reloj','p-reloj','#FFB347','0.25');
+setupClick('campana','p-campana','#D4A574','0.25');
+setupClick('muro','p-muro','#FF5900','0.15');
+setupClick('puerta','p-puerta','#FF5900','0.2');
+var cam=document.querySelector('a-camera');
+setInterval(function(){var pos=cam.object3D.getWorldPosition(new THREE.Vector3());var z=zonaIndicator.textContent;var nz='';if(pos.z<-12&&pos.x>-10){nz='SALA DE CINE';}else if(pos.x<-10){nz='ZONA 5: Salida';}else if(pos.z<5&&pos.x<=10){nz='ZONA 1: Entrada';}else if(pos.x>10){nz='ZONA 3: Oficina';}else if(pos.z>=18){nz='ZONA 4: El Patio';}else if(pos.z>=5){nz='ZONA 2: Taller';}if(nz&&nz!==z){zonaIndicator.textContent=nz;if(sessionRef)sessionRef.update({zone:nz});logActivity('move',nz);}},2000);
+},2000);});};
+document.head.appendChild(s);
+</script>
+</body>
+</html>
+
+
