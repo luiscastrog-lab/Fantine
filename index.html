@@ -4,64 +4,177 @@
 <meta charset="utf-8">
 <title>UV1: La Fabrica de Fantine</title>
 <style>
-body{margin:0;overflow:hidden;background:#0a0a0a}
-.panel{display:none;position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:rgba(26,26,46,0.95);color:#FFFDF8;padding:25px 35px;border-radius:14px;font-family:Georgia,serif;font-size:17px;text-align:center;z-index:99999;max-width:560px;width:88%;border:2px solid #D4A574;line-height:1.6}
-.panel-x{position:absolute;top:8px;right:14px;color:#FF5900;cursor:pointer;font-size:28px;font-weight:bold}
-#status{position:fixed;top:20px;left:50%;transform:translateX(-50%);color:#D4A574;font-family:Georgia,serif;font-size:18px;z-index:99999;text-align:center;background:rgba(26,26,46,0.85);padding:14px 28px;border-radius:12px;border:1px solid #D4A574}
-#zona-indicator{position:fixed;top:80px;left:50%;transform:translateX(-50%);color:#FFB347;font-family:Georgia,serif;font-size:14px;z-index:99999;text-align:center;background:rgba(26,26,46,0.7);padding:8px 20px;border-radius:8px}
-#obj-counter{position:fixed;top:110px;left:50%;transform:translateX(-50%);color:#A0896E;font-family:Georgia,serif;font-size:12px;z-index:99999;text-align:center;background:rgba(26,26,46,0.6);padding:5px 14px;border-radius:6px}
-#online-counter{position:fixed;top:138px;left:50%;transform:translateX(-50%);color:#4CAF50;font-family:Georgia,serif;font-size:12px;z-index:99999;text-align:center;background:rgba(26,26,46,0.6);padding:5px 14px;border-radius:6px}
-#controles{position:fixed;bottom:20px;right:20px;color:#A0896E;font-family:Georgia,serif;font-size:12px;z-index:99998;text-align:right;background:rgba(26,26,46,0.7);padding:10px 14px;border-radius:8px;line-height:1.6}
-#reactions-bar{display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(26,26,46,0.9);padding:10px 20px;border-radius:12px;border:1px solid #D4A574;z-index:99998;text-align:center}
-.react-btn{font-size:28px;cursor:pointer;margin:0 8px;padding:5px;border:none;background:none;transition:transform 0.2s}
-.react-btn:hover{transform:scale(1.4)}
-#floating-reactions{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99997;overflow:hidden}
-#video-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:100000;justify-content:center;align-items:center;flex-direction:column}
-#video-overlay.active{display:flex}
-#video-container{width:90%;max-width:900px;background:#0a0a0a;border-radius:12px;overflow:hidden;border:3px solid #DAA520}
-#video-header{background:linear-gradient(135deg,#1a1a2e,#2a1a1a);padding:12px 20px;text-align:center;border-bottom:3px solid #DAA520}
-#video-header span{font-family:Georgia,serif;font-size:12px;color:#ffd700;text-transform:uppercase;letter-spacing:3px}
-#video-footer{background:#0a0a0a;padding:16px 24px;text-align:center;border-top:2px solid #DAA520}
-#video-footer p{font-family:Georgia,serif;font-size:12px;color:#ccc;font-style:italic;line-height:1.5;margin:0 0 10px 0}
-#close-video{background:#FF5900;color:white;border:none;padding:12px 30px;border-radius:8px;font-family:Georgia,serif;font-size:16px;cursor:pointer;margin-top:16px}
-#login-screen{display:flex;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,10,10,0.98);z-index:100002;justify-content:center;align-items:center;flex-direction:column}
-#login-box{text-align:center;max-width:400px;width:90%}
-#login-box h1{font-family:Georgia,serif;font-size:28px;color:#D4A574;margin-bottom:8px}
-#login-box p{font-family:Georgia,serif;font-size:14px;color:#A0896E;margin-bottom:25px}
-#name-input{width:80%;padding:14px 20px;font-family:Georgia,serif;font-size:18px;border:2px solid #D4A574;border-radius:10px;background:#1a1a2e;color:#FFFDF8;text-align:center;outline:none}
-#name-input:focus{border-color:#FFB347}
-#enter-btn{margin-top:20px;padding:14px 40px;font-family:Georgia,serif;font-size:18px;background:#FF5900;color:white;border:none;border-radius:10px;cursor:pointer}
-#enter-btn:hover{background:#cc4700}
-#muro-input-box{display:none;position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:rgba(26,26,46,0.95);padding:20px;border-radius:12px;border:2px solid #FF5900;z-index:99999;text-align:center;width:88%;max-width:500px}
-#muro-text{width:85%;padding:10px;font-family:Georgia,serif;font-size:14px;border:1px solid #D4A574;border-radius:8px;background:#1a1a2e;color:#FFFDF8;resize:none;outline:none}
-#muro-send{margin-top:10px;padding:10px 30px;font-family:Georgia,serif;font-size:14px;background:#FF5900;color:white;border:none;border-radius:8px;cursor:pointer}
+body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e;}
+#login-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e 0%,#2C1A1A 50%,#1a1a2e 100%);display:flex;justify-content:center;align-items:center;z-index:100000;flex-direction:column;}
+#login-box{text-align:center;max-width:500px;width:90%;padding:40px;}
+#login-box h1{font-size:32px;color:#D4A574;margin-bottom:5px;}
+#login-box h2{font-size:16px;color:#A0896E;margin-bottom:30px;font-weight:normal;}
+#name-input{width:80%;padding:12px 20px;font-size:18px;border:2px solid #D4A574;border-radius:8px;background:rgba(26,26,46,0.8);color:#FFFDF8;text-align:center;font-family:Georgia,serif;}
+#enter-btn{margin-top:20px;padding:12px 40px;font-size:18px;background:linear-gradient(135deg,#D4A574,#FFB347);color:#1a1a2e;border:none;border-radius:8px;cursor:pointer;font-family:Georgia,serif;font-weight:bold;}
+#hud{position:fixed;top:10px;left:10px;z-index:99999;font-size:13px;color:#D4A574;pointer-events:none;}
+#zona-indicator{background:rgba(26,26,46,0.85);padding:6px 14px;border-radius:6px;border:1px solid #D4A574;margin-bottom:4px;display:inline-block;}
+#obj-counter{background:rgba(26,26,46,0.85);padding:4px 10px;border-radius:6px;border:1px solid #FFB347;display:inline-block;margin-left:8px;}
+#online-counter{background:rgba(26,26,46,0.85);padding:4px 10px;border-radius:6px;border:1px solid #4CAF50;display:inline-block;margin-left:8px;}
+#status{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(26,26,46,0.9);color:#FFB347;padding:10px 24px;border-radius:8px;border:1px solid #FFB347;font-size:14px;z-index:99999;display:none;text-align:center;max-width:80%;}
+.info-panel{display:none;position:fixed;bottom:0;left:0;width:100%;max-height:45%;overflow-y:auto;background:rgba(26,26,46,0.95);color:#FFFDF8;padding:20px;z-index:100000;border-top:3px solid #D4A574;font-size:14px;line-height:1.6;box-sizing:border-box;}
+.info-panel h3{color:#D4A574;margin:0 0 8px 0;font-size:18px;}
+.info-panel .close-btn{position:absolute;top:10px;right:15px;color:#FF5900;font-size:24px;cursor:pointer;background:rgba(26,26,46,0.8);border:1px solid #FF5900;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;}
+.info-panel .close-btn:hover{background:#FF5900;color:#FFFDF8;}
+#reactions-bar{display:none;position:fixed;bottom:10px;left:50%;transform:translateX(-50%);z-index:99999;background:rgba(26,26,46,0.9);padding:8px 16px;border-radius:25px;border:1px solid #D4A574;}
+#reactions-bar span{font-size:28px;cursor:pointer;margin:0 6px;transition:transform 0.2s;}
+#reactions-bar span:hover{transform:scale(1.4);}
+#floating-reactions{position:fixed;bottom:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99998;overflow:hidden;}
+#video-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:100002;justify-content:center;align-items:center;flex-direction:column;}
+#video-overlay.active{display:flex;}
+#yt-player{width:90%;max-width:900px;height:50vh;border:3px solid #DAA520;border-radius:8px;}
+#video-close{margin-top:20px;padding:12px 30px;background:#FF5900;color:#FFFDF8;border:none;border-radius:8px;font-size:16px;cursor:pointer;font-family:Georgia,serif;}
+#muro-input-box{display:none;position:fixed;bottom:60px;left:50%;transform:translateX(-50%);z-index:100001;background:rgba(26,26,46,0.95);padding:15px;border-radius:10px;border:1px solid #FF5900;width:80%;max-width:500px;}
+#muro-text{width:90%;padding:10px;border:1px solid #D4A574;border-radius:6px;background:rgba(26,26,46,0.8);color:#FFFDF8;font-family:Georgia,serif;font-size:14px;resize:none;height:60px;}
+#muro-send{margin-top:8px;padding:8px 20px;background:#FF5900;color:#FFFDF8;border:none;border-radius:6px;cursor:pointer;font-family:Georgia,serif;}
 </style>
 </head>
 <body>
-<div id="login-screen"><div id="login-box"><h1>&#127981; La Fabrica de Fantine</h1><p>Escribe tu nombre para entrar</p><input id="name-input" type="text" placeholder="Tu nombre completo" maxlength="40"><br><button id="enter-btn" onclick="enterVR()">Entrar al Universo VR</button></div></div>
-<div id="status">&#127916; Cargando...</div>
-<div id="zona-indicator">SALA DE CINE</div>
-<div id="obj-counter">Objetos: 0 / 14</div>
-<div id="online-counter">&#128994; Conectados: 1</div>
-<div id="controles"><strong style="color:#D4A574;">Controles:</strong><br>WASD=caminar<br>Mouse=mirar<br>Clic=interactuar</div>
-<div id="reactions-bar"><span class="react-btn" onclick="sendReaction('asombro')">&#128558;</span><span class="react-btn" onclick="sendReaction('tristeza')">&#128546;</span><span class="react-btn" onclick="sendReaction('injusticia')">&#128545;</span><span class="react-btn" onclick="sendReaction('reflexion')">&#129300;</span><span class="react-btn" onclick="sendReaction('descubrimiento')">&#128161;</span><span class="react-btn" onclick="sendReaction('empatia')">&#10084;&#65039;</span></div>
+<div id="login-screen">
+<div id="login-box">
+<h1>&#127981; La Fabrica de Fantine &#127981;</h1>
+<h2>UV1: Miseria y Grandeza del Hombre</h2>
+<p style="color:#A0896E;margin-bottom:20px;font-size:14px;">Persona y Trascendencia &bull; Universidad Anahuac Mayab</p>
+<input type="text" id="name-input" placeholder="Escribe tu nombre completo">
+<br>
+<button id="enter-btn" onclick="enterVR()">Entrar a la Fabrica</button>
+</div>
+</div>
+<div id="hud">
+<span id="zona-indicator">MENU</span>
+<span id="obj-counter">Objetos: 0 / 14</span>
+<span id="online-counter">&#128994; Conectados: 0</span>
+</div>
+<div id="status"></div>
+<div id="reactions-bar">
+<span onclick="sendReaction('asombro')" title="Asombro">&#128558;</span>
+<span onclick="sendReaction('tristeza')" title="Tristeza">&#128546;</span>
+<span onclick="sendReaction('injusticia')" title="Injusticia">&#128545;</span>
+<span onclick="sendReaction('reflexion')" title="Reflexion">&#129300;</span>
+<span onclick="sendReaction('descubrimiento')" title="Descubrimiento">&#128161;</span>
+<span onclick="sendReaction('empatia')" title="Empatia">&#10084;&#65039;</span>
+</div>
 <div id="floating-reactions"></div>
-<div id="video-overlay"><div id="video-container"><div id="video-header"><span>&#9733; Now Showing &#9733;</span></div><div style="position:relative;padding-bottom:56.25%;height:0;background:#000;"><iframe id="yt-player" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" src="" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div id="video-footer"><p>"At the End of the Day" - Les Miserables (2012)</p><button id="close-video" onclick="closeVideo()">&#127981; Entrar a la Fabrica</button></div></div></div>
-<div id="muro-input-box"><div style="font-family:Georgia,serif;color:#D4A574;font-size:16px;margin-bottom:10px;">Escribe tu reflexion en el muro:</div><textarea id="muro-text" rows="3" maxlength="200" placeholder="Tu reflexion sobre Fantine..."></textarea><br><button id="muro-send" onclick="sendMuroMessage()">Publicar en el Muro</button><span style="color:#FF5900;cursor:pointer;margin-left:15px;font-size:20px;" onclick="document.getElementById('muro-input-box').style.display='none'">&times; Cerrar</span></div>
-<div class="panel" id="p-cartel"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#D4A574;font-size:20px;">Contexto Historico</b><br><br>En 1817, Montreuil-sur-Mer era una ciudad empobrecida. La llegada del Padre Madeleine la transformo: fundo una fabrica de cuentas de azabache que dio empleo a toda la region.<br><br><em>"Cualquiera que tuviera hambre podia presentarse en la fabrica del Padre Madeleine y estaba seguro de encontrar alli empleo y pan."</em><br><br><small style="color:#A0896E;">- Victor Hugo, Los Miserables, Parte I, Libro V, Cap. II</small></div>
-<div class="panel" id="p-porton"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#D4A574;font-size:20px;">El Porton de la Fabrica</b><br><br>Por esta puerta entraban cada manana cientos de obreras. Madeleine separo a hombres y mujeres en talleres distintos. A las mujeres les exigia <em>"buenas costumbres"</em> - una condicion que destruiria a Fantine.<br><br><b style="color:#FF5900;">Avanza hacia el interior (tecla W).</b></div>
-<div class="panel" id="p-instrucciones"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#D4A574;font-size:20px;">Como explorar</b><br><br><b>Movimiento:</b> W A S D<br><b>Mirar:</b> Mouse / controlador<br><b>Interactuar:</b> Clic en objetos que brillan<br><b>Paneles:</b> Cierra con la X roja<br><br><b style="color:#FFB347;">6 zonas, 14 objetos. Tiempo: 20-25 min.</b></div>
-<div class="panel" id="p-letrero"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#D4A574;font-size:20px;">FABRIQUE MADELEINE</b><br><br>Fundada por el Padre Madeleine, un hombre misterioso que llego a Montreuil-sur-Mer en 1815. Su industria transformo una ciudad miserable en un centro prospero.<br><br><em>"Madeleine pensaba mucho en los demas y poco en si mismo."</em><br><br><small style="color:#A0896E;">- Victor Hugo, Los Miserables, Parte I, Libro V, Cap. II</small></div>
-<div class="panel" id="p-carta"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#D4A574;font-size:20px;">Carta de Fantine a los Thenardier</b><br><br><em>"Queridos Thenardier - Les suplico noticias de mi pequena Cosette. Come bien? Duerme en una cama caliente? Les envio lo poco que tengo: diez francos."</em><br><br><b style="color:#A0896E;">Su madre, Fantine.</b></div>
-<div class="panel" id="p-diario"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#D4A574;font-size:20px;">Diario de una obrera</b><br><br><em>"Lunes. Entramos a las seis. Trabajamos hasta las ocho de la noche. Catorce horas encorvadas sobre las cuentas. Mis dedos sangran."</em><br><br><em>"Las vigilantas nos observan. Si hablas, te descuentan. Si descubren que tienes un hijo sin estar casada... te despiden."</em></div>
-<div class="panel" id="p-cuentas"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#D4A574;font-size:20px;">Las cuentas de azabache</b><br><br>La industria consistia en imitar cuentas de azabache ingles usando resina negra, para rosarios, collares y adornos de luto.<br><br><em>"Antes de Madeleine, todo languidecia; ahora todo vivia con vida sana de trabajo."</em></div>
-<div class="panel" id="p-decreto"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#D4A574;font-size:20px;">Decreto del Padre Madeleine</b><br><br><em>"Hombres y mujeres: en esta fabrica encontrareis trabajo honrado y salario justo. Solo pido: a los hombres, buena voluntad; a las mujeres, buenas costumbres."</em><br><br>Fantine fue despedida cuando descubrieron que tenia una hija fuera del matrimonio.<br><br><b style="color:#FF5900;">Es justo que la moral personal determine el derecho al trabajo?</b></div>
-<div class="panel" id="p-espejo"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#D4A574;font-size:20px;">El espejo de Madeleine</b><br><br>El hombre que se mira en este espejo tiene dos nombres: <b>Jean Valjean</b>, expresidiario, y <b>Padre Madeleine</b>, alcalde y benefactor.<br><br><em>"Somos lo que fuimos, o lo que elegimos ser?"</em></div>
-<div class="panel" id="p-reloj"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#D4A574;font-size:20px;">5:45 AM - El reloj de la fabrica</b><br><br>Cada manana, antes del amanecer, el reloj marca las 5:45. Las obreras caminan por calles heladas hacia sus puestos.<br><br><em>"El trabajo era su unica esperanza. Perderlo significaba perderlo todo."</em></div>
-<div class="panel" id="p-campana"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#D4A574;font-size:20px;">La campana de la fabrica</b><br><br>La campana marca el ritmo de la vida en Montreuil-sur-Mer.<br><br><em>Mientras suene, hay trabajo. El dia que deje de sonar para Fantine, comenzara su caida.</em><br><br><b style="color:#FF5900;">Que significa el trabajo para la dignidad de una persona?</b></div>
-<div class="panel" id="p-muro"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#FF5900;font-size:22px;">MURO COLABORATIVO</b><br><br><b style="color:#D4A574;">La miseria de Fantine es causada por la pobreza material o por el juicio moral de los otros?</b><br><br><b style="color:#FFB347;cursor:pointer;" onclick="document.getElementById('muro-input-box').style.display='block';this.parentElement.style.display='none';">&#9998; ESCRIBE TU REFLEXION EN EL MURO</b><br><br><div id="muro-messages" style="text-align:left;max-height:150px;overflow-y:auto;font-size:13px;margin-top:10px;"></div></div>
-<div class="panel" id="p-puerta"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#FF5900;font-size:22px;">FIN DEL RECORRIDO</b><br><br>Fantine fue expulsada de esta fabrica. Sin trabajo, sin dinero, sin esperanza, vendio su cabello, sus dientes y finalmente su cuerpo.<br><br><b style="color:#FFB347;">Has descubierto <span id="final-count">0</span> de 14 objetos.</b><br><br><b style="color:#FF5900;">Ahora regresa a Brightspace y participa en el Foro 1.</b></div>
-<div class="panel" id="p-pantalla"><span class="panel-x" onclick="this.parentElement.style.display='none'">&times;</span><b style="color:#DAA520;font-size:22px;">PANTALLA DE CINE</b><br><br><b style="color:#D4A574;">"At the End of the Day"</b><br><em>Les Miserables</em> (2012)<br><br><b style="color:#FF5900;font-size:18px;cursor:pointer;" onclick="openVideo()">HAZ CLIC AQUI PARA VER EL VIDEO</b></div>
+<div id="video-overlay">
+<iframe id="yt-player" src="" frameborder="0" allow="autoplay;encrypted-media" allowfullscreen></iframe>
+<button id="video-close" onclick="closeVideo()">&#10006; Cerrar Video</button>
+</div>
+<div id="muro-input-box">
+<textarea id="muro-text" placeholder="Escribe tu reflexion sobre la miseria que viene del otro..."></textarea>
+<br>
+<button id="muro-send" onclick="sendMuroMessage()">Publicar en el Muro</button>
+</div>
+<div id="p-pantalla" class="info-panel">
+<div class="close-btn" onclick="this.parentElement.style.display='none'">&#10006;</div>
+<h3>&#127916; Sala de Cine — At the End of the Day</h3>
+<p>Observa la escena musical de la fabrica donde Fantine trabaja junto a las demas obreras.</p>
+<p><strong>Contexto:</strong> Montreuil-sur-Mer, 1823. Fantine ha dejado a su hija Cosette con los Thenardier para buscar trabajo en la fabrica del Padre Madeleine.</p>
+<p style="text-align:center;margin-top:15px;"><button onclick="openVideo()" style="padding:12px 30px;background:#DAA520;color:#1a1a2e;border:none;border-radius:8px;font-size:16px;cursor:pointer;font-family:Georgia,serif;font-weight:bold;">&#9654; Ver Video</button></p>
+</div>
+<div id="p-cartel" class="info-panel">
+<div class="close-btn" onclick="this.parentElement.style.display='none'">&#10006;</div>
+<h3>&#128220; Cartel Historico</h3>
+<p><em>"Se buscan obreras para la manufactura de abalorios negros. Salario: quince sous por jornada de doce horas."</em></p>
+<p><strong>Reflexion:</strong> Este cartel representa la unica oportunidad de Fantine. Victor Hugo denuncia como la necesidad obliga a aceptar condiciones inhumanas. &#191;Que opciones reales tenia una mujer sola en 1823?</p>
+<p><strong>Pregunta:</strong> &#191;Existen hoy situaciones donde las personas aceptan condiciones injustas por necesidad?</p>
+</div>
+<div id="p-porton" class="info-panel">
+<div class="close-btn" onclick="this.parentElement.style.display='none'">&#10006;</div>
+<h3>&#128682; El Porton de la Fabrica</h3>
+<p>Este porton separaba dos mundos: afuera, la miseria de las calles; adentro, la promesa de un salario miserable pero necesario.</p>
+<p><strong>Dato historico:</strong> En la Francia de 1823, las fabricas no tenian regulacion laboral. Los obreros trabajaban 12-16 horas diarias sin derechos.</p>
+<p><strong>Reflexion:</strong> Fantine cruza este porton cada dia con la esperanza de reunir suficiente dinero para su hija Cosette.</p>
+</div>
+<div id="p-instrucciones" class="info-panel">
+<div class="close-btn" onclick="this.parentElement.style.display='none'">&#10006;</div>
+<h3>&#128218; Instrucciones de Navegacion</h3>
+<p><strong>En computadora:</strong> Usa las teclas W A S D para moverte y el mouse para mirar.</p>
+<p><strong>En Meta Quest:</strong> Usa el joystick izquierdo para moverte y apunta con el controlador derecho + trigger para interactuar.</p>
+<p><strong>Objetos interactivos:</strong> Busca los objetos que brillan con etiquetas [ NOMBRE ]. Haz clic o apunta con el trigger para descubrir su historia.</p>
+<p><strong>Menu de zonas:</strong> Usa el boton "Menu de Zonas" en la parte superior para teletransportarte.</p>
+<p><strong>Reacciones:</strong> Usa los emojis en la barra inferior para compartir tus emociones con tus companeros.</p>
+</div>
+<div id="p-letrero" class="info-panel">
+<div class="close-btn" onclick="this.parentElement.style.display='none'">&#10006;</div>
+<h3>&#127963; Fabrique Madeleine</h3>
+<p>La fabrica lleva el nombre de su dueno: el Padre Madeleine, quien en realidad es <strong>Jean Valjean</strong> viviendo bajo una identidad falsa.</p>
+<p><strong>Paradoja moral:</strong> Un ex-convicto se convierte en el mayor benefactor de la ciudad. &#191;Puede un hombre reinventarse completamente? &#191;El pasado define quienes somos?</p>
+<p><strong>Victor Hugo escribe:</strong> <em>"Habia llegado a Montreuil-sur-Mer con muy poco dinero. Con el producto de un ingenioso procedimiento industrial, habia hecho su fortuna y la de toda la comarca."</em></p>
+</div>
+<div id="p-carta" class="info-panel">
+<div class="close-btn" onclick="this.parentElement.style.display='none'">&#10006;</div>
+<h3>&#9993; Carta de Fantine a los Thenardier</h3>
+<p><em>"Mis queridos Thenardier: Cosette esta enferma de una epidemia del pais. Necesito medicinas que cuestan mucho. Envio doce francos."</em></p>
+<p><strong>La verdad:</strong> Los Thenardier inventaban enfermedades de Cosette para extorsionar a Fantine. Cada carta era una mentira diseñada para extraer mas dinero.</p>
+<p><strong>Reflexion:</strong> &#191;Como la distancia y la desesperacion hacen vulnerable a una persona ante el engano?</p>
+</div>
+<div id="p-diario" class="info-panel">
+<div class="close-btn" onclick="this.parentElement.style.display='none'">&#10006;</div>
+<h3>&#128214; Diario de una Obrera</h3>
+<p><em>"Jornada: 5:00 AM a 7:00 PM. Salario: 15 sous. Descuentos: 3 sous por material danado. Neto: 12 sous."</em></p>
+<p><strong>Contexto:</strong> Con 12 sous diarios, Fantine debia pagar alojamiento, comida y los envios a los Thenardier. Era matematicamente imposible sobrevivir dignamente.</p>
+<p><strong>Pregunta:</strong> &#191;Que significa "salario justo"? &#191;Basta con pagar lo acordado si lo acordado no alcanza para vivir?</p>
+</div>
+<div id="p-cuentas" class="info-panel">
+<div class="close-btn" onclick="this.parentElement.style.display='none'">&#10006;</div>
+<h3>&#128176; Libro de Cuentas</h3>
+<p><strong>Ingresos mensuales de Fantine:</strong> 360 sous (12 sous x 30 dias)</p>
+<p><strong>Gastos:</strong> Alojamiento: 120 sous | Comida: 100 sous | Envio a Thenardier: 200 sous</p>
+<p><strong>Balance: -60 sous al mes</strong></p>
+<p><strong>Reflexion:</strong> Las matematicas de la miseria son implacables. Fantine estaba atrapada en un sistema donde trabajar honestamente no era suficiente para sobrevivir.</p>
+</div>
+<div id="p-decreto" class="info-panel">
+<div class="close-btn" onclick="this.parentElement.style.display='none'">&#10006;</div>
+<h3>&#128220; Decreto del Padre Madeleine</h3>
+<p><em>"Decreto: Se establece que ningun obrero sera despedido sin causa justa verificada personalmente por el director."</em></p>
+<p><strong>Ironia tragica:</strong> Madeleine creo esta regla, pero Fantine fue despedida sin que el lo supiera. La capataza actuo por prejuicio al descubrir que Fantine tenia una hija ilegitima.</p>
+<p><strong>Pregunta:</strong> &#191;Pueden las buenas intenciones de un lider proteger a todos? &#191;Que falla en los sistemas cuando las reglas no se aplican?</p>
+</div>
+<div id="p-espejo" class="info-panel">
+<div class="close-btn" onclick="this.parentElement.style.display='none'">&#10006;</div>
+<h3>&#128374; El Espejo de Madeleine</h3>
+<p><strong>Pregunta para ti:</strong> Si estuvieras en el lugar de Madeleine/Valjean, &#191;revelarias tu verdadera identidad para salvar a un inocente, sabiendo que irias a prision?</p>
+<p><strong>El dilema:</strong> Valjean debe elegir entre su vida comoda como Madeleine y confesar que es un ex-convicto para salvar a Champmathieu, un hombre acusado injustamente de ser el.</p>
+<p><em>"Ser santo a los ojos de Dios, &#191;no es acaso lo unico importante?"</em></p>
+</div>
+<div id="p-reloj" class="info-panel">
+<div class="close-btn" onclick="this.parentElement.style.display='none'">&#10006;</div>
+<h3>&#128336; El Reloj — 5:45 AM</h3>
+<p>Las 5:45 de la manana. La campana sonara en 15 minutos marcando el inicio de otra jornada de 12 horas.</p>
+<p><strong>Victor Hugo:</strong> <em>"Trabajaba doce horas al dia, ganaba quince sous. Pero debia a los Thenardier cien francos."</em></p>
+<p><strong>Reflexion:</strong> El tiempo en la fabrica no pertenece al obrero. &#191;Que significa vender tu tiempo? &#191;Es diferente hoy?</p>
+</div>
+<div id="p-campana" class="info-panel">
+<div class="close-btn" onclick="this.parentElement.style.display='none'">&#10006;</div>
+<h3>&#128276; La Campana de la Fabrica</h3>
+<p>Esta campana marcaba el ritmo de vida de cientos de obreros. Su sonido significaba: "Tu tiempo no te pertenece."</p>
+<p><strong>Simbolismo:</strong> La campana es el sonido de la servidumbre industrial. Igual que las campanas de las iglesias marcaban la vida medieval, las campanas de las fabricas marcaban la vida moderna.</p>
+<p><strong>Pregunta:</strong> &#191;Que "campanas" marcan tu vida hoy? &#191;Alarmas, notificaciones, horarios?</p>
+</div>
+<div id="p-muro" class="info-panel">
+<div class="close-btn" onclick="this.parentElement.style.display='none'">&#10006;</div>
+<h3>&#128293; Muro Colaborativo — La Miseria que Viene del Otro</h3>
+<p><strong>Victor Hugo distingue dos tipos de miseria:</strong></p>
+<p>1. <strong>La miseria material:</strong> pobreza, hambre, frio — consecuencia de sistemas injustos.</p>
+<p>2. <strong>La miseria moral:</strong> la crueldad, el prejuicio, la indiferencia — la miseria que viene del otro ser humano.</p>
+<p><strong>Fantine sufrio ambas:</strong> la pobreza la obligo a trabajar en condiciones inhumanas, pero fue el prejuicio de sus companeras y la crueldad de los Thenardier lo que la destruyo.</p>
+<p style="margin-top:15px;"><strong>Comparte tu reflexion:</strong></p>
+<p><button onclick="document.getElementById('muro-input-box').style.display='block'" style="padding:10px 20px;background:#FF5900;color:#FFFDF8;border:none;border-radius:6px;cursor:pointer;font-family:Georgia,serif;">&#9998; Escribir en el Muro</button></p>
+<div id="muro-messages" style="margin-top:15px;max-height:150px;overflow-y:auto;"></div>
+</div>
+<div id="p-puerta" class="info-panel">
+<div class="close-btn" onclick="this.parentElement.style.display='none'">&#10006;</div>
+<h3>&#128682; La Puerta de Salida</h3>
+<p><strong>Has completado el recorrido por la Fabrica de Fantine.</strong></p>
+<p>Descubriste <strong id="final-count">0</strong> de 14 objetos.</p>
+<p><strong>Reflexion final:</strong> La historia de Fantine nos muestra que la miseria no es solo material — es tambien la indiferencia, el prejuicio y la crueldad de quienes nos rodean.</p>
+<p><em>"Mientras exista la ignorancia y la miseria sobre la tierra, libros como este no seran inutiles."</em> — Victor Hugo, prefacio de Los Miserables</p>
+<p><strong>Ahora ve al foro en Brightspace y comparte tu experiencia.</strong></p>
+</div>
 
 <div id="teleport-menu" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,10,10,0.95);z-index:100001;justify-content:center;align-items:center;flex-direction:column;">
 <div style="text-align:center;max-width:700px;width:90%;">
@@ -131,16 +244,13 @@ h+='<a-box position="6.5 3 -27" width="1.5" height="5.5" depth="0.3" material="c
 h+='<a-text value="NOW SHOWING" color="#DAA520" align="center" width="6" position="0 5.9 -27.3"></a-text>';
 h+='<a-text value="At the End of the Day" color="#FFFDF8" align="center" width="5" position="0 5.5 -27.3"></a-text>';
 var bx,bz;for(bz=-23;bz>=-17;bz+=3){for(bx=-4;bx<=4;bx+=2){h+='<a-box position="'+bx+' 0.4 '+bz+'" width="1.2" height="0.8" depth="0.8" material="color:#3A1A1A;roughness:0.8"></a-box>';}}
-h+='<a-sphere position="-7.5 0.2 -25" radius="0.08" material="color:#DAA520;emissive:#DAA520;emissiveIntensity:0.6"></a-sphere>';
-h+='<a-sphere position="7.5 0.2 -25" radius="0.08" material="color:#DAA520;emissive:#DAA520;emissiveIntensity:0.6"></a-sphere>';
-h+='<a-sphere position="-7.5 0.2 -20" radius="0.08" material="color:#DAA520;emissive:#DAA520;emissiveIntensity:0.6"></a-sphere>';
-h+='<a-sphere position="7.5 0.2 -20" radius="0.08" material="color:#DAA520;emissive:#DAA520;emissiveIntensity:0.6"></a-sphere>';
-h+='<a-box position="0 0.01 -11.5" width="3" height="0.02" depth="0.8" material="color:#DAA520;emissive:#DAA520;emissiveIntensity:0.4;opacity:0.7;transparent:true"></a-box>';
-h+='<a-text value="ZONA 1: ENTRADA" color="#DAA520" align="center" width="4" position="0 0.15 -11.5" rotation="-90 0 0"></a-text>';
-h+='<a-cone position="0 0.08 -10.5" rotation="-90 0 0" radius-bottom="0.3" radius-top="0" height="0.5" material="color:#DAA520;emissive:#DAA520;emissiveIntensity:0.5;opacity:0.8;transparent:true"></a-cone>';
-h+='<a-sphere position="-2 0.05 -10" radius="0.06" material="color:#FFB347;emissive:#FFB347;emissiveIntensity:0.8"></a-sphere>';
-h+='<a-sphere position="0 0.05 -9.5" radius="0.06" material="color:#FFB347;emissive:#FFB347;emissiveIntensity:0.8"></a-sphere>';
-h+='<a-sphere position="2 0.05 -9" radius="0.06" material="color:#FFB347;emissive:#FFB347;emissiveIntensity:0.8"></a-sphere>';
+h+='<a-box position="0 0.005 -11.5" width="3.6" height="0.01" depth="1.4" material="color:#0a0a0a;roughness:0.3"></a-box>';
+h+='<a-box position="0 0.015 -11.5" width="3.2" height="0.02" depth="1" material="color:#DAA520;emissive:#DAA520;emissiveIntensity:0.6;opacity:0.9;transparent:true"></a-box>';
+h+='<a-text value="ZONA 1: ENTRADA" color="#FFFFFF" align="center" width="4.5" position="0 0.15 -11.5" rotation="-90 0 0"></a-text>';
+h+='<a-cone position="0 0.08 -10.3" rotation="-90 0 0" radius-bottom="0.35" radius-top="0" height="0.6" material="color:#DAA520;emissive:#DAA520;emissiveIntensity:0.6;opacity:0.9;transparent:true"></a-cone>';
+h+='<a-sphere position="-2 0.08 -10" radius="0.08" material="color:#FFB347;emissive:#FFB347;emissiveIntensity:1"></a-sphere>';
+h+='<a-sphere position="0 0.08 -9.5" radius="0.08" material="color:#FFB347;emissive:#FFB347;emissiveIntensity:1"></a-sphere>';
+h+='<a-sphere position="2 0.08 -9" radius="0.08" material="color:#FFB347;emissive:#FFB347;emissiveIntensity:1"></a-sphere>';
 h+='<a-plane position="0 0.02 -2" rotation="-90 0 0" width="20" height="12" material="color:#8B7355;roughness:0.95"></a-plane>';
 h+='<a-box position="0 3 -8" width="20" height="6" depth="0.5" material="color:#7A7068;roughness:0.85;metalness:0.05"></a-box>';
 h+='<a-box id="porton" class="clickable" position="0 1.8 -7.7" width="3.5" height="3.6" depth="0.15" material="color:#2C2C2C;metalness:0.7;roughness:0.3;emissive:#FFB347;emissiveIntensity:0.15"></a-box>';
@@ -156,16 +266,17 @@ h+='<a-box id="instrucciones" class="clickable" position="9.7 2.5 0" width="0.15
 h+='<a-text value="[ AYUDA ]" color="#FF5900" align="center" width="2.5" position="9.5 1.3 0" rotation="0 -90 0"></a-text>';
 h+='<a-sphere position="-4 4.1 -6" radius="0.18" material="color:#FFB347;emissive:#FFB347;emissiveIntensity:0.6"></a-sphere>';
 h+='<a-sphere position="4 4.1 -6" radius="0.18" material="color:#FFB347;emissive:#FFB347;emissiveIntensity:0.6"></a-sphere>';
-h+='<a-box position="0 0.01 4.5" width="3" height="0.02" depth="0.8" material="color:#D4A574;emissive:#D4A574;emissiveIntensity:0.4;opacity:0.7;transparent:true"></a-box>';
-h+='<a-text value="ZONA 2: TALLER" color="#D4A574" align="center" width="4" position="0 0.15 4.5" rotation="-90 0 0"></a-text>';
-h+='<a-cone position="0 0.08 5.5" rotation="-90 0 0" radius-bottom="0.3" radius-top="0" height="0.5" material="color:#D4A574;emissive:#D4A574;emissiveIntensity:0.5;opacity:0.8;transparent:true"></a-cone>';
-h+='<a-sphere position="-1.5 0.05 3.5" radius="0.06" material="color:#D4A574;emissive:#D4A574;emissiveIntensity:0.8"></a-sphere>';
-h+='<a-sphere position="0 0.05 3" radius="0.06" material="color:#D4A574;emissive:#D4A574;emissiveIntensity:0.8"></a-sphere>';
-h+='<a-sphere position="1.5 0.05 2.5" radius="0.06" material="color:#D4A574;emissive:#D4A574;emissiveIntensity:0.8"></a-sphere>';
-h+='<a-box position="-9.7 2.5 3" width="0.1" height="1.2" depth="0.8" material="color:#1A1A2E;roughness:0.4;emissive:#D4A574;emissiveIntensity:0.2"></a-box>';
-h+='<a-text value="Zona 2 >>>" color="#D4A574" align="center" width="2" position="-9.5 2.5 3" rotation="0 90 0"></a-text>';
-h+='<a-box position="9.7 2.5 3" width="0.1" height="1.2" depth="0.8" material="color:#1A1A2E;roughness:0.4;emissive:#D4A574;emissiveIntensity:0.2"></a-box>';
-h+='<a-text value="<<< Zona 2" color="#D4A574" align="center" width="2" position="9.5 2.5 3" rotation="0 -90 0"></a-text>';
+h+='<a-box position="0 0.005 4.5" width="3.6" height="0.01" depth="1.4" material="color:#0a0a0a;roughness:0.3"></a-box>';
+h+='<a-box position="0 0.015 4.5" width="3.2" height="0.02" depth="1" material="color:#D4A574;emissive:#D4A574;emissiveIntensity:0.6;opacity:0.9;transparent:true"></a-box>';
+h+='<a-text value="ZONA 2: TALLER" color="#FFFFFF" align="center" width="4.5" position="0 0.15 4.5" rotation="-90 0 0"></a-text>';
+h+='<a-cone position="0 0.08 5.7" rotation="-90 0 0" radius-bottom="0.35" radius-top="0" height="0.6" material="color:#D4A574;emissive:#D4A574;emissiveIntensity:0.6;opacity:0.9;transparent:true"></a-cone>';
+h+='<a-sphere position="-1.5 0.08 3.5" radius="0.08" material="color:#D4A574;emissive:#D4A574;emissiveIntensity:1"></a-sphere>';
+h+='<a-sphere position="0 0.08 3" radius="0.08" material="color:#D4A574;emissive:#D4A574;emissiveIntensity:1"></a-sphere>';
+h+='<a-sphere position="1.5 0.08 2.5" radius="0.08" material="color:#D4A574;emissive:#D4A574;emissiveIntensity:1"></a-sphere>';
+h+='<a-box position="-9.7 2.5 3" width="0.1" height="1.4" depth="1.2" material="color:#0a0a0a;roughness:0.3"></a-box>';
+h+='<a-text value="Zona 2 >>>" color="#FFFFFF" align="center" width="2.5" position="-9.5 2.5 3" rotation="0 90 0"></a-text>';
+h+='<a-box position="9.7 2.5 3" width="0.1" height="1.4" depth="1.2" material="color:#0a0a0a;roughness:0.3"></a-box>';
+h+='<a-text value="<<< Zona 2" color="#FFFFFF" align="center" width="2.5" position="9.5 2.5 3" rotation="0 -90 0"></a-text>';
 h+='<a-plane position="0 0.02 11" rotation="-90 0 0" width="20" height="13" material="color:#5C3A1E;roughness:0.92"></a-plane>';
 h+='<a-box position="-7 3 5" width="6" height="6" depth="0.5" material="color:#6B5D52;roughness:0.85"></a-box>';
 h+='<a-box position="7 3 5" width="6" height="6" depth="0.5" material="color:#6B5D52;roughness:0.85"></a-box>';
@@ -183,13 +294,14 @@ h+='<a-box id="diario" class="clickable" position="-9.6 1.7 12" width="0.12" hei
 h+='<a-text value="[ DIARIO ]" color="#FFB347" align="center" width="2.5" position="-9.4 1.2 12" rotation="0 90 0"></a-text>';
 h+='<a-sphere position="-4 4.1 12" radius="0.15" material="color:#FFB347;emissive:#FFB347;emissiveIntensity:0.5"></a-sphere>';
 h+='<a-sphere position="4 4.1 12" radius="0.15" material="color:#FFB347;emissive:#FFB347;emissiveIntensity:0.5"></a-sphere>';
-h+='<a-box position="7 0.01 17.5" width="3" height="0.02" depth="0.8" material="color:#C4A882;emissive:#C4A882;emissiveIntensity:0.4;opacity:0.7;transparent:true"></a-box>';
-h+='<a-text value="ZONA 3: OFICINA >>>" color="#C4A882" align="center" width="4" position="7 0.15 17.5" rotation="-90 0 0"></a-text>';
-h+='<a-sphere position="8 0.05 17.5" radius="0.06" material="color:#C4A882;emissive:#C4A882;emissiveIntensity:0.8"></a-sphere>';
-h+='<a-sphere position="9 0.05 18" radius="0.06" material="color:#C4A882;emissive:#C4A882;emissiveIntensity:0.8"></a-sphere>';
-h+='<a-sphere position="10 0.05 18.5" radius="0.06" material="color:#C4A882;emissive:#C4A882;emissiveIntensity:0.8"></a-sphere>';
-h+='<a-box position="9.7 2.5 15" width="0.1" height="1.2" depth="0.8" material="color:#1A1A2E;roughness:0.4;emissive:#C4A882;emissiveIntensity:0.2"></a-box>';
-h+='<a-text value="Zona 3 >>>" color="#C4A882" align="center" width="2" position="9.5 2.5 15" rotation="0 -90 0"></a-text>';
+h+='<a-box position="7 0.005 17.5" width="4" height="0.01" depth="1.4" material="color:#0a0a0a;roughness:0.3"></a-box>';
+h+='<a-box position="7 0.015 17.5" width="3.6" height="0.02" depth="1" material="color:#C4A882;emissive:#C4A882;emissiveIntensity:0.6;opacity:0.9;transparent:true"></a-box>';
+h+='<a-text value="ZONA 3: OFICINA >>>" color="#FFFFFF" align="center" width="4.5" position="7 0.15 17.5" rotation="-90 0 0"></a-text>';
+h+='<a-sphere position="8.5 0.08 17.5" radius="0.08" material="color:#C4A882;emissive:#C4A882;emissiveIntensity:1"></a-sphere>';
+h+='<a-sphere position="9.5 0.08 18" radius="0.08" material="color:#C4A882;emissive:#C4A882;emissiveIntensity:1"></a-sphere>';
+h+='<a-sphere position="10.5 0.08 18.5" radius="0.08" material="color:#C4A882;emissive:#C4A882;emissiveIntensity:1"></a-sphere>';
+h+='<a-box position="9.7 2.5 15" width="0.1" height="1.4" depth="1.2" material="color:#0a0a0a;roughness:0.3"></a-box>';
+h+='<a-text value="Zona 3 >>>" color="#FFFFFF" align="center" width="2.5" position="9.5 2.5 15" rotation="0 -90 0"></a-text>';
 h+='<a-box position="10 3 20" width="0.5" height="6" depth="4" material="color:#5C4A3A;roughness:0.8"></a-box>';
 h+='<a-box position="10 3 28" width="0.5" height="6" depth="4" material="color:#5C4A3A;roughness:0.8"></a-box>';
 h+='<a-box position="17 3 18" width="0.5" height="6" depth="14" material="color:#5C4A3A;roughness:0.75"></a-box>';
@@ -203,16 +315,17 @@ h+='<a-text value="[ DECRETO ]" color="#FFB347" align="center" width="2.5" posit
 h+='<a-box id="espejo" class="clickable" position="16.65 3 22" width="0.08" height="1.3" depth="0.8" material="color:#B8C4D0;metalness:0.95;roughness:0.05;emissive:#B8C4D0;emissiveIntensity:0.15"></a-box>';
 h+='<a-text value="[ ESPEJO ]" color="#FFB347" align="center" width="2" position="16.5 2 22" rotation="0 -90 0"></a-text>';
 h+='<a-sphere position="14 3.3 25" radius="0.12" material="color:#FFB347;emissive:#FFB347;emissiveIntensity:0.7"></a-sphere>';
-h+='<a-box position="10.3 2.5 30" width="0.1" height="1.2" depth="0.8" material="color:#1A1A2E;roughness:0.4;emissive:#8B8682;emissiveIntensity:0.2"></a-box>';
-h+='<a-text value="<<< Zona 4" color="#8B8682" align="center" width="2" position="10.5 2.5 30" rotation="0 90 0"></a-text>';
+h+='<a-box position="10.3 2.5 30" width="0.1" height="1.4" depth="1.2" material="color:#0a0a0a;roughness:0.3"></a-box>';
+h+='<a-text value="<<< Zona 4" color="#FFFFFF" align="center" width="2.5" position="10.5 2.5 30" rotation="0 90 0"></a-text>';
 h+='<a-plane position="0 0.01 28" rotation="-90 0 0" width="18" height="18" material="color:#6B7B6B;roughness:0.95"></a-plane>';
 h+='<a-box position="-9 2.5 28" width="0.5" height="5" depth="18" material="color:#7A7068;roughness:0.9"></a-box>';
 h+='<a-box position="9 2.5 28" width="0.5" height="5" depth="18" material="color:#7A7068;roughness:0.9"></a-box>';
 h+='<a-box position="0 2.5 37" width="18" height="5" depth="0.5" material="color:#7A7068;roughness:0.9"></a-box>';
 h+='<a-text value="EL PATIO" color="#D4A574" align="center" width="5" position="0 5 18.3"></a-text>';
-h+='<a-box position="0 0.01 18.5" width="3" height="0.02" depth="0.8" material="color:#8B8682;emissive:#8B8682;emissiveIntensity:0.4;opacity:0.7;transparent:true"></a-box>';
-h+='<a-text value="ZONA 4: EL PATIO" color="#8B8682" align="center" width="4" position="0 0.15 18.5" rotation="-90 0 0"></a-text>';
-h+='<a-cone position="0 0.08 19.5" rotation="-90 0 0" radius-bottom="0.3" radius-top="0" height="0.5" material="color:#8B8682;emissive:#8B8682;emissiveIntensity:0.5;opacity:0.8;transparent:true"></a-cone>';
+h+='<a-box position="0 0.005 18.5" width="3.6" height="0.01" depth="1.4" material="color:#0a0a0a;roughness:0.3"></a-box>';
+h+='<a-box position="0 0.015 18.5" width="3.2" height="0.02" depth="1" material="color:#8B8682;emissive:#8B8682;emissiveIntensity:0.6;opacity:0.9;transparent:true"></a-box>';
+h+='<a-text value="ZONA 4: EL PATIO" color="#FFFFFF" align="center" width="4.5" position="0 0.15 18.5" rotation="-90 0 0"></a-text>';
+h+='<a-cone position="0 0.08 19.7" rotation="-90 0 0" radius-bottom="0.35" radius-top="0" height="0.6" material="color:#8B8682;emissive:#8B8682;emissiveIntensity:0.6;opacity:0.9;transparent:true"></a-cone>';
 h+='<a-box id="reloj" class="clickable" position="-8.7 3.5 25" width="0.15" height="1.2" depth="1.2" material="color:#2C2C2C;roughness:0.4;metalness:0.3;emissive:#FFB347;emissiveIntensity:0.25"></a-box>';
 h+='<a-circle position="-8.6 3.5 25" rotation="0 90 0" radius="0.5" material="color:#F5E6C8;roughness:0.3"></a-circle>';
 h+='<a-text value="5:45" color="#1A1A2E" align="center" width="1.5" position="-8.55 3.5 25" rotation="0 90 0"></a-text>';
@@ -220,69 +333,4 @@ h+='<a-text value="[ RELOJ ]" color="#FFB347" align="center" width="2.5" positio
 h+='<a-cone id="campana" class="clickable" position="5 3.7 32" radius-bottom="0.4" radius-top="0.05" height="0.6" material="color:#D4A574;metalness:0.85;roughness:0.15;emissive:#D4A574;emissiveIntensity:0.25"></a-cone>';
 h+='<a-text value="[ CAMPANA ]" color="#FFB347" align="center" width="2.5" position="5 3 32"></a-text>';
 h+='<a-box id="muro" class="clickable" position="0 2 36.7" width="6" height="3.5" depth="0.3" material="color:#5C4A3A;roughness:0.85;emissive:#FF5900;emissiveIntensity:0.15"></a-box>';
-h+='<a-text value="La miseria que\\nviene del otro" color="#D4A574" align="center" width="4" position="0 2.5 36.4"></a-text>';
-h+='<a-text value="[ MURO ]" color="#FF5900" align="center" width="4" position="0 0.8 36.4"></a-text>';
-h+='<a-box position="-5 0.01 -7.5" width="3" height="0.02" depth="0.8" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.4;opacity:0.7;transparent:true"></a-box>';
-h+='<a-text value="ZONA 5: SALIDA" color="#FF5900" align="center" width="4" position="-5 0.15 -7.5" rotation="-90 0 0"></a-text>';
-h+='<a-cone position="-5 0.08 -8.5" rotation="90 0 0" radius-bottom="0.3" radius-top="0" height="0.5" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.5;opacity:0.8;transparent:true"></a-cone>';
-h+='<a-sphere position="-6 0.05 -7" radius="0.06" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.8"></a-sphere>';
-h+='<a-sphere position="-7 0.05 -7.5" radius="0.06" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.8"></a-sphere>';
-h+='<a-sphere position="-8 0.05 -8" radius="0.06" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.8"></a-sphere>';
-h+='<a-box position="-9.7 2.5 -5" width="0.1" height="1.2" depth="0.8" material="color:#1A1A2E;roughness:0.4;emissive:#FF5900;emissiveIntensity:0.2"></a-box>';
-h+='<a-text value="<<< Salida" color="#FF5900" align="center" width="2" position="-9.5 2.5 -5" rotation="0 90 0"></a-text>';
-h+='<a-plane position="-13 0.01 -12" rotation="-90 0 0" width="6" height="8" material="color:#3A2A1A;roughness:0.9"></a-plane>';
-h+='<a-box position="-13 3 -8" width="6" height="6" depth="0.5" material="color:#5C4A3A;roughness:0.85"></a-box>';
-h+='<a-box position="-16 3 -12" width="0.5" height="6" depth="8" material="color:#5C4A3A;roughness:0.85"></a-box>';
-h+='<a-box position="-10 3 -12" width="0.5" height="6" depth="8" material="color:#5C4A3A;roughness:0.85"></a-box>';
-h+='<a-box position="-13 3 -16" width="6" height="6" depth="0.5" material="color:#5C4A3A;roughness:0.85"></a-box>';
-h+='<a-text value="SALIDA" color="#FF5900" align="center" width="4" position="-10.3 5 -12" rotation="0 -90 0"></a-text>';
-h+='<a-box id="puerta" class="clickable" position="-13 2.5 -15.7" width="3" height="4.5" depth="0.3" material="color:#4A2E15;roughness:0.6;emissive:#FF5900;emissiveIntensity:0.2"></a-box>';
-h+='<a-text value="[ PUERTA ]" color="#FF5900" align="center" width="3" position="-13 0.5 -15.3"></a-text>';
-h+='<a-text value="Fin del recorrido" color="#D4A574" align="center" width="3" position="-13 4.8 -15.3"></a-text>';
-h+='<a-light type="ambient" color="#C4A882" intensity="0.45"></a-light>';
-h+='<a-light type="point" color="#FFB347" intensity="0.7" distance="12" position="-4 4 -6"></a-light>';
-h+='<a-light type="point" color="#FFB347" intensity="0.7" distance="12" position="4 4 -6"></a-light>';
-h+='<a-light type="point" color="#FFB347" intensity="0.5" distance="10" position="0 4 12"></a-light>';
-h+='<a-light type="point" color="#FFB347" intensity="0.6" distance="8" position="14 3.5 25"></a-light>';
-h+='<a-light type="point" color="#FFB347" intensity="0.5" distance="12" position="0 4 28"></a-light>';
-h+='<a-light type="point" color="#DAA520" intensity="0.6" distance="15" position="0 4 -22"></a-light>';
-h+='<a-light type="directional" color="#B8C4D0" intensity="0.3" position="0 8 28"></a-light>';
-h+='<a-light type="point" color="#FF5900" intensity="0.3" distance="8" position="-13 3 -12"></a-light>';
-h+='<a-light type="point" color="#D4A574" intensity="0.5" distance="15" position="0 4 -9"></a-light>';
-h+='<a-light type="point" color="#D4A574" intensity="0.5" distance="15" position="0 4 4"></a-light>';
-h+='<a-light type="point" color="#D4A574" intensity="0.4" distance="12" position="5 4 17"></a-light>';
-h+='<a-light type="point" color="#C4A882" intensity="0.4" distance="10" position="-5 3 -7"></a-light>';
-h+='<a-entity id="rig" position="0 0 0"><a-camera look-controls wasd-controls="acceleration:25"><a-cursor color="#FF5900" raycaster="objects:.clickable" geometry="primitive:ring;radiusInner:0.02;radiusOuter:0.03" material="color:#FF5900;shader:flat"></a-cursor></a-camera></a-entity>';
-sc.innerHTML=h;
-document.body.appendChild(sc);
-sc.addEventListener('loaded',function(){
-cameraRig=document.getElementById('rig');
-status.textContent='Selecciona una zona en el menu.';
-setTimeout(function(){status.style.display='none';},5000);
-setTimeout(function(){
-var panels=['p-cartel','p-porton','p-instrucciones','p-letrero','p-carta','p-diario','p-cuentas','p-decreto','p-espejo','p-reloj','p-campana','p-muro','p-puerta','p-pantalla'];
-function closeAll(){for(var i=0;i<panels.length;i++){document.getElementById(panels[i]).style.display='none';}}
-function setupClick(id,panelId,ec,bi){var el=document.getElementById(id);if(el){el.addEventListener('click',function(){closeAll();document.getElementById(panelId).style.display='block';if(id==='campana'){playCampana();}if(!discovered[id]){discovered[id]=true;discoverCount++;objCounter.textContent='Objetos: '+discoverCount+' / 14';if(sessionRef)sessionRef.update({objectsFound:discoverCount});logActivity('discover',id);var fc=document.getElementById('final-count');if(fc)fc.textContent=discoverCount;}});el.addEventListener('mouseenter',function(){el.setAttribute('material','emissive',ec);el.setAttribute('material','emissiveIntensity','0.8');});el.addEventListener('mouseleave',function(){el.setAttribute('material','emissive',ec);el.setAttribute('material','emissiveIntensity',bi);});}}
-setupClick('pantalla','p-pantalla','#333','0.3');
-setupClick('cartel','p-cartel','#C4A882','0.3');
-setupClick('porton','p-porton','#FFB347','0.15');
-setupClick('instrucciones','p-instrucciones','#FF5900','0.2');
-setupClick('letrero','p-letrero','#D4A574','0.2');
-setupClick('carta','p-carta','#F5E6C8','0.4');
-setupClick('diario','p-diario','#D4A574','0.3');
-setupClick('cuentas','p-cuentas','#FFB347','0.25');
-setupClick('decreto','p-decreto','#D4A574','0.4');
-setupClick('espejo','p-espejo','#B8C4D0','0.15');
-setupClick('reloj','p-reloj','#FFB347','0.25');
-setupClick('campana','p-campana','#D4A574','0.25');
-setupClick('muro','p-muro','#FF5900','0.15');
-setupClick('puerta','p-puerta','#FF5900','0.2');
-var cam=document.querySelector('a-camera');
-setInterval(function(){var pos=cam.object3D.getWorldPosition(new THREE.Vector3());var z=zonaIndicator.textContent;var nz='';if(pos.z<-12&&pos.x>-10){nz='SALA DE CINE';}else if(pos.x<-10){nz='ZONA 5: Salida';}else if(pos.z<5&&pos.x<=10){nz='ZONA 1: Entrada';}else if(pos.x>10){nz='ZONA 3: Oficina';}else if(pos.z>=18){nz='ZONA 4: El Patio';}else if(pos.z>=5){nz='ZONA 2: Taller';}if(nz&&nz!==z){zonaIndicator.textContent=nz;if(sessionRef)sessionRef.update({zone:nz});logActivity('move',nz);}},2000);
-},2000);});};
-document.head.appendChild(s);
-</script>
-</body>
-</html>
-
 
