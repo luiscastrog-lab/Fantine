@@ -19,10 +19,8 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e;}
 .info-panel{display:none;position:fixed;bottom:0;left:0;width:100%;max-height:45%;overflow-y:auto;background:rgba(26,26,46,0.95);color:#FFFDF8;padding:20px;z-index:100000;border-top:3px solid #D4A574;font-size:14px;line-height:1.6;box-sizing:border-box;}
 .info-panel h3{color:#D4A574;margin:0 0 8px 0;font-size:18px;}
 .info-panel .close-btn{position:absolute;top:10px;right:15px;color:#FF5900;font-size:24px;cursor:pointer;background:rgba(26,26,46,0.8);border:1px solid #FF5900;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;}
-.info-panel .close-btn:hover{background:#FF5900;color:#FFFDF8;}
 #reactions-bar{display:none;position:fixed;bottom:10px;left:50%;transform:translateX(-50%);z-index:99999;background:rgba(26,26,46,0.9);padding:8px 16px;border-radius:25px;border:1px solid #D4A574;}
-#reactions-bar span{font-size:28px;cursor:pointer;margin:0 6px;transition:transform 0.2s;}
-#reactions-bar span:hover{transform:scale(1.4);}
+#reactions-bar span{font-size:28px;cursor:pointer;margin:0 6px;}
 #floating-reactions{position:fixed;bottom:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99998;overflow:hidden;}
 #video-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:100002;justify-content:center;align-items:center;flex-direction:column;}
 #video-overlay.active{display:flex;}
@@ -333,9 +331,9 @@ h+='<a-text value="[ RELOJ ]" color="#FFB347" align="center" width="2.5" positio
 h+='<a-cone id="campana" class="clickable" position="5 3.7 32" radius-bottom="0.4" radius-top="0.05" height="0.6" material="color:#D4A574;metalness:0.85;roughness:0.15;emissive:#D4A574;emissiveIntensity:0.25"></a-cone>';
 h+='<a-text value="[ CAMPANA ]" color="#FFB347" align="center" width="2.5" position="5 3 32"></a-text>';
 h+='<a-box id="muro" class="clickable" position="0 2 36.7" width="6" height="3.5" depth="0.3" material="color:#5C4A3A;roughness:0.85;emissive:#FF5900;emissiveIntensity:0.15"></a-box>';
-
-h+='<a-box id="muro" class="clickable" position="0 2 36.7" width="6" height="3.5" depth="0.3" material="color:#5C4A3A;roughness:0.85;emissive:#FF5900;emissiveIntensity:0.15"></a-box>';
 h+='<a-text value="La miseria que\\nviene del otro" color="#D4A574" align="center" width="4" position="0 2.5 36.4"></a-text>';
+h+='<a-text value="[ MURO ]" color="#FF5900" align="
+
 h+='<a-text value="[ MURO ]" color="#FF5900" align="center" width="4" position="0 0.8 36.4"></a-text>';
 h+='<a-box position="-5 0.005 -7.5" width="3.6" height="0.01" depth="1.4" material="color:#0a0a0a;roughness:0.3"></a-box>';
 h+='<a-box position="-5 0.015 -7.5" width="3.2" height="0.02" depth="1" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.6;opacity:0.9;transparent:true"></a-box>';
