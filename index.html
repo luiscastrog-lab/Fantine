@@ -17,9 +17,6 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 #rb{display:none;position:fixed;bottom:10px;left:50%;transform:translateX(-50%);z-index:99999;background:rgba(26,26,46,0.9);padding:8px 16px;border-radius:25px;border:1px solid #D4A574}
 #rb span{font-size:28px;cursor:pointer;margin:0 6px}
 #fr{position:fixed;bottom:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99998;overflow:hidden}
-.ip{display:none;position:fixed;bottom:0;left:0;width:100%;max-height:45%;overflow-y:auto;background:rgba(26,26,46,0.95);color:#FFFDF8;padding:20px;z-index:100000;border-top:3px solid #D4A574;font-size:14px;line-height:1.6;box-sizing:border-box}
-.ip h3{color:#D4A574;margin:0 0 8px 0}
-.cb{position:absolute;top:10px;right:15px;color:#FF5900;font-size:24px;cursor:pointer;background:rgba(26,26,46,0.8);border:1px solid #FF5900;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center}
 #vo{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:100002;justify-content:center;align-items:center;flex-direction:column}
 #vo.a{display:flex}
 #yp{width:90%;max-width:900px;height:50vh;border:3px solid #DAA520;border-radius:8px}
@@ -44,27 +41,11 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <div id="rb"><span onclick="re('asombro')">&#128558;</span><span onclick="re('tristeza')">&#128546;</span><span onclick="re('injusticia')">&#128545;</span><span onclick="re('reflexion')">&#129300;</span><span onclick="re('descubrimiento')">&#128161;</span><span onclick="re('empatia')">&#10084;&#65039;</span></div>
 <div id="fr"></div>
 
-<!-- VIDEO -->
+<!-- VIDEO OVERLAY (solo PC) -->
 <div id="vo"><iframe id="yp" src="" frameborder="0" allow="autoplay;encrypted-media" allowfullscreen></iframe><button onclick="cv()" style="margin-top:20px;padding:12px 30px;background:#FF5900;color:#FFF;border:none;border-radius:8px;font-size:16px;cursor:pointer">Cerrar Video</button></div>
 
-<!-- MURO -->
+<!-- MURO OVERLAY (solo PC) -->
 <div id="mb"><textarea id="mt" placeholder="Escribe tu reflexion..."></textarea><br><button onclick="sm()" style="margin-top:8px;padding:8px 20px;background:#FF5900;color:#FFF;border:none;border-radius:6px;cursor:pointer">Publicar</button></div>
-
-<!-- PANELES -->
-<div id="p0" class="ip"><div class="cb" onclick="this.parentElement.style.display='none'">&#10006;</div><h3>&#127916; Sala de Cine</h3><p>Observa la escena musical de la fabrica donde Fantine trabaja.</p><p style="text-align:center"><button onclick="ov()" style="padding:12px 30px;background:#DAA520;color:#1a1a2e;border:none;border-radius:8px;font-size:16px;cursor:pointer;font-weight:bold">&#9654; Ver Video</button></p></div>
-<div id="p1" class="ip"><div class="cb" onclick="this.parentElement.style.display='none'">&#10006;</div><h3>&#128220; Cartel Historico</h3><p><em>"Se buscan obreras. Salario: quince sous por jornada de doce horas."</em></p><p>Victor Hugo denuncia como la necesidad obliga a aceptar condiciones inhumanas.</p></div>
-<div id="p2" class="ip"><div class="cb" onclick="this.parentElement.style.display='none'">&#10006;</div><h3>&#128682; El Porton</h3><p>Separaba dos mundos: afuera la miseria; adentro un salario miserable pero necesario.</p></div>
-<div id="p3" class="ip"><div class="cb" onclick="this.parentElement.style.display='none'">&#10006;</div><h3>&#128218; Instrucciones</h3><p><strong>PC:</strong> W A S D + mouse. <strong>Quest:</strong> Joystick + trigger.</p></div>
-<div id="p4" class="ip"><div class="cb" onclick="this.parentElement.style.display='none'">&#10006;</div><h3>&#127963; Fabrique Madeleine</h3><p>El Padre Madeleine es en realidad <strong>Jean Valjean</strong> viviendo bajo identidad falsa.</p></div>
-<div id="p5" class="ip"><div class="cb" onclick="this.parentElement.style.display='none'">&#10006;</div><h3>&#9993; Carta de Fantine</h3><p><em>"Mis queridos Thenardier: Cosette esta enferma. Envio doce francos."</em></p><p>Los Thenardier inventaban enfermedades para extorsionarla.</p></div>
-<div id="p6" class="ip"><div class="cb" onclick="this.parentElement.style.display='none'">&#10006;</div><h3>&#128214; Diario de una Obrera</h3><p><em>"Jornada: 5AM-7PM. Salario: 15 sous. Neto: 12 sous."</em></p><p>Que significa "salario justo"?</p></div>
-<div id="p7" class="ip"><div class="cb" onclick="this.parentElement.style.display='none'">&#10006;</div><h3>&#128176; Libro de Cuentas</h3><p>Ingresos: 360 sous/mes. Gastos: 420. <strong>Balance: -60 sous</strong></p></div>
-<div id="p8" class="ip"><div class="cb" onclick="this.parentElement.style.display='none'">&#10006;</div><h3>&#128220; Decreto de Madeleine</h3><p><em>"Ningun obrero sera despedido sin causa justa."</em></p><p>Pero Fantine fue despedida sin que el lo supiera.</p></div>
-<div id="p9" class="ip"><div class="cb" onclick="this.parentElement.style.display='none'">&#10006;</div><h3>&#128374; El Espejo</h3><p>Revelarias tu identidad para salvar a un inocente?</p></div>
-<div id="p10" class="ip"><div class="cb" onclick="this.parentElement.style.display='none'">&#10006;</div><h3>&#128336; El Reloj 5:45 AM</h3><p><em>"Trabajaba doce horas, ganaba quince sous."</em></p></div>
-<div id="p11" class="ip"><div class="cb" onclick="this.parentElement.style.display='none'">&#10006;</div><h3>&#128276; La Campana</h3><p>"Tu tiempo no te pertenece." Que campanas marcan tu vida hoy?</p></div>
-<div id="p12" class="ip"><div class="cb" onclick="this.parentElement.style.display='none'">&#10006;</div><h3>&#128293; Muro Colaborativo</h3><p>Miseria material vs miseria moral. Fantine sufrio ambas.</p><p><button onclick="document.getElementById('mb').style.display='block'" style="padding:10px 20px;background:#FF5900;color:#FFF;border:none;border-radius:6px;cursor:pointer">Escribir en el Muro</button></p><div id="mm" style="margin-top:15px;max-height:150px;overflow-y:auto"></div></div>
-<div id="p13" class="ip"><div class="cb" onclick="this.parentElement.style.display='none'">&#10006;</div><h3>&#128682; Salida</h3><p>Descubriste <strong id="fc">0</strong> de 14 objetos.</p><p><strong>Ve al foro en Brightspace.</strong></p></div>
 
 <!-- MENU TELETRANSPORTE -->
 <div id="tm" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,10,10,0.95);z-index:100001;justify-content:center;align-items:center;flex-direction:column"><div style="text-align:center;max-width:700px;width:90%"><div style="font-size:28px;color:#D4A574;margin-bottom:8px">&#127981; La Fabrica de Fantine</div><div id="wn" style="font-size:14px;color:#FFB347;margin-bottom:5px"></div><div style="font-size:14px;color:#A0896E;margin-bottom:30px">Selecciona tu destino</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:15px"><div onclick="tp(0,-15,'CINE')" style="background:#1a1a2e;border:2px solid #DAA520;border-radius:12px;padding:20px;cursor:pointer;text-align:center"><div style="font-size:32px">&#127916;</div><div style="color:#DAA520;margin-top:8px">Sala de Cine</div></div><div onclick="tp(0,-5,'ZONA 1')" style="background:#1a1a2e;border:2px solid #FFB347;border-radius:12px;padding:20px;cursor:pointer;text-align:center"><div style="font-size:32px">&#127963;</div><div style="color:#FFB347;margin-top:8px">Entrada</div></div><div onclick="tp(0,10,'ZONA 2')" style="background:#1a1a2e;border:2px solid #D4A574;border-radius:12px;padding:20px;cursor:pointer;text-align:center"><div style="font-size:32px">&#129525;</div><div style="color:#D4A574;margin-top:8px">Taller</div></div><div onclick="tp(13,25,'ZONA 3')" style="background:#1a1a2e;border:2px solid #C4A882;border-radius:12px;padding:20px;cursor:pointer;text-align:center"><div style="font-size:32px">&#128203;</div><div style="color:#C4A882;margin-top:8px">Oficina</div></div><div onclick="tp(0,28,'ZONA 4')" style="background:#1a1a2e;border:2px solid #8B8682;border-radius:12px;padding:20px;cursor:pointer;text-align:center"><div style="font-size:32px">&#9970;</div><div style="color:#8B8682;margin-top:8px">El Patio</div></div><div onclick="tp(-13,-12,'ZONA 5')" style="background:#1a1a2e;border:2px solid #FF5900;border-radius:12px;padding:20px;cursor:pointer;text-align:center"><div style="font-size:32px">&#128682;</div><div style="color:#FF5900;margin-top:8px">Salida</div></div></div></div></div>
@@ -74,6 +55,135 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-scene embedded vr-mode-ui="enabled:true" renderer="antialias:true" fog="type:exponential;color:#4A3A2A;density:0.002" style="position:fixed;top:0;left:0;width:100%;height:100%">
 <a-sky color="#1a1a2e"></a-sky>
 <a-plane position="0 0 0" rotation="-90 0 0" width="80" height="100" material="color:#6B635B;roughness:0.9"></a-plane>
+
+<!-- PANELES 3D FLOTANTES (ocultos por defecto) -->
+<a-entity id="panel3d-0" visible="false" position="0 2.5 -25" look-at="[camera]">
+<a-plane width="4" height="2.5" material="color:#1A1A2E;opacity:0.95" position="0 0 0"></a-plane>
+<a-plane width="4" height="0.05" material="color:#D4A574" position="0 1.2 0.01"></a-plane>
+<a-text value="Sala de Cine" color="#D4A574" align="center" width="3.5" position="0 0.9 0.02"></a-text>
+<a-text value="Observa la escena musical de la\nfabrica donde Fantine trabaja.\nAt the End of the Day\nLes Miserables (2012)" color="#FFFDF8" align="center" width="3" position="0 0.2 0.02"></a-text>
+<a-text value="[ Mira la PANTALLA para ver video ]" color="#DAA520" align="center" width="3" position="0 -0.5 0.02"></a-text>
+<a-box class="clickable" id="close0" position="1.7 1 0.02" width="0.3" height="0.3" depth="0.05" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.3"></a-box>
+<a-text value="X" color="#FFF" align="center" width="2" position="1.7 1 0.04"></a-text>
+</a-entity>
+
+<a-entity id="panel3d-1" visible="false" position="-9 2.5 -2" look-at="[camera]">
+<a-plane width="4" height="2.5" material="color:#1A1A2E;opacity:0.95"></a-plane>
+<a-plane width="4" height="0.05" material="color:#D4A574" position="0 1.2 0.01"></a-plane>
+<a-text value="Cartel Historico" color="#D4A574" align="center" width="3.5" position="0 0.9 0.02"></a-text>
+<a-text value="Se buscan obreras.\nSalario: quince sous por\njornada de doce horas.\n\nVictor Hugo denuncia como la\nnecesidad obliga a aceptar\ncondiciones inhumanas." color="#FFFDF8" align="center" width="3" position="0 0.1 0.02"></a-text>
+<a-box class="clickable" id="close1" position="1.7 1 0.02" width="0.3" height="0.3" depth="0.05" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.3"></a-box>
+<a-text value="X" color="#FFF" align="center" width="2" position="1.7 1 0.04"></a-text>
+</a-entity>
+
+<a-entity id="panel3d-2" visible="false" position="0 2.5 -7" look-at="[camera]">
+<a-plane width="4" height="2.5" material="color:#1A1A2E;opacity:0.95"></a-plane>
+<a-plane width="4" height="0.05" material="color:#D4A574" position="0 1.2 0.01"></a-plane>
+<a-text value="El Porton" color="#D4A574" align="center" width="3.5" position="0 0.9 0.02"></a-text>
+<a-text value="Separaba dos mundos:\nafuera la miseria;\nadentro un salario miserable\npero necesario.\n\nCruzar este porton significaba\naceptar la explotacion." color="#FFFDF8" align="center" width="3" position="0 0.1 0.02"></a-text>
+<a-box class="clickable" id="close2" position="1.7 1 0.02" width="0.3" height="0.3" depth="0.05" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.3"></a-box>
+<a-text value="X" color="#FFF" align="center" width="2" position="1.7 1 0.04"></a-text>
+</a-entity>
+
+<a-entity id="panel3d-3" visible="false" position="9 2.5 0" look-at="[camera]">
+<a-plane width="4" height="2.5" material="color:#1A1A2E;opacity:0.95"></a-plane>
+<a-plane width="4" height="0.05" material="color:#D4A574" position="0 1.2 0.01"></a-plane>
+<a-text value="Instrucciones" color="#D4A574" align="center" width="3.5" position="0 0.9 0.02"></a-text>
+<a-text value="PC: W A S D + mouse\nClic en objetos brillantes\n\nMeta Quest:\nJoystick izquierdo = caminar\nTrigger derecho = seleccionar\n\nBusca los 14 objetos!" color="#FFFDF8" align="center" width="3" position="0 0.1 0.02"></a-text>
+<a-box class="clickable" id="close3" position="1.7 1 0.02" width="0.3" height="0.3" depth="0.05" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.3"></a-box>
+<a-text value="X" color="#FFF" align="center" width="2" position="1.7 1 0.04"></a-text>
+</a-entity>
+
+<a-entity id="panel3d-4" visible="false" position="0 3.5 -7" look-at="[camera]">
+<a-plane width="4" height="2.5" material="color:#1A1A2E;opacity:0.95"></a-plane>
+<a-plane width="4" height="0.05" material="color:#D4A574" position="0 1.2 0.01"></a-plane>
+<a-text value="Fabrique Madeleine" color="#D4A574" align="center" width="3.5" position="0 0.9 0.02"></a-text>
+<a-text value="El Padre Madeleine es en\nrealidad Jean Valjean\nviviendo bajo identidad falsa.\n\nUn expresidiario convertido\nen benefactor del pueblo." color="#FFFDF8" align="center" width="3" position="0 0.1 0.02"></a-text>
+<a-box class="clickable" id="close4" position="1.7 1 0.02" width="0.3" height="0.3" depth="0.05" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.3"></a-box>
+<a-text value="X" color="#FFF" align="center" width="2" position="1.7 1 0.04"></a-text>
+</a-entity>
+
+<a-entity id="panel3d-5" visible="false" position="-4 2 9" look-at="[camera]">
+<a-plane width="4" height="2.5" material="color:#1A1A2E;opacity:0.95"></a-plane>
+<a-plane width="4" height="0.05" material="color:#D4A574" position="0 1.2 0.01"></a-plane>
+<a-text value="Carta de Fantine" color="#D4A574" align="center" width="3.5" position="0 0.9 0.02"></a-text>
+<a-text value="Mis queridos Thenardier:\nCosette esta enferma.\nEnvio doce francos.\n\nLos Thenardier inventaban\nenfermedades para\nextorsionarla." color="#FFFDF8" align="center" width="3" position="0 0.1 0.02"></a-text>
+<a-box class="clickable" id="close5" position="1.7 1 0.02" width="0.3" height="0.3" depth="0.05" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.3"></a-box>
+<a-text value="X" color="#FFF" align="center" width="2" position="1.7 1 0.04"></a-text>
+</a-entity>
+
+<a-entity id="panel3d-6" visible="false" position="-9 2 12" look-at="[camera]">
+<a-plane width="4" height="2.5" material="color:#1A1A2E;opacity:0.95"></a-plane>
+<a-plane width="4" height="0.05" material="color:#D4A574" position="0 1.2 0.01"></a-plane>
+<a-text value="Diario de una Obrera" color="#D4A574" align="center" width="3.5" position="0 0.9 0.02"></a-text>
+<a-text value="Jornada: 5AM - 7PM\nSalario: 15 sous\nNeto despues de descuentos: 12 sous\n\nQue significa salario justo?\nPuede existir dignidad\nsin justicia economica?" color="#FFFDF8" align="center" width="3" position="0 0.1 0.02"></a-text>
+<a-box class="clickable" id="close6" position="1.7 1 0.02" width="0.3" height="0.3" depth="0.05" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.3"></a-box>
+<a-text value="X" color="#FFF" align="center" width="2" position="1.7 1 0.04"></a-text>
+</a-entity>
+
+<a-entity id="panel3d-7" visible="false" position="4 2 9" look-at="[camera]">
+<a-plane width="4" height="2.5" material="color:#1A1A2E;opacity:0.95"></a-plane>
+<a-plane width="4" height="0.05" material="color:#D4A574" position="0 1.2 0.01"></a-plane>
+<a-text value="Libro de Cuentas" color="#D4A574" align="center" width="3.5" position="0 0.9 0.02"></a-text>
+<a-text value="Ingresos: 360 sous/mes\nGastos: 420 sous/mes\nBalance: -60 sous\n\nFantine vivia en deficit\npermanente. La pobreza no\nes solo carencia, es trampa." color="#FFFDF8" align="center" width="3" position="0 0.1 0.02"></a-text>
+<a-box class="clickable" id="close7" position="1.7 1 0.02" width="0.3" height="0.3" depth="0.05" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.3"></a-box>
+<a-text value="X" color="#FFF" align="center" width="2" position="1.7 1 0.04"></a-text>
+</a-entity>
+
+<a-entity id="panel3d-8" visible="false" position="14 2 28" look-at="[camera]">
+<a-plane width="4" height="2.5" material="color:#1A1A2E;opacity:0.95"></a-plane>
+<a-plane width="4" height="0.05" material="color:#D4A574" position="0 1.2 0.01"></a-plane>
+<a-text value="Decreto de Madeleine" color="#D4A574" align="center" width="3.5" position="0 0.9 0.02"></a-text>
+<a-text value="Ningun obrero sera despedido\nsin causa justa.\n\nPero Fantine fue despedida\nsin que Madeleine lo supiera.\nLa buena intencion no basta\nsi el sistema falla." color="#FFFDF8" align="center" width="3" position="0 0.1 0.02"></a-text>
+<a-box class="clickable" id="close8" position="1.7 1 0.02" width="0.3" height="0.3" depth="0.05" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.3"></a-box>
+<a-text value="X" color="#FFF" align="center" width="2" position="1.7 1 0.04"></a-text>
+</a-entity>
+
+<a-entity id="panel3d-9" visible="false" position="16 3 22" look-at="[camera]">
+<a-plane width="4" height="2.5" material="color:#1A1A2E;opacity:0.95"></a-plane>
+<a-plane width="4" height="0.05" material="color:#D4A574" position="0 1.2 0.01"></a-plane>
+<a-text value="El Espejo" color="#D4A574" align="center" width="3.5" position="0 0.9 0.02"></a-text>
+<a-text value="Revelarias tu identidad\npara salvar a un inocente?\n\nJean Valjean enfrento este\ndilema: confesar y perder\ntodo, o callar y vivir\ncon la culpa." color="#FFFDF8" align="center" width="3" position="0 0.1 0.02"></a-text>
+<a-box class="clickable" id="close9" position="1.7 1 0.02" width="0.3" height="0.3" depth="0.05" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.3"></a-box>
+<a-text value="X" color="#FFF" align="center" width="2" position="1.7 1 0.04"></a-text>
+</a-entity>
+
+<a-entity id="panel3d-10" visible="false" position="-8 3.5 25" look-at="[camera]">
+<a-plane width="4" height="2.5" material="color:#1A1A2E;opacity:0.95"></a-plane>
+<a-plane width="4" height="0.05" material="color:#D4A574" position="0 1.2 0.01"></a-plane>
+<a-text value="El Reloj - 5:45 AM" color="#D4A574" align="center" width="3.5" position="0 0.9 0.02"></a-text>
+<a-text value="Trabajaba doce horas,\nganaba quince sous.\n\nEl tiempo de Fantine no le\npertenecia. Cada minuto\nestaba vendido a la fabrica." color="#FFFDF8" align="center" width="3" position="0 0.1 0.02"></a-text>
+<a-box class="clickable" id="close10" position="1.7 1 0.02" width="0.3" height="0.3" depth="0.05" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.3"></a-box>
+<a-text value="X" color="#FFF" align="center" width="2" position="1.7 1 0.04"></a-text>
+</a-entity>
+
+<a-entity id="panel3d-11" visible="false" position="5 3.5 32" look-at="[camera]">
+<a-plane width="4" height="2.5" material="color:#1A1A2E;opacity:0.95"></a-plane>
+<a-plane width="4" height="0.05" material="color:#D4A574" position="0 1.2 0.01"></a-plane>
+<a-text value="La Campana" color="#D4A574" align="center" width="3.5" position="0 0.9 0.02"></a-text>
+<a-text value="Tu tiempo no te pertenece.\n\nQue campanas marcan tu\nvida hoy? El trabajo,\nlas redes sociales,\nlas expectativas ajenas?" color="#FFFDF8" align="center" width="3" position="0 0.1 0.02"></a-text>
+<a-box class="clickable" id="close11" position="1.7 1 0.02" width="0.3" height="0.3" depth="0.05" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.3"></a-box>
+<a-text value="X" color="#FFF" align="center" width="2" position="1.7 1 0.04"></a-text>
+</a-entity>
+
+<a-entity id="panel3d-12" visible="false" position="0 2.5 36" look-at="[camera]">
+<a-plane width="4" height="2.5" material="color:#1A1A2E;opacity:0.95"></a-plane>
+<a-plane width="4" height="0.05" material="color:#FF5900" position="0 1.2 0.01"></a-plane>
+<a-text value="Muro Colaborativo" color="#FF5900" align="center" width="3.5" position="0 0.9 0.02"></a-text>
+<a-text value="Miseria material vs\nmiseria moral.\nFantine sufrio ambas.\n\nEscribe tu reflexion\nen el foro de Brightspace\nal terminar el recorrido." color="#FFFDF8" align="center" width="3" position="0 0.1 0.02"></a-text>
+<a-box class="clickable" id="close12" position="1.7 1 0.02" width="0.3" height="0.3" depth="0.05" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.3"></a-box>
+<a-text value="X" color="#FFF" align="center" width="2" position="1.7 1 0.04"></a-text>
+</a-entity>
+
+<a-entity id="panel3d-13" visible="false" position="-13 2.5 -15" look-at="[camera]">
+<a-plane width="4" height="2.5" material="color:#1A1A2E;opacity:0.95"></a-plane>
+<a-plane width="4" height="0.05" material="color:#FF5900" position="0 1.2 0.01"></a-plane>
+<a-text value="Salida" color="#FF5900" align="center" width="3.5" position="0 0.9 0.02"></a-text>
+<a-text value="Fin del recorrido.\n\nRegresa a Brightspace\ny participa en el foro\nde discusion.\n\nMiseria y Grandeza\ndel Hombre." color="#FFFDF8" align="center" width="3" position="0 0.1 0.02"></a-text>
+<a-box class="clickable" id="close13" position="1.7 1 0.02" width="0.3" height="0.3" depth="0.05" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.3"></a-box>
+<a-text value="X" color="#FFF" align="center" width="2" position="1.7 1 0.04"></a-text>
+</a-entity>
+
 <!-- SALA DE CINE -->
 <a-plane position="0 0.01 -20" rotation="-90 0 0" width="16" height="16" material="color:#0a0a0a"></a-plane>
 <a-box position="-8 3 -20" width="0.5" height="6" depth="16" material="color:#2C1A1A"></a-box>
@@ -197,16 +307,26 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <script src="app.js"></script>
 <script>
 var ids=['pantalla','cartel','porton','instrucciones','letrero','carta','diario','cuentas','decreto','espejo','reloj','campana','muro','puerta'];
-var pids=['p0','p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12','p13'];
 var bis=[0.3,0.3,0.15,0.2,0.2,0.4,0.3,0.25,0.4,0.15,0.25,0.25,0.15,0.2];
 var userEntered=false;
+var activePanel=null;
 
-function openPanel(idx){
+function showPanel3D(idx){
 if(!userEntered) return;
-for(var j=0;j<pids.length;j++) document.getElementById(pids[j]).style.display='none';
-document.getElementById(pids[idx]).style.display='block';
+if(activePanel!==null){
+var old=document.getElementById('panel3d-'+activePanel);
+if(old) old.setAttribute('visible','false');
+}
+var p=document.getElementById('panel3d-'+idx);
+if(p){p.setAttribute('visible','true');activePanel=idx;}
 if(ids[idx]==='campana'){try{ca.currentTime=0;ca.play()}catch(e){}}
 if(!disc[ids[idx]]){disc[ids[idx]]=true;dc++;oi.textContent=dc+'/14';if(sr)sr.update({objectsFound:dc});var f=document.getElementById('fc');if(f)f.textContent=dc;}
+}
+
+function closePanel3D(idx){
+var p=document.getElementById('panel3d-'+idx);
+if(p) p.setAttribute('visible','false');
+activePanel=null;
 }
 
 document.querySelector('a-scene').addEventListener('loaded',function(){
@@ -214,13 +334,22 @@ cr=document.getElementById('rig');
 for(var i=0;i<ids.length;i++){(function(idx){
 var el=document.getElementById(ids[idx]);
 if(!el) return;
-el.addEventListener('click',function(){openPanel(idx)});
-el.addEventListener('mousedown',function(){openPanel(idx)});
+el.addEventListener('click',function(){showPanel3D(idx)});
+el.addEventListener('mousedown',function(){showPanel3D(idx)});
 el.addEventListener('mouseenter',function(){if(userEntered) el.setAttribute('material','emissiveIntensity','0.8')});
 el.addEventListener('mouseleave',function(){el.setAttribute('material','emissiveIntensity',String(bis[idx]))});
 el.addEventListener('raycaster-intersected',function(){if(userEntered) el.setAttribute('material','emissiveIntensity','0.8')});
 el.addEventListener('raycaster-intersected-cleared',function(){el.setAttribute('material','emissiveIntensity',String(bis[idx]))});
 })(i)}
+
+for(var c=0;c<14;c++){(function(ci){
+var cb=document.getElementById('close'+ci);
+if(!cb) return;
+cb.addEventListener('click',function(){closePanel3D(ci)});
+cb.addEventListener('mousedown',function(){closePanel3D(ci)});
+cb.addEventListener('mouseenter',function(){cb.setAttribute('material','emissiveIntensity','0.8')});
+cb.addEventListener('mouseleave',function(){cb.setAttribute('material','emissiveIntensity','0.3')});
+})(c)}
 
 var rh=document.getElementById('rhand');
 var lh=document.getElementById('lhand');
@@ -229,10 +358,11 @@ if(!userEntered) return;
 var rc=hand.components.raycaster;
 if(!rc) return;
 var ints=rc.intersectedEls;
-if(ints && ints.length>0){
+if(ints&&ints.length>0){
 var hit=ints[0];
-var idx=ids.indexOf(hit.id);
-if(idx>=0) openPanel(idx);
+var oi2=ids.indexOf(hit.id);
+if(oi2>=0){showPanel3D(oi2);return;}
+for(var k=0;k<14;k++){if(hit.id==='close'+k){closePanel3D(k);return;}}
 }
 }
 if(rh) rh.addEventListener('triggerdown',function(){onTrigger(rh)});
