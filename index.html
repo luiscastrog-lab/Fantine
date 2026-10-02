@@ -3,7 +3,6 @@
 <head>
 <meta charset="utf-8">
 <title>UV1: La Fabrica de Fantine</title>
-<script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
 <style>
 body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 #ls{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e,#2C1A1A,#1a1a2e);display:flex;justify-content:center;align-items:center;z-index:100000;flex-direction:column}
@@ -12,7 +11,7 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 #lb h2{font-size:16px;color:#A0896E;margin-bottom:30px;font-weight:normal}
 #ni{width:80%;padding:12px 20px;font-size:18px;border:2px solid #D4A574;border-radius:8px;background:rgba(26,26,46,0.8);color:#FFFDF8;text-align:center}
 #eb{margin-top:20px;padding:12px 40px;font-size:18px;background:linear-gradient(135deg,#D4A574,#FFB347);color:#1a1a2e;border:none;border-radius:8px;cursor:pointer;font-weight:bold}
-#hud{position:fixed;top:10px;left:10px;z-index:99999;font-size:13px;color:#D4A574;pointer-events:none}
+#hud{position:fixed;top:10px;left:10px;z-index:99999;font-size:13px;color:#D4A574;pointer-events:none;display:none}
 .hi{background:rgba(26,26,46,0.85);padding:4px 10px;border-radius:6px;display:inline-block;margin-right:6px}
 #rb{display:none;position:fixed;bottom:10px;left:50%;transform:translateX(-50%);z-index:99999;background:rgba(26,26,46,0.9);padding:8px 16px;border-radius:25px;border:1px solid #D4A574}
 #rb span{font-size:28px;cursor:pointer;margin:0 6px}
@@ -25,21 +24,33 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 #yp{width:90%;max-width:900px;height:50vh;border:3px solid #DAA520;border-radius:8px}
 #mb{display:none;position:fixed;bottom:60px;left:50%;transform:translateX(-50%);z-index:100001;background:rgba(26,26,46,0.95);padding:15px;border-radius:10px;border:1px solid #FF5900;width:80%;max-width:500px}
 #mt{width:90%;padding:10px;border:1px solid #D4A574;border-radius:6px;background:rgba(26,26,46,0.8);color:#FFFDF8;font-size:14px;resize:none;height:60px}
+#sc{display:none}
 </style>
 </head>
 <body>
+<!-- LOGIN -->
 <div id="ls"><div id="lb">
 <h1>&#127981; La Fabrica de Fantine</h1>
 <h2>Miseria y Grandeza del Hombre</h2>
 <p style="color:#A0896E;font-size:14px">Persona y Trascendencia - Universidad Anahuac Mayab</p>
 <input type="text" id="ni" placeholder="Escribe tu nombre completo"><br>
-<button id="eb" onclick="go()">Entrar a la Fabrica</button>
+<button id="eb">Entrar a la Fabrica</button>
 </div></div>
+
+<!-- HUD -->
 <div id="hud"><span class="hi" id="zi">MENU</span><span class="hi" id="oi">0/14</span><span class="hi" id="ci">&#128994;0</span></div>
+
+<!-- EMOJIS -->
 <div id="rb"><span onclick="re('asombro')">&#128558;</span><span onclick="re('tristeza')">&#128546;</span><span onclick="re('injusticia')">&#128545;</span><span onclick="re('reflexion')">&#129300;</span><span onclick="re('descubrimiento')">&#128161;</span><span onclick="re('empatia')">&#10084;&#65039;</span></div>
 <div id="fr"></div>
+
+<!-- VIDEO -->
 <div id="vo"><iframe id="yp" src="" frameborder="0" allow="autoplay;encrypted-media" allowfullscreen></iframe><button onclick="cv()" style="margin-top:20px;padding:12px 30px;background:#FF5900;color:#FFF;border:none;border-radius:8px;font-size:16px;cursor:pointer">Cerrar Video</button></div>
+
+<!-- MURO -->
 <div id="mb"><textarea id="mt" placeholder="Escribe tu reflexion..."></textarea><br><button onclick="sm()" style="margin-top:8px;padding:8px 20px;background:#FF5900;color:#FFF;border:none;border-radius:6px;cursor:pointer">Publicar</button></div>
+
+<!-- PANELES -->
 <div id="p0" class="ip"><div class="cb" onclick="this.parentElement.style.display='none'">&#10006;</div><h3>&#127916; Sala de Cine</h3><p>Observa la escena musical de la fabrica donde Fantine trabaja.</p><p style="text-align:center"><button onclick="ov()" style="padding:12px 30px;background:#DAA520;color:#1a1a2e;border:none;border-radius:8px;font-size:16px;cursor:pointer;font-weight:bold">&#9654; Ver Video</button></p></div>
 <div id="p1" class="ip"><div class="cb" onclick="this.parentElement.style.display='none'">&#10006;</div><h3>&#128220; Cartel Historico</h3><p><em>"Se buscan obreras. Salario: quince sous por jornada de doce horas."</em></p><p>Victor Hugo denuncia como la necesidad obliga a aceptar condiciones inhumanas.</p></div>
 <div id="p2" class="ip"><div class="cb" onclick="this.parentElement.style.display='none'">&#10006;</div><h3>&#128682; El Porton</h3><p>Separaba dos mundos: afuera la miseria; adentro un salario miserable pero necesario.</p></div>
@@ -54,13 +65,16 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <div id="p11" class="ip"><div class="cb" onclick="this.parentElement.style.display='none'">&#10006;</div><h3>&#128276; La Campana</h3><p>"Tu tiempo no te pertenece." Que campanas marcan tu vida hoy?</p></div>
 <div id="p12" class="ip"><div class="cb" onclick="this.parentElement.style.display='none'">&#10006;</div><h3>&#128293; Muro Colaborativo</h3><p>Miseria material vs miseria moral. Fantine sufrio ambas.</p><p><button onclick="document.getElementById('mb').style.display='block'" style="padding:10px 20px;background:#FF5900;color:#FFF;border:none;border-radius:6px;cursor:pointer">Escribir en el Muro</button></p><div id="mm" style="margin-top:15px;max-height:150px;overflow-y:auto"></div></div>
 <div id="p13" class="ip"><div class="cb" onclick="this.parentElement.style.display='none'">&#10006;</div><h3>&#128682; Salida</h3><p>Descubriste <strong id="fc">0</strong> de 14 objetos.</p><p><strong>Ve al foro en Brightspace.</strong></p></div>
+
+<!-- MENU TELETRANSPORTE -->
 <div id="tm" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,10,10,0.95);z-index:100001;justify-content:center;align-items:center;flex-direction:column"><div style="text-align:center;max-width:700px;width:90%"><div style="font-size:28px;color:#D4A574;margin-bottom:8px">&#127981; La Fabrica de Fantine</div><div id="wn" style="font-size:14px;color:#FFB347;margin-bottom:5px"></div><div style="font-size:14px;color:#A0896E;margin-bottom:30px">Selecciona tu destino</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:15px"><div onclick="tp(0,-15,'CINE')" style="background:#1a1a2e;border:2px solid #DAA520;border-radius:12px;padding:20px;cursor:pointer;text-align:center"><div style="font-size:32px">&#127916;</div><div style="color:#DAA520;margin-top:8px">Sala de Cine</div></div><div onclick="tp(0,-5,'ZONA 1')" style="background:#1a1a2e;border:2px solid #FFB347;border-radius:12px;padding:20px;cursor:pointer;text-align:center"><div style="font-size:32px">&#127963;</div><div style="color:#FFB347;margin-top:8px">Entrada</div></div><div onclick="tp(0,10,'ZONA 2')" style="background:#1a1a2e;border:2px solid #D4A574;border-radius:12px;padding:20px;cursor:pointer;text-align:center"><div style="font-size:32px">&#129525;</div><div style="color:#D4A574;margin-top:8px">Taller</div></div><div onclick="tp(13,25,'ZONA 3')" style="background:#1a1a2e;border:2px solid #C4A882;border-radius:12px;padding:20px;cursor:pointer;text-align:center"><div style="font-size:32px">&#128203;</div><div style="color:#C4A882;margin-top:8px">Oficina</div></div><div onclick="tp(0,28,'ZONA 4')" style="background:#1a1a2e;border:2px solid #8B8682;border-radius:12px;padding:20px;cursor:pointer;text-align:center"><div style="font-size:32px">&#9970;</div><div style="color:#8B8682;margin-top:8px">El Patio</div></div><div onclick="tp(-13,-12,'ZONA 5')" style="background:#1a1a2e;border:2px solid #FF5900;border-radius:12px;padding:20px;cursor:pointer;text-align:center"><div style="font-size:32px">&#128682;</div><div style="color:#FF5900;margin-top:8px">Salida</div></div></div></div></div>
 <div id="tb" onclick="document.getElementById('tm').style.display='flex'" style="display:none;position:fixed;top:150px;left:50%;transform:translateX(-50%);background:rgba(26,26,46,0.9);color:#FFB347;font-size:14px;padding:10px 20px;border-radius:8px;border:1px solid #FFB347;cursor:pointer;z-index:99999">&#128205; Menu</div>
 
+<!-- ESCENA 3D (oculta hasta login) -->
+<div id="sc">
 <a-scene embedded vr-mode-ui="enabled:true" renderer="antialias:true" fog="type:exponential;color:#4A3A2A;density:0.002" style="position:fixed;top:0;left:0;width:100%;height:100%">
 <a-sky color="#1a1a2e"></a-sky>
 <a-plane position="0 0 0" rotation="-90 0 0" width="80" height="100" material="color:#6B635B;roughness:0.9"></a-plane>
-
 <!-- SALA DE CINE -->
 <a-plane position="0 0.01 -20" rotation="-90 0 0" width="16" height="16" material="color:#0a0a0a"></a-plane>
 <a-box position="-8 3 -20" width="0.5" height="6" depth="16" material="color:#2C1A1A"></a-box>
@@ -78,7 +92,6 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-box position="5.1 3.5 -27.6" width="0.15" height="5.8" depth="0.15" material="color:#DAA520;metalness:0.8"></a-box>
 <a-box position="-7.5 3 -20" width="1" height="6" depth="16" material="color:#8B0000;roughness:0.9"></a-box>
 <a-box position="7.5 3 -20" width="1" height="6" depth="16" material="color:#8B0000;roughness:0.9"></a-box>
-<!-- ASIENTOS -->
 <a-box position="-4 0.4 -23" width="1.2" height="0.8" depth="0.8" material="color:#3A1A1A"></a-box>
 <a-box position="-2 0.4 -23" width="1.2" height="0.8" depth="0.8" material="color:#3A1A1A"></a-box>
 <a-box position="0 0.4 -23" width="1.2" height="0.8" depth="0.8" material="color:#3A1A1A"></a-box>
@@ -94,8 +107,7 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-box position="0 0.4 -17" width="1.2" height="0.8" depth="0.8" material="color:#3A1A1A"></a-box>
 <a-box position="2 0.4 -17" width="1.2" height="0.8" depth="0.8" material="color:#3A1A1A"></a-box>
 <a-box position="4 0.4 -17" width="1.2" height="0.8" depth="0.8" material="color:#3A1A1A"></a-box>
-
-<!-- ZONA 1: ENTRADA -->
+<!-- ZONA 1 -->
 <a-plane position="0 0.02 -2" rotation="-90 0 0" width="20" height="12" material="color:#8B7355"></a-plane>
 <a-box position="0 3 -8" width="20" height="6" depth="0.5" material="color:#7A7068"></a-box>
 <a-box id="porton" class="clickable" position="0 1.8 -7.7" width="3.5" height="3.6" depth="0.15" material="color:#2C2C2C;emissive:#FFB347;emissiveIntensity:0.15"></a-box>
@@ -108,8 +120,7 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-text value="[ CARTEL ]" color="#FFB347" align="center" width="2.5" position="-9.5 1.3 -2" rotation="0 90 0"></a-text>
 <a-box id="instrucciones" class="clickable" position="9.7 2.5 0" width="0.15" height="1.8" depth="1.4" material="color:#1A1A2E;emissive:#FF5900;emissiveIntensity:0.2"></a-box>
 <a-text value="[ AYUDA ]" color="#FF5900" align="center" width="2.5" position="9.5 1.3 0" rotation="0 -90 0"></a-text>
-
-<!-- ZONA 2: TALLER -->
+<!-- ZONA 2 -->
 <a-plane position="0 0.02 11" rotation="-90 0 0" width="20" height="13" material="color:#5C3A1E"></a-plane>
 <a-box position="-7 3 5" width="6" height="6" depth="0.5" material="color:#6B5D52"></a-box>
 <a-box position="7 3 5" width="6" height="6" depth="0.5" material="color:#6B5D52"></a-box>
@@ -123,8 +134,7 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-text value="[ CUENTAS ]" color="#FFB347" align="center" width="2.5" position="4 1.5 9"></a-text>
 <a-box id="diario" class="clickable" position="-9.6 1.7 12" width="0.12" height="0.3" depth="0.25" material="color:#6B3A1E;emissive:#D4A574;emissiveIntensity:0.3"></a-box>
 <a-text value="[ DIARIO ]" color="#FFB347" align="center" width="2.5" position="-9.4 1.2 12" rotation="0 90 0"></a-text>
-
-<!-- ZONA 3: OFICINA -->
+<!-- ZONA 3 -->
 <a-box position="10 3 20" width="0.5" height="6" depth="4" material="color:#5C4A3A"></a-box>
 <a-box position="10 3 28" width="0.5" height="6" depth="4" material="color:#5C4A3A"></a-box>
 <a-box position="17 3 18" width="0.5" height="6" depth="14" material="color:#5C4A3A"></a-box>
@@ -136,8 +146,7 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-text value="[ DECRETO ]" color="#FFB347" align="center" width="2.5" position="14 1.5 28"></a-text>
 <a-box id="espejo" class="clickable" position="16.65 3 22" width="0.08" height="1.3" depth="0.8" material="color:#B8C4D0;metalness:0.95;emissive:#B8C4D0;emissiveIntensity:0.15"></a-box>
 <a-text value="[ ESPEJO ]" color="#FFB347" align="center" width="2" position="16.5 2 22" rotation="0 -90 0"></a-text>
-
-<!-- ZONA 4: EL PATIO -->
+<!-- ZONA 4 -->
 <a-plane position="0 0.01 28" rotation="-90 0 0" width="18" height="18" material="color:#6B7B6B"></a-plane>
 <a-box position="-9 2.5 28" width="0.5" height="5" depth="18" material="color:#7A7068"></a-box>
 <a-box position="9 2.5 28" width="0.5" height="5" depth="18" material="color:#7A7068"></a-box>
@@ -150,8 +159,7 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-text value="[ CAMPANA ]" color="#FFB347" align="center" width="2.5" position="5 3 32"></a-text>
 <a-box id="muro" class="clickable" position="0 2 36.7" width="6" height="3.5" depth="0.3" material="color:#5C4A3A;emissive:#FF5900;emissiveIntensity:0.15"></a-box>
 <a-text value="[ MURO ]" color="#FF5900" align="center" width="4" position="0 0.8 36.4"></a-text>
-
-<!-- ZONA 5: SALIDA -->
+<!-- ZONA 5 -->
 <a-plane position="-13 0.01 -12" rotation="-90 0 0" width="6" height="8" material="color:#3A2A1A"></a-plane>
 <a-box position="-13 3 -8" width="6" height="6" depth="0.5" material="color:#5C4A3A"></a-box>
 <a-box position="-16 3 -12" width="0.5" height="6" depth="8" material="color:#5C4A3A"></a-box>
@@ -160,8 +168,7 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-text value="SALIDA" color="#FF5900" align="center" width="4" position="-10.3 5 -12" rotation="0 -90 0"></a-text>
 <a-box id="puerta" class="clickable" position="-13 2.5 -15.7" width="3" height="4.5" depth="0.3" material="color:#4A2E15;emissive:#FF5900;emissiveIntensity:0.2"></a-box>
 <a-text value="[ PUERTA ]" color="#FF5900" align="center" width="3" position="-13 0.5 -15.3"></a-text>
-
-<!-- ILUMINACION -->
+<!-- LUCES -->
 <a-light type="ambient" color="#C4A882" intensity="0.45"></a-light>
 <a-light type="point" color="#FFB347" intensity="0.7" distance="12" position="-4 4 -6"></a-light>
 <a-light type="point" color="#FFB347" intensity="0.7" distance="12" position="4 4 -6"></a-light>
@@ -172,8 +179,7 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-light type="point" color="#D4A574" intensity="0.5" distance="15" position="0 4 -9"></a-light>
 <a-light type="point" color="#D4A574" intensity="0.5" distance="15" position="0 4 4"></a-light>
 <a-light type="point" color="#FF5900" intensity="0.3" distance="8" position="-13 3 -12"></a-light>
-
-<!-- CAMARA + CONTROLES META QUEST -->
+<!-- CAMARA + CONTROLES QUEST -->
 <a-entity id="rig" position="0 0 0">
 <a-camera look-controls wasd-controls="acceleration:25">
 <a-cursor fuse="true" fuse-timeout="1500" color="#FF5900" raycaster="objects:.clickable" geometry="primitive:ring;radiusInner:0.02;radiusOuter:0.03" material="color:#FF5900;shader:flat"></a-cursor>
@@ -182,9 +188,12 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-entity id="lhand" hand-controls="hand:left;handModelStyle:lowPoly" laser-controls="hand:left" raycaster="objects:.clickable;far:30" line="color:#FFB347;opacity:0.75"></a-entity>
 </a-entity>
 </a-scene>
+</div>
 
+<!-- SCRIPTS -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
 <script src="app.js"></script>
 <script>
 var ids=['pantalla','cartel','porton','instrucciones','letrero','carta','diario','cuentas','decreto','espejo','reloj','campana','muro','puerta'];
@@ -198,14 +207,13 @@ if(ids[idx]==='campana'){try{ca.currentTime=0;ca.play()}catch(e){}}
 if(!disc[ids[idx]]){disc[ids[idx]]=true;dc++;oi.textContent=dc+'/14';if(sr)sr.update({objectsFound:dc});var f=document.getElementById('fc');if(f)f.textContent=dc;}
 }
 
-document.querySelector('a-scene').addEventListener('loaded',function(){
+function setupClicks(){
 cr=document.getElementById('rig');
 for(var i=0;i<ids.length;i++){(function(idx){
 var el=document.getElementById(ids[idx]);
 if(!el) return;
 el.addEventListener('click',function(){openPanel(idx)});
 el.addEventListener('mousedown',function(){openPanel(idx)});
-el.addEventListener('triggerdown',function(){openPanel(idx)});
 el.addEventListener('mouseenter',function(){el.setAttribute('material','emissiveIntensity','0.8')});
 el.addEventListener('mouseleave',function(){el.setAttribute('material','emissiveIntensity',String(bis[idx]))});
 el.addEventListener('raycaster-intersected',function(){el.setAttribute('material','emissiveIntensity','0.8')});
@@ -224,11 +232,31 @@ var idx=ids.indexOf(hit.id);
 if(idx>=0) openPanel(idx);
 }
 }
-if(rh){rh.addEventListener('triggerdown',function(){onTrigger(rh)})}
-if(lh){lh.addEventListener('triggerdown',function(){onTrigger(lh)})}
+if(rh) rh.addEventListener('triggerdown',function(){onTrigger(rh)});
+if(lh) lh.addEventListener('triggerdown',function(){onTrigger(lh)});
 
 var cm=document.querySelector('a-camera');
-setInterval(function(){var p=cm.object3D.getWorldPosition(new THREE.Vector3());var z=zi.textContent;var n='';if(p.z<-12&&p.x>-10)n='CINE';else if(p.x<-10)n='ZONA 5';else if(p.z<5&&p.x<=10)n='ZONA 1';else if(p.x>10)n='ZONA 3';else if(p.z>=18)n='ZONA 4';else if(p.z>=5)n='ZONA 2';if(n&&n!==z){zi.textContent=n;if(sr)sr.update({zone:n})}},2000);
+if(cm){setInterval(function(){var p=cm.object3D.getWorldPosition(new THREE.Vector3());var z=zi.textContent;var n='';if(p.z<-12&&p.x>-10)n='CINE';else if(p.x<-10)n='ZONA 5';else if(p.z<5&&p.x<=10)n='ZONA 1';else if(p.x>10)n='ZONA 3';else if(p.z>=18)n='ZONA 4';else if(p.z>=5)n='ZONA 2';if(n&&n!==z){zi.textContent=n;if(sr)sr.update({zone:n})}},2000);}
+}
+
+document.getElementById('eb').addEventListener('click',function(){
+var n=document.getElementById('ni').value.trim();
+if(!n){alert('Escribe tu nombre');return;}
+go();
+document.getElementById('sc').style.display='block';
+document.getElementById('hud').style.display='block';
+setTimeout(setupClicks,2000);
+});
+
+document.getElementById('ni').addEventListener('keypress',function(e){
+if(e.key==='Enter'){
+var n=document.getElementById('ni').value.trim();
+if(!n){alert('Escribe tu nombre');return;}
+go();
+document.getElementById('sc').style.display='block';
+document.getElementById('hud').style.display='block';
+setTimeout(setupClicks,2000);
+}
 });
 </script>
 </body>
