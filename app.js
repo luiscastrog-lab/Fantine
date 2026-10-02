@@ -1,6 +1,6 @@
 
 firebase.initializeApp({databaseURL:'https://fantine-vr-default-rtdb.firebaseio.com/'});
-var db=firebase.database(),mn='',mi='',sr,cr=null,ms=false,dc=0,disc={};
+var zi,oi,ci;window.addEventListener('DOMContentLoaded',function(){zi=document.getElementById('zi');oi=document.getElementById('oi');ci=document.getElementById('ci');});
 var zi=document.getElementById('zi'),oi=document.getElementById('oi'),ci=document.getElementById('ci');
 var ba=new Audio('https://luiscastrog-lab.github.io/Fantine/musica.mp3');ba.loop=true;ba.volume=0.15;
 var ca=new Audio('https://luiscastrog-lab.github.io/Fantine/campana.mp3');ca.volume=0.5;
