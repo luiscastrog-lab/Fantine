@@ -1,7 +1,6 @@
 
 firebase.initializeApp({databaseURL:'https://fantine-vr-default-rtdb.firebaseio.com/'});
 var db=firebase.database(),mn='',mi='',sr,cr=null,ms=false,dc=0,disc={};
-window.addEventListener('load',function(){cr=document.getElementById('rig');});
 var zi=document.getElementById('zi'),oi=document.getElementById('oi'),ci=document.getElementById('ci');
 var ba=new Audio('https://luiscastrog-lab.github.io/Fantine/musica.mp3');ba.loop=true;ba.volume=0.15;
 var ca=new Audio('https://luiscastrog-lab.github.io/Fantine/campana.mp3');ca.volume=0.5;
@@ -67,13 +66,18 @@ function tp(x,z,zona){
 document.getElementById('tm').style.display='none';
 document.getElementById('tb').style.display='block';
 if(!ms){ms=true;try{ba.play()}catch(e){}}
-if(cr)cr.setAttribute('position',x+' 0 '+z);
+var rig=document.getElementById('rig');
+if(rig){
+rig.object3D.position.set(x,0,z);
+rig.setAttribute('position',x+' 0 '+z);
+}
 zi.textContent=zona;
 if(sr)sr.update({zone:zona});
 }
 
 function ov(){
-document.getElementById('p0').style.display='none';
+var p0=document.getElementById('p0');
+if(p0) p0.style.display='none';
 document.getElementById('vo').classList.add('a');
 document.getElementById('yp').src='https://www.youtube.com/embed/xOyrZSaeZa0?autoplay=1&rel=0';
 ba.pause();
@@ -84,10 +88,4 @@ document.getElementById('yp').src='';
 document.getElementById('vo').classList.remove('a');
 if(ms)ba.play();
 }
-var rig=document.getElementById('rig');  // busca el rig directamente
-if(rig){
-  rig.object3D.position.set(x,0,z);     // método Three.js (más confiable)
-  rig.setAttribute('position',x+' 0 '+z); // método A-Frame (respaldo)
-}
-
 
