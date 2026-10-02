@@ -113,6 +113,7 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-text value="[ PORTON ]" color="#FFB347" align="center" width="3" position="0 3.8 -7.5"></a-text>
 <a-box id="letrero" class="clickable" position="0 5 -7.7" width="6" height="1.2" depth="0.15" material="color:#5C3A1E;emissive:#D4A574;emissiveIntensity:0.2"></a-box>
 <a-text value="FABRIQUE MADELEINE" color="#D4A574" align="center" width="5.5" position="0 5.2 -7.5"></a-text>
+<a-text value="Montreuil-sur-Mer, 1823" color="#A0896E" align="center" width="3.5" position="0 4.7 -7.5"></a-text>
 <a-box position="-10 3 0" width="0.5" height="6" depth="20" material="color:#7A7068"></a-box>
 <a-box position="10 3 0" width="0.5" height="6" depth="20" material="color:#7A7068"></a-box>
 <a-box id="cartel" class="clickable" position="-9.7 2.5 -2" width="0.15" height="1.8" depth="1.4" material="color:#C4A882;emissive:#C4A882;emissiveIntensity:0.3"></a-box>
@@ -152,6 +153,7 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-box position="0 2.5 37" width="18" height="5" depth="0.5" material="color:#7A7068"></a-box>
 <a-text value="EL PATIO" color="#D4A574" align="center" width="5" position="0 5 18.3"></a-text>
 <a-box id="reloj" class="clickable" position="-8.7 3.5 25" width="0.15" height="1.2" depth="1.2" material="color:#2C2C2C;emissive:#FFB347;emissiveIntensity:0.25"></a-box>
+<a-circle position="-8.6 3.5 25" rotation="0 90 0" radius="0.5" material="color:#F5E6C8"></a-circle>
 <a-text value="5:45" color="#1A1A2E" align="center" width="1.5" position="-8.55 3.5 25" rotation="0 90 0"></a-text>
 <a-text value="[ RELOJ ]" color="#FFB347" align="center" width="2.5" position="-8.5 2.5 25" rotation="0 90 0"></a-text>
 <a-cone id="campana" class="clickable" position="5 3.7 32" radius-bottom="0.4" radius-top="0.05" height="0.6" material="color:#D4A574;metalness:0.85;emissive:#D4A574;emissiveIntensity:0.25"></a-cone>
@@ -167,6 +169,7 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-text value="SALIDA" color="#FF5900" align="center" width="4" position="-10.3 5 -12" rotation="0 -90 0"></a-text>
 <a-box id="puerta" class="clickable" position="-13 2.5 -15.7" width="3" height="4.5" depth="0.3" material="color:#4A2E15;emissive:#FF5900;emissiveIntensity:0.2"></a-box>
 <a-text value="[ PUERTA ]" color="#FF5900" align="center" width="3" position="-13 0.5 -15.3"></a-text>
+<a-text value="Fin del recorrido" color="#D4A574" align="center" width="3" position="-13 4.8 -15.3"></a-text>
 <!-- LUCES -->
 <a-light type="ambient" color="#C4A882" intensity="0.45"></a-light>
 <a-light type="point" color="#FFB347" intensity="0.7" distance="12" position="-4 4 -6"></a-light>
@@ -196,8 +199,10 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 var ids=['pantalla','cartel','porton','instrucciones','letrero','carta','diario','cuentas','decreto','espejo','reloj','campana','muro','puerta'];
 var pids=['p0','p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12','p13'];
 var bis=[0.3,0.3,0.15,0.2,0.2,0.4,0.3,0.25,0.4,0.15,0.25,0.25,0.15,0.2];
+var userEntered=false;
 
 function openPanel(idx){
+if(!userEntered) return;
 for(var j=0;j<pids.length;j++) document.getElementById(pids[j]).style.display='none';
 document.getElementById(pids[idx]).style.display='block';
 if(ids[idx]==='campana'){try{ca.currentTime=0;ca.play()}catch(e){}}
@@ -211,15 +216,16 @@ var el=document.getElementById(ids[idx]);
 if(!el) return;
 el.addEventListener('click',function(){openPanel(idx)});
 el.addEventListener('mousedown',function(){openPanel(idx)});
-el.addEventListener('mouseenter',function(){el.setAttribute('material','emissiveIntensity','0.8')});
+el.addEventListener('mouseenter',function(){if(userEntered) el.setAttribute('material','emissiveIntensity','0.8')});
 el.addEventListener('mouseleave',function(){el.setAttribute('material','emissiveIntensity',String(bis[idx]))});
-el.addEventListener('raycaster-intersected',function(){el.setAttribute('material','emissiveIntensity','0.8')});
+el.addEventListener('raycaster-intersected',function(){if(userEntered) el.setAttribute('material','emissiveIntensity','0.8')});
 el.addEventListener('raycaster-intersected-cleared',function(){el.setAttribute('material','emissiveIntensity',String(bis[idx]))});
 })(i)}
 
 var rh=document.getElementById('rhand');
 var lh=document.getElementById('lhand');
 function onTrigger(hand){
+if(!userEntered) return;
 var rc=hand.components.raycaster;
 if(!rc) return;
 var ints=rc.intersectedEls;
@@ -233,8 +239,14 @@ if(rh) rh.addEventListener('triggerdown',function(){onTrigger(rh)});
 if(lh) lh.addEventListener('triggerdown',function(){onTrigger(lh)});
 
 var cm=document.querySelector('a-camera');
-if(cm){setInterval(function(){var p=cm.object3D.getWorldPosition(new THREE.Vector3());var z=zi.textContent;var n='';if(p.z<-12&&p.x>-10)n='CINE';else if(p.x<-10)n='ZONA 5';else if(p.z<5&&p.x<=10)n='ZONA 1';else if(p.x>10)n='ZONA 3';else if(p.z>=18)n='ZONA 4';else if(p.z>=5)n='ZONA 2';if(n&&n!==z){zi.textContent=n;if(sr)sr.update({zone:n})}},2000);}
+if(cm){setInterval(function(){if(!userEntered) return;var p=cm.object3D.getWorldPosition(new THREE.Vector3());var z=zi.textContent;var n='';if(p.z<-12&&p.x>-10)n='CINE';else if(p.x<-10)n='ZONA 5';else if(p.z<5&&p.x<=10)n='ZONA 1';else if(p.x>10)n='ZONA 3';else if(p.z>=18)n='ZONA 4';else if(p.z>=5)n='ZONA 2';if(n&&n!==z){zi.textContent=n;if(sr)sr.update({zone:n})}},2000);}
 });
+
+var origGo=window.go;
+window.go=function(){
+if(typeof origGo==='function') origGo();
+userEntered=true;
+};
 </script>
 </body>
 </html>
