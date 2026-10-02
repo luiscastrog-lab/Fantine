@@ -75,7 +75,7 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-sky color="#1a1a2e"></a-sky>
 <a-plane position="0 0 0" rotation="-90 0 0" width="80" height="100" material="color:#6B635B;roughness:0.9"></a-plane>
 
-<!-- PANELES 3D (Quest) - ocultos por defecto -->
+<!-- PANELES 3D (Quest) -->
 <a-entity id="vp0" visible="false" position="0 2.5 -25" look-at="[camera]"><a-plane width="4" height="2.5" material="color:#1A1A2E;opacity:0.95"></a-plane><a-plane width="4" height="0.05" material="color:#D4A574" position="0 1.2 0.01"></a-plane><a-text value="Sala de Cine" color="#D4A574" align="center" width="3.5" position="0 0.9 0.02"></a-text><a-text value="Observa la escena musical\nde la fabrica donde\nFantine trabaja.\n\nAt the End of the Day\nLes Miserables (2012)" color="#FFFDF8" align="center" width="3" position="0 0.1 0.02"></a-text><a-box class="clickable" id="cx0" position="1.7 1 0.02" width="0.3" height="0.3" depth="0.05" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.3"></a-box><a-text value="X" color="#FFF" align="center" width="2" position="1.7 1 0.04"></a-text></a-entity>
 
 <a-entity id="vp1" visible="false" position="-8 2.5 -2" look-at="[camera]"><a-plane width="4" height="2.5" material="color:#1A1A2E;opacity:0.95"></a-plane><a-plane width="4" height="0.05" material="color:#D4A574" position="0 1.2 0.01"></a-plane><a-text value="Cartel Historico" color="#D4A574" align="center" width="3.5" position="0 0.9 0.02"></a-text><a-text value="Se buscan obreras.\nSalario: quince sous por\njornada de doce horas.\n\nVictor Hugo denuncia como\nla necesidad obliga a aceptar\ncondiciones inhumanas." color="#FFFDF8" align="center" width="3" position="0 0.1 0.02"></a-text><a-box class="clickable" id="cx1" position="1.7 1 0.02" width="0.3" height="0.3" depth="0.05" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.3"></a-box><a-text value="X" color="#FFF" align="center" width="2" position="1.7 1 0.04"></a-text></a-entity>
@@ -136,6 +136,7 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-box position="0 0.4 -17" width="1.2" height="0.8" depth="0.8" material="color:#3A1A1A"></a-box>
 <a-box position="2 0.4 -17" width="1.2" height="0.8" depth="0.8" material="color:#3A1A1A"></a-box>
 <a-box position="4 0.4 -17" width="1.2" height="0.8" depth="0.8" material="color:#3A1A1A"></a-box>
+
 <!-- ZONA 1 -->
 <a-plane position="0 0.02 -2" rotation="-90 0 0" width="20" height="12" material="color:#8B7355"></a-plane>
 <a-box position="0 3 -8" width="20" height="6" depth="0.5" material="color:#7A7068"></a-box>
@@ -150,6 +151,7 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-text value="[ CARTEL ]" color="#FFB347" align="center" width="2.5" position="-9.5 1.3 -2" rotation="0 90 0"></a-text>
 <a-box id="instrucciones" class="clickable" position="9.7 2.5 0" width="0.15" height="1.8" depth="1.4" material="color:#1A1A2E;emissive:#FF5900;emissiveIntensity:0.2"></a-box>
 <a-text value="[ AYUDA ]" color="#FF5900" align="center" width="2.5" position="9.5 1.3 0" rotation="0 -90 0"></a-text>
+
 <!-- ZONA 2 -->
 <a-plane position="0 0.02 11" rotation="-90 0 0" width="20" height="13" material="color:#5C3A1E"></a-plane>
 <a-box position="-7 3 5" width="6" height="6" depth="0.5" material="color:#6B5D52"></a-box>
@@ -164,6 +166,7 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-text value="[ CUENTAS ]" color="#FFB347" align="center" width="2.5" position="4 1.5 9"></a-text>
 <a-box id="diario" class="clickable" position="-9.6 1.7 12" width="0.12" height="0.3" depth="0.25" material="color:#6B3A1E;emissive:#D4A574;emissiveIntensity:0.3"></a-box>
 <a-text value="[ DIARIO ]" color="#FFB347" align="center" width="2.5" position="-9.4 1.2 12" rotation="0 90 0"></a-text>
+
 <!-- ZONA 3 -->
 <a-box position="10 3 20" width="0.5" height="6" depth="4" material="color:#5C4A3A"></a-box>
 <a-box position="10 3 28" width="0.5" height="6" depth="4" material="color:#5C4A3A"></a-box>
@@ -176,6 +179,7 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-text value="[ DECRETO ]" color="#FFB347" align="center" width="2.5" position="14 1.5 28"></a-text>
 <a-box id="espejo" class="clickable" position="16.65 3 22" width="0.08" height="1.3" depth="0.8" material="color:#B8C4D0;metalness:0.95;emissive:#B8C4D0;emissiveIntensity:0.15"></a-box>
 <a-text value="[ ESPEJO ]" color="#FFB347" align="center" width="2" position="16.5 2 22" rotation="0 -90 0"></a-text>
+
 <!-- ZONA 4 -->
 <a-plane position="0 0.01 28" rotation="-90 0 0" width="18" height="18" material="color:#6B7B6B"></a-plane>
 <a-box position="-9 2.5 28" width="0.5" height="5" depth="18" material="color:#7A7068"></a-box>
@@ -190,6 +194,7 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-text value="[ CAMPANA ]" color="#FFB347" align="center" width="2.5" position="5 3 32"></a-text>
 <a-box id="muro" class="clickable" position="0 2 36.7" width="6" height="3.5" depth="0.3" material="color:#5C4A3A;emissive:#FF5900;emissiveIntensity:0.15"></a-box>
 <a-text value="[ MURO ]" color="#FF5900" align="center" width="4" position="0 0.8 36.4"></a-text>
+
 <!-- ZONA 5 -->
 <a-plane position="-13 0.01 -12" rotation="-90 0 0" width="6" height="8" material="color:#3A2A1A"></a-plane>
 <a-box position="-13 3 -8" width="6" height="6" depth="0.5" material="color:#5C4A3A"></a-box>
@@ -200,6 +205,7 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-box id="puerta" class="clickable" position="-13 2.5 -15.7" width="3" height="4.5" depth="0.3" material="color:#4A2E15;emissive:#FF5900;emissiveIntensity:0.2"></a-box>
 <a-text value="[ PUERTA ]" color="#FF5900" align="center" width="3" position="-13 0.5 -15.3"></a-text>
 <a-text value="Fin del recorrido" color="#D4A574" align="center" width="3" position="-13 4.8 -15.3"></a-text>
+
 <!-- LUCES -->
 <a-light type="ambient" color="#C4A882" intensity="0.45"></a-light>
 <a-light type="point" color="#FFB347" intensity="0.7" distance="12" position="-4 4 -6"></a-light>
@@ -211,6 +217,7 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-light type="point" color="#D4A574" intensity="0.5" distance="15" position="0 4 -9"></a-light>
 <a-light type="point" color="#D4A574" intensity="0.5" distance="15" position="0 4 4"></a-light>
 <a-light type="point" color="#FF5900" intensity="0.3" distance="8" position="-13 3 -12"></a-light>
+
 <!-- CAMARA + CONTROLES -->
 <a-entity id="rig" position="0 0 0">
 <a-camera look-controls wasd-controls="acceleration:25">
@@ -232,76 +239,3 @@ var bis=[0.3,0.3,0.15,0.2,0.2,0.4,0.3,0.25,0.4,0.15,0.25,0.25,0.15,0.2];
 var userEntered=false;
 var isVR=false;
 var activeVP=null;
-
-function openPanel(idx){
-if(!userEntered) return;
-if(isVR){
-if(activeVP!==null){var o=document.getElementById('vp'+activeVP);if(o)o.setAttribute('visible','false');}
-var v=document.getElementById('vp'+idx);
-if(v){v.setAttribute('visible','true');activeVP=idx;}
-} else {
-for(var j=0;j<pids.length;j++) document.getElementById(pids[j]).style.display='none';
-document.getElementById(pids[idx]).style.display='block';
-}
-if(ids[idx]==='campana'){try{ca.currentTime=0;ca.play()}catch(e){}}
-if(!disc[ids[idx]]){disc[ids[idx]]=true;dc++;oi.textContent=dc+'/14';if(sr)sr.update({objectsFound:dc});var f=document.getElementById('fc');if(f)f.textContent=dc;}
-}
-
-function closeVP(idx){
-var v=document.getElementById('vp'+idx);
-if(v) v.setAttribute('visible','false');
-activeVP=null;
-}
-
-document.querySelector('a-scene').addEventListener('enter-vr',function(){isVR=true;});
-document.querySelector('a-scene').addEventListener('exit-vr',function(){isVR=false;});
-
-document.querySelector('a-scene').addEventListener('loaded',function(){
-for(var i=0;i<ids.length;i++){(function(idx){
-var el=document.getElementById(ids[idx]);
-if(!el) return;
-el.addEventListener('click',function(){openPanel(idx)});
-el.addEventListener('mousedown',function(){openPanel(idx)});
-el.addEventListener('mouseenter',function(){if(userEntered) el.setAttribute('material','emissiveIntensity','0.8')});
-el.addEventListener('mouseleave',function(){el.setAttribute('material','emissiveIntensity',String(bis[idx]))});
-el.addEventListener('raycaster-intersected',function(){if(userEntered) el.setAttribute('material','emissiveIntensity','0.8')});
-el.addEventListener('raycaster-intersected-cleared',function(){el.setAttribute('material','emissiveIntensity',String(bis[idx]))});
-})(i)}
-
-for(var c=0;c<14;c++){(function(ci){
-var cb=document.getElementById('cx'+ci);
-if(!cb) return;
-cb.addEventListener('click',function(){closeVP(ci)});
-cb.addEventListener('mousedown',function(){closeVP(ci)});
-})(c)}
-
-var rh=document.getElementById('rhand');
-var lh=document.getElementById('lhand');
-function onTrigger(hand){
-if(!userEntered) return;
-var rc=hand.components.raycaster;
-if(!rc) return;
-var ints=rc.intersectedEls;
-if(ints&&ints.length>0){
-var hit=ints[0];
-var oi2=ids.indexOf(hit.id);
-if(oi2>=0){openPanel(oi2);return;}
-for(var k=0;k<14;k++){if(hit.id==='cx'+k){closeVP(k);return;}}
-}
-}
-if(rh) rh.addEventListener('triggerdown',function(){onTrigger(rh)});
-if(lh) lh.addEventListener('triggerdown',function(){onTrigger(lh)});
-
-var cm=document.querySelector('a-camera');
-if(cm){setInterval(function(){if(!userEntered) return;var p=cm.object3D.getWorldPosition(new THREE.Vector3());var z=zi.textContent;var n='';if(p.z<-12&&p.x>-10)n='CINE';else if(p.x<-10)n='ZONA 5';else if(p.z<5&&p.x<=10)n='ZONA 1';else if(p.x>10)n='ZONA 3';else if(p.z>=18)n='ZONA 4';else if(p.z>=5)n='ZONA 2';if(n&&n!==z){zi.textContent=n;if(sr)sr.update({zone:n})}},2000);}
-});
-
-var origGo=window.go;
-window.go=function(){
-if(typeof origGo==='function') origGo();
-userEntered=true;
-};
-</script>
-</body>
-</html>
-
