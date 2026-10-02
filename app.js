@@ -5,6 +5,13 @@ var zi=document.getElementById('zi'),oi=document.getElementById('oi'),ci=documen
 var ba=new Audio('https://luiscastrog-lab.github.io/Fantine/musica.mp3');ba.loop=true;ba.volume=0.15;
 var ca=new Audio('https://luiscastrog-lab.github.io/Fantine/campana.mp3');ca.volume=0.5;
 
+var ids=['pantalla','cartel','porton','instrucciones','letrero','carta','diario','cuentas','decreto','espejo','reloj','campana','muro','puerta'];
+var pids=['p0','p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12','p13'];
+var bis=[0.3,0.3,0.15,0.2,0.2,0.4,0.3,0.25,0.4,0.15,0.25,0.25,0.15,0.2];
+var userEntered=false;
+var isVR=false;
+var activeVP=null;
+
 function go(){
 var n=document.getElementById('ni').value.trim();
 if(!n){alert('Escribe tu nombre');return;}
@@ -14,6 +21,7 @@ document.getElementById('ls').style.display='none';
 document.getElementById('tm').style.display='flex';
 document.getElementById('wn').textContent='Bienvenido, '+mn;
 document.getElementById('rb').style.display='block';
+userEntered=true;
 sr=db.ref('sessions/'+mi);
 sr.set({name:mn,joinedAt:new Date().toISOString(),zone:'MENU',objectsFound:0});
 sr.onDisconnect().update({leftAt:new Date().toISOString(),status:'offline'});
@@ -88,4 +96,74 @@ document.getElementById('yp').src='';
 document.getElementById('vo').classList.remove('a');
 if(ms)ba.play();
 }
+
+function openPanel(idx){
+if(!userEntered) return;
+if(isVR){
+if(activeVP!==null){var o=document.getElementById('vp'+activeVP);if(o)o.setAttribute('visible','false');}
+var v=document.getElementById('vp'+idx);
+if(v){v.setAttribute('visible','true');activeVP=idx;}
+} else {
+for(var j=0;j<pids.length;j++) document.getElementById(pids[j]).style.display='none';
+document.getElementById(pids[idx]).style.display='block';
+}
+if(ids[idx]==='campana'){try{ca.currentTime=0;ca.play();}catch(e){}}
+if(!disc[ids[idx]]){disc[ids[idx]]=true;dc++;oi.textContent=dc+'/14';if(sr)sr.update({objectsFound:dc});var f=document.getElementById('fc');if(f)f.textContent=dc;}
+}
+
+function closeVP(idx){
+var v=document.getElementById('vp'+idx);
+if(v) v.setAttribute('visible','false');
+activeVP=null;
+}
+
+document.querySelector('a-scene').addEventListener('enter-vr',function(){isVR=true;});
+document.querySelector('a-scene').addEventListener('exit-vr',function(){isVR=false;});
+
+document.querySelector('a-scene').addEventListener('loaded',function(){
+for(var i=0;i<ids.length;i++){(function(idx){
+var el=document.getElementById(ids[idx]);
+if(!el) return;
+el.addEventListener('click',function(){openPanel(idx);});
+el.addEventListener('mousedown',function(){openPanel(idx);});
+el.addEventListener('mouseenter',function(){if(userEntered) el.setAttribute('material','emissiveIntensity','0.8');});
+el.addEventListener('mouseleave',function(){el.setAttribute('material','emissiveIntensity',String(bis[idx]));});
+el.addEventListener('raycaster-intersected',function(){if(userEntered) el.setAttribute('material','emissiveIntensity','0.8');});
+el.addEventListener('raycaster-intersected-cleared',function(){el.setAttribute('material','emissiveIntensity',String(bis[idx]));});
+})(i);}
+
+for(var c=0;c<14;c++){(function(ci2){
+var cb=document.getElementById('cx'+ci2);
+if(!cb) return;
+cb.addEventListener('click',function(){closeVP(ci2);});
+cb.addEventListener('mousedown',function(){closeVP(ci2);});
+})(c);}
+
+var rh=document.getElementById('rhand');
+var lh=document.getElementById('lhand');
+function onTrigger(hand){
+if(!userEntered) return;
+var rc=hand.components.raycaster;
+if(!rc) return;
+var ints=rc.intersectedEls;
+if(ints&&ints.length>0){
+var hit=ints[0];
+var oi2=ids.indexOf(hit.id);
+if(oi2>=0){openPanel(oi2);return;}
+for(var k=0;k<14;k++){if(hit.id==='cx'+k){closeVP(k);return;}}
+hit.emit('click');
+}
+}
+if(rh){
+rh.addEventListener('triggerdown',function(){onTrigger(rh);});
+rh.addEventListener('gripdown',function(){onTrigger(rh);});
+}
+if(lh){
+lh.addEventListener('triggerdown',function(){onTrigger(lh);});
+lh.addEventListener('gripdown',function(){onTrigger(lh);});
+}
+
+var cm=document.querySelector('a-camera');
+if(cm){setInterval(function(){if(!userEntered) return;var p=cm.object3D.getWorldPosition(new THREE.Vector3());var z2=zi.textContent;var n='';if(p.z<-12&&p.x>-10)n='CINE';else if(p.x<-10)n='ZONA 5';else if(p.z<5&&p.x<=10)n='ZONA 1';else if(p.x>10)n='ZONA 3';else if(p.z>=18)n='ZONA 4';else if(p.z>=5)n='ZONA 2';if(n&&n!==z2){zi.textContent=n;if(sr)sr.update({zone:n});}},2000);}
+});
 
