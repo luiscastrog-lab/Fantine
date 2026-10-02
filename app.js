@@ -84,4 +84,10 @@ document.getElementById('yp').src='';
 document.getElementById('vo').classList.remove('a');
 if(ms)ba.play();
 }
+var rig=document.getElementById('rig');  // busca el rig directamente
+if(rig){
+  rig.object3D.position.set(x,0,z);     // método Three.js (más confiable)
+  rig.setAttribute('position',x+' 0 '+z); // método A-Frame (respaldo)
+}
+
 
