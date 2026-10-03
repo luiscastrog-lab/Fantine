@@ -124,10 +124,6 @@ rb.addEventListener('raycaster-intersected',function(){hoveredEl=rb;rb.setAttrib
 rb.addEventListener('raycaster-intersected-cleared',function(){if(hoveredEl===rb)hoveredEl=null;rb.setAttribute('material','emissiveIntensity','0.2');});
 })(r);}
 
-var rpanel=document.getElementById('rpanel');
-scene.addEventListener('enter-vr',function(){if(rpanel&&userEntered)rpanel.setAttribute('visible','true');});
-scene.addEventListener('exit-vr',function(){if(rpanel)rpanel.setAttribute('visible','false');});
-
 var rp=document.getElementById('rpanel');
 if(rp){setInterval(function(){if(!isVR||!userEntered)return;var cam=document.querySelector('a-camera');if(!cam)return;var dir=new THREE.Vector3(0,0,-1.5);dir.applyQuaternion(cam.object3D.quaternion);var cp=cam.object3D.getWorldPosition(new THREE.Vector3());rp.object3D.position.set(cp.x+dir.x,cp.y-0.4,cp.z+dir.z);rp.object3D.lookAt(cp.x,cp.y,cp.z);},100);}
 var rp=document.getElementById('rpanel');
