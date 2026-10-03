@@ -106,7 +106,8 @@ lh.addEventListener('gripdown',onVRClick);
 lh.addEventListener('xbuttondown',onVRClick);
 lh.addEventListener('ybuttondown',onVRClick);
 }
-
+var vp=document.getElementById('vplay');
+if(vp){vp.addEventListener('click',function(){ov();});vp.addEventListener('raycaster-intersected',function(){hoveredEl=vp;});vp.addEventListener('raycaster-intersected-cleared',function(){if(hoveredEl===vp)hoveredEl=null;});}
 var cm=document.querySelector('a-camera');
 if(cm){setInterval(function(){if(!userEntered) return;var p=cm.object3D.getWorldPosition(new THREE.Vector3());var z2=zi?zi.textContent:'';var n='';if(p.z<-12&&p.x>-10)n='CINE';else if(p.x<-10)n='ZONA 5';else if(p.z<5&&p.x<=10)n='ZONA 1';else if(p.x>10)n='ZONA 3';else if(p.z>=18)n='ZONA 4';else if(p.z>=5)n='ZONA 2';if(n&&n!==z2){if(zi)zi.textContent=n;if(sr)sr.update({zone:n});}},2000);}
 });
