@@ -115,6 +115,20 @@ lh.addEventListener('xbuttondown',onVRClick);
 lh.addEventListener('ybuttondown',onVRClick);
 }
 
+var rnames=['asombro','tristeza','injusticia','reflexion','descubrimiento'];
+for(var r=0;r<5;r++){(function(ri){
+var rb=document.getElementById('re'+ri);
+if(!rb) return;
+rb.addEventListener('click',function(){re(rnames[ri]);showVREmoji(rnames[ri]);});
+rb.addEventListener('raycaster-intersected',function(){hoveredEl=rb;rb.setAttribute('material','emissiveIntensity','0.6');});
+rb.addEventListener('raycaster-intersected-cleared',function(){if(hoveredEl===rb)hoveredEl=null;rb.setAttribute('material','emissiveIntensity','0.2');});
+})(r);}
+
+var rpanel=document.getElementById('rpanel');
+scene.addEventListener('enter-vr',function(){if(rpanel&&userEntered)rpanel.setAttribute('visible','true');});
+scene.addEventListener('exit-vr',function(){if(rpanel)rpanel.setAttribute('visible','false');});
+
+
 var cm=document.querySelector('a-camera');
 if(cm){setInterval(function(){if(!userEntered) return;var p=cm.object3D.getWorldPosition(new THREE.Vector3());var z2=zi?zi.textContent:'';var n='';if(p.z<-12&&p.x>-10)n='CINE';else if(p.x<-10)n='ZONA 5';else if(p.z<5&&p.x<=10)n='ZONA 1';else if(p.x>10)n='ZONA 3';else if(p.z>=18)n='ZONA 4';else if(p.z>=5)n='ZONA 2';if(n&&n!==z2){if(zi)zi.textContent=n;if(sr)sr.update({zone:n});}},2000);}
 });
@@ -202,4 +216,26 @@ var v=document.getElementById('vp'+idx);
 if(v) v.setAttribute('visible','false');
 activeVP=null;
 }
+
+function showVREmoji(type){
+var emojis={'asombro':'😲','tristeza':'😢','injusticia':'😡','reflexion':'🤔','descubrimiento':'💡','empatia':'❤️'};
+var em=emojis[type]||'❓';
+var sc=document.querySelector('a-scene');
+if(!sc) return;
+var cam=document.querySelector('a-camera');
+if(!cam) return;
+var pos=cam.object3D.getWorldPosition(new THREE.Vector3());
+var txt=document.createElement('a-text');
+txt.setAttribute('value',em);
+txt.setAttribute('align','center');
+txt.setAttribute('width','8');
+txt.setAttribute('position',pos.x+' '+(pos.y+2)+' '+pos.z);
+txt.setAttribute('look-at','[camera]');
+txt.setAttribute('animation','property:position;to:'+pos.x+' '+(pos.y+5)+' '+pos.z+';dur:3000;easing:easeOutQuad');
+txt.setAttribute('animation__fade','property:material.opacity;from:1;to:0;dur:3000');
+sc.appendChild(txt);
+setTimeout(function(){txt.remove();},3500);
+}
+
+
 
