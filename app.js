@@ -189,6 +189,8 @@ function cv(){
 document.getElementById('yp').src='';
 document.getElementById('vo').classList.remove('a');
 if(ms&&ba) ba.play();
+var sc=document.querySelector('a-scene');
+if(sc&&sc.renderer){sc.renderer.setAnimationLoop(sc.render.bind(sc));}
 }
 
 function openPanel(idx){
