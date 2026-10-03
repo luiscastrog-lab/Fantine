@@ -177,9 +177,12 @@ if(rig){
 rig.object3D.position.set(x,0,z);
 rig.setAttribute('position',x+' 0 '+z);
 }
+var rp=document.getElementById('rpanel');
+if(rp&&isVR){rp.object3D.position.set(x,1.2,z-1.5);rp.setAttribute('visible','true');}
 if(zi) zi.textContent=zona;
 if(sr) sr.update({zone:zona});
 }
+
 
 function ov(){
 if(isVR){
