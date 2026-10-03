@@ -232,27 +232,115 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-light type="point" color="#C4A882" intensity="0.3" distance="12" position="13 4 25"></a-light>
 <a-light type="point" color="#8B8682" intensity="0.3" distance="15" position="0 4 28"></a-light>
 
-<!-- --- 7I: ESTACIÓN DE REACCIONES (Zona 1 - Entrada) --- -->
-<!-- Poste vertical con letrero -->
+<!-- --- 7I: ESTACIONES DE REACCIONES (en todas las zonas) --- -->
+
+<!-- ESTACIÓN ZONA 1 (Entrada - pared izquierda) -->
 <a-box position="-9.2 1.5 -6" width="0.08" height="3" depth="0.08" material="color:#5C3A1E"></a-box>
 <a-plane position="-9.2 2.9 -6" width="1.8" height="0.5" material="color:#1A1A2E;opacity:0.9" rotation="0 90 0"></a-plane>
 <a-text value="REACCIONES" color="#D4A574" align="center" width="2.5" position="-9.1 2.9 -6" rotation="0 90 0"></a-text>
-
-<!-- Esferas de reacciones (vertical, de arriba a abajo) -->
 <a-sphere class="clickable" id="re0" position="-9.2 2.4 -6" radius="0.15" material="color:#FF6B35;emissive:#FF6B35;emissiveIntensity:0.5"></a-sphere>
 <a-text value="WOW" color="#FF6B35" align="center" width="1.5" position="-9.1 2.4 -6" rotation="0 90 0"></a-text>
-
 <a-sphere class="clickable" id="re1" position="-9.2 2.0 -6" radius="0.15" material="color:#4A90D9;emissive:#4A90D9;emissiveIntensity:0.5"></a-sphere>
 <a-text value="TRISTE" color="#4A90D9" align="center" width="1.5" position="-9.1 2.0 -6" rotation="0 90 0"></a-text>
-
 <a-sphere class="clickable" id="re2" position="-9.2 1.6 -6" radius="0.15" material="color:#DC2626;emissive:#DC2626;emissiveIntensity:0.5"></a-sphere>
 <a-text value="NO!" color="#DC2626" align="center" width="1.5" position="-9.1 1.6 -6" rotation="0 90 0"></a-text>
-
 <a-sphere class="clickable" id="re3" position="-9.2 1.2 -6" radius="0.15" material="color:#7C3AED;emissive:#7C3AED;emissiveIntensity:0.5"></a-sphere>
 <a-text value="HMM" color="#7C3AED" align="center" width="1.5" position="-9.1 1.2 -6" rotation="0 90 0"></a-text>
-
 <a-sphere class="clickable" id="re4" position="-9.2 0.8 -6" radius="0.15" material="color:#F59E0B;emissive:#F59E0B;emissiveIntensity:0.5"></a-sphere>
 <a-text value="IDEA" color="#F59E0B" align="center" width="1.5" position="-9.1 0.8 -6" rotation="0 90 0"></a-text>
+
+<!-- CARTEL INFORMATIVO (junto a estación Zona 1) -->
+<a-plane position="-9.2 1.5 -4.2" width="1.6" height="2.2" material="color:#1A1A2E;opacity:0.92" rotation="0 90 0"></a-plane>
+<a-plane position="-9.2 2.55 -4.2" width="1.6" height="0.08" material="color:#D4A574" rotation="0 90 0"></a-plane>
+<a-text value="Que sientes?" color="#D4A574" align="center" width="2" position="-9.1 2.35 -4.2" rotation="0 90 0"></a-text>
+<a-text value="WOW = Asombro\nTRISTE = Tristeza\nNO! = Injusticia\nHMM = Reflexion\nIDEA = Descubrimiento" color="#FFFDF8" align="center" width="1.8" position="-9.1 1.6 -4.2" rotation="0 90 0"></a-text>
+<a-text value="Toca una esfera\npara reaccionar" color="#FFB347" align="center" width="1.6" position="-9.1 0.7 -4.2" rotation="0 90 0"></a-text>
+
+<!-- ESTACIÓN ZONA 2 (Taller - pared izquierda) -->
+<a-box position="-9.7 1.5 14" width="0.08" height="3" depth="0.08" material="color:#5C3A1E"></a-box>
+<a-plane position="-9.7 2.9 14" width="1.8" height="0.5" material="color:#1A1A2E;opacity:0.9" rotation="0 90 0"></a-plane>
+<a-text value="REACCIONES" color="#D4A574" align="center" width="2.5" position="-9.6 2.9 14" rotation="0 90 0"></a-text>
+<a-sphere class="clickable re-z2" position="-9.7 2.4 14" radius="0.15" material="color:#FF6B35;emissive:#FF6B35;emissiveIntensity:0.5" data-re="asombro"></a-sphere>
+<a-text value="WOW" color="#FF6B35" align="center" width="1.5" position="-9.6 2.4 14" rotation="0 90 0"></a-text>
+<a-sphere class="clickable re-z2" position="-9.7 2.0 14" radius="0.15" material="color:#4A90D9;emissive:#4A90D9;emissiveIntensity:0.5" data-re="tristeza"></a-sphere>
+<a-text value="TRISTE" color="#4A90D9" align="center" width="1.5" position="-9.6 2.0 14" rotation="0 90 0"></a-text>
+<a-sphere class="clickable re-z2" position="-9.7 1.6 14" radius="0.15" material="color:#DC2626;emissive:#DC2626;emissiveIntensity:0.5" data-re="injusticia"></a-sphere>
+<a-text value="NO!" color="#DC2626" align="center" width="1.5" position="-9.6 1.6 14" rotation="0 90 0"></a-text>
+<a-sphere class="clickable re-z2" position="-9.7 1.2 14" radius="0.15" material="color:#7C3AED;emissive:#7C3AED;emissiveIntensity:0.5" data-re="reflexion"></a-sphere>
+<a-text value="HMM" color="#7C3AED" align="center" width="1.5" position="-9.6 1.2 14" rotation="0 90 0"></a-text>
+<a-sphere class="clickable re-z2" position="-9.7 0.8 14" radius="0.15" material="color:#F59E0B;emissive:#F59E0B;emissiveIntensity:0.5" data-re="descubrimiento"></a-sphere>
+<a-text value="IDEA" color="#F59E0B" align="center" width="1.5" position="-9.6 0.8 14" rotation="0 90 0"></a-text>
+
+<!-- ESTACIÓN ZONA 3 (Oficina - pared interior) -->
+<a-box position="16.7 1.5 28" width="0.08" height="3" depth="0.08" material="color:#5C3A1E"></a-box>
+<a-plane position="16.7 2.9 28" width="1.8" height="0.5" material="color:#1A1A2E;opacity:0.9" rotation="0 -90 0"></a-plane>
+<a-text value="REACCIONES" color="#D4A574" align="center" width="2.5" position="16.6 2.9 28" rotation="0 -90 0"></a-text>
+<a-sphere class="clickable re-z3" position="16.7 2.4 28" radius="0.15" material="color:#FF6B35;emissive:#FF6B35;emissiveIntensity:0.5" data-re="asombro"></a-sphere>
+<a-text value="WOW" color="#FF6B35" align="center" width="1.5" position="16.6 2.4 28" rotation="0 -90 0"></a-text>
+<a-sphere class="clickable re-z3" position="16.7 2.0 28" radius="0.15" material="color:#4A90D9;emissive:#4A90D9;emissiveIntensity:0.5" data-re="tristeza"></a-sphere>
+<a-text value="TRISTE" color="#4A90D9" align="center" width="1.5" position="16.6 2.0 28" rotation="0 -90 0"></a-text>
+<a-sphere class="clickable re-z3" position="16.7 1.6 28" radius="0.15" material="color:#DC2626;emissive:#DC2626;emissiveIntensity:0.5" data-re="injusticia"></a-sphere>
+<a-text value="NO!" color="#DC2626" align="center" width="1.5" position="16.6 1.6 28" rotation="0 -90 0"></a-text>
+<a-sphere class="clickable re-z3" position="16.7 1.2 28" radius="0.15" material="color:#7C3AED;emissive:#7C3AED;emissiveIntensity:0.5" data-re="reflexion"></a-sphere>
+<a-text value="HMM" color="#7C3AED" align="center" width="1.5" position="16.6 1.2 28" rotation="0 -90 0"></a-text>
+<a-sphere class="clickable re-z3" position="16.7 0.8 28" radius="0.15" material="color:#F59E0B;emissive:#F59E0B;emissiveIntensity:0.5" data-re="descubrimiento"></a-sphere>
+<a-text value="IDEA" color="#F59E0B" align="center" width="1.5" position="16.6 0.8 28" rotation="0 -90 0"></a-text>
+
+<!-- ESTACIÓN ZONA 4 (Patio - pared izquierda) -->
+<a-box position="-8.7 1.5 30" width="0.08" height="3" depth="0.08" material="color:#5C3A1E"></a-box>
+<a-plane position="-8.7 2.9 30" width="1.8" height="0.5" material="color:#1A1A2E;opacity:0.9" rotation="0 90 0"></a-plane>
+<a-text value="REACCIONES" color="#D4A574" align="center" width="2.5" position="-8.6 2.9 30" rotation="0 90 0"></a-text>
+<a-sphere class="clickable re-z4" position="-8.7 2.4 30" radius="0.15" material="color:#FF6B35;emissive:#FF6B35;emissiveIntensity:0.5" data-re="asombro"></a-sphere>
+<a-text value="WOW" color="#FF6B35" align="center" width="1.5" position="-8.6 2.4 30" rotation="0 90 0"></a-text>
+<a-sphere class="clickable re-z4" position="-8.7 2.0 30" radius="0.15" material="color:#4A90D9;emissive:#4A90D9;emissiveIntensity:0.5" data-re="tristeza"></a-sphere>
+<a-text value="TRISTE" color="#4A90D9" align="center" width="1.5" position="-8.6 2.0 30" rotation="0 90 0"></a-text>
+<a-sphere class="clickable re-z4" position="-8.7 1.6 30" radius="0.15" material="color:#DC2626;emissive:#DC2626;emissiveIntensity:0.5" data-re="injusticia"></a-sphere>
+<a-text value="NO!" color="#DC2626" align="center" width="1.5" position="-8.6 1.6 30" rotation="0 90 0"></a-text>
+<a-sphere class="clickable re-z4" position="-8.7 1.2 30" radius="0.15" material="color:#7C3AED;emissive:#7C3AED;emissiveIntensity:0.5" data-re="reflexion"></a-sphere>
+<a-text value="HMM" color="#7C3AED" align="center" width="1.5" position="-8.6 1.2 30" rotation="0 90 0"></a-text>
+<a-sphere class="clickable re-z4" position="-8.7 0.8 30" radius="0.15" material="color:#F59E0B;emissive:#F59E0B;emissiveIntensity:0.5" data-re="descubrimiento"></a-sphere>
+<a-text value="IDEA" color="#F59E0B" align="center" width="1.5" position="-8.6 0.8 30" rotation="0 90 0"></a-text>
+
+<!-- ESTACIÓN ZONA 5 (Salida - pared interior) -->
+<a-box position="-15.7 1.5 -12" width="0.08" height="3" depth="0.08" material="color:#5C3A1E"></a-box>
+<a-plane position="-15.7 2.9 -12" width="1.8" height="0.5" material="color:#1A1A2E;opacity:0.9" rotation="0 90 0"></a-plane>
+<a-text value="REACCIONES" color="#D4A574" align="center" width="2.5" position="-15.6 2.9 -12" rotation="0 90 0"></a-text>
+<a-sphere class="clickable re-z5" position="-15.7 2.4 -12" radius="0.15" material="color:#FF6B35;emissive:#FF6B35;emissiveIntensity:0.5" data-re="asombro"></a-sphere>
+<a-text value="WOW" color="#FF6B35" align="center" width="1.5" position="-15.6 2.4 -12" rotation="0 90 0"></a-text>
+<a-sphere class="clickable re-z5" position="-15.7 2.0 -12" radius="0.15" material="color:#4A90D9;emissive:#4A90D9;emissiveIntensity:0.5" data-re="tristeza"></a-sphere>
+<a-text value="TRISTE" color="#4A90D9" align="center" width="1.5" position="-15.6 2.0 -12" rotation="0 90 0"></a-text>
+<a-sphere class="clickable re-z5" position="-15.7 1.6 -12" radius="0.15" material="color:#DC2626;emissive:#DC2626;emissiveIntensity:0.5" data-re="injusticia"></a-sphere>
+<a-text value="NO!" color="#DC2626" align="center" width="1.5" position="-15.6 1.6 -12" rotation="0 90 0"></a-text>
+<a-sphere class="clickable re-z5" position="-15.7 1.2 -12" radius="0.15" material="color:#7C3AED;emissive:#7C3AED;emissiveIntensity:0.5" data-re="reflexion"></a-sphere>
+<a-text value="HMM" color="#7C3AED" align="center" width="1.5" position="-15.6 1.2 -12" rotation="0 90 0"></a-text>
+<a-sphere class="clickable re-z5" position="-15.7 0.8 -12" radius="0.15" material="color:#F59E0B;emissive:#F59E0B;emissiveIntensity:0.5" data-re="descubrimiento"></a-sphere>
+<a-text value="IDEA" color="#F59E0B" align="center" width="1.5" position="-15.6 0.8 -12" rotation="0 90 0"></a-text>
+
+<!-- --- FLECHAS DE RUTA (Amarillo tráfico en paredes) --- -->
+
+<!-- Flecha: Cine → Zona 1 (pared lateral) -->
+<a-plane position="9.7 2 -9" width="1.5" height="0.6" material="color:#FFD100;opacity:0.95" rotation="0 -90 0"></a-plane>
+<a-text value="ENTRADA >>>" color="#1A1A2E" align="center" width="2.5" position="9.6 2 -9" rotation="0 -90 0"></a-text>
+
+<!-- Flecha: Zona 1 → Zona 2 (pared lateral) -->
+<a-plane position="9.7 2 3" width="1.5" height="0.6" material="color:#FFD100;opacity:0.95" rotation="0 -90 0"></a-plane>
+<a-text value="TALLER >>>" color="#1A1A2E" align="center" width="2.5" position="9.6 2 3" rotation="0 -90 0"></a-text>
+
+<!-- Flecha: Zona 2 → Zona 3 (pared fondo) -->
+<a-plane position="5 2 17.7" width="1.5" height="0.6" material="color:#FFD100;opacity:0.95"></a-plane>
+<a-text value="OFICINA >>>" color="#1A1A2E" align="center" width="2.5" position="5 2 17.6"></a-text>
+
+<!-- Flecha: Zona 3 → Zona 4 (pared interior) -->
+<a-plane position="10.3 2 22" width="1.5" height="0.6" material="color:#FFD100;opacity:0.95" rotation="0 90 0"></a-plane>
+<a-text value="<<< PATIO" color="#1A1A2E" align="center" width="2.5" position="10.4 2 22" rotation="0 90 0"></a-text>
+
+<!-- Flecha: Zona 4 → Zona 5 (pared lateral) -->
+<a-plane position="-8.7 2 22" width="1.5" height="0.6" material="color:#FFD100;opacity:0.95" rotation="0 90 0"></a-plane>
+<a-text value="<<< SALIDA" color="#1A1A2E" align="center" width="2.5" position="-8.6 2 22" rotation="0 90 0"></a-text>
+
+<!-- Flecha: Zona 1 → Cine (pared lateral, regreso) -->
+<a-plane position="-9.7 2 -9" width="1.5" height="0.6" material="color:#FFD100;opacity:0.95" rotation="0 90 0"></a-plane>
+<a-text value="<<< CINE" color="#1A1A2E" align="center" width="2.5" position="-9.6 2 -9" rotation="0 90 0"></a-text>
 
 
 <!-- ========================================= -->
