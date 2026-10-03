@@ -218,24 +218,26 @@ activeVP=null;
 }
 
 function showVREmoji(type){
-var emojis={'asombro':'😲','tristeza':'😢','injusticia':'😡','reflexion':'🤔','descubrimiento':'💡','empatia':'❤️'};
-var em=emojis[type]||'❓';
+var labels={'asombro':'WOW!','tristeza':'TRISTE','injusticia':'NO!','reflexion':'HMM...','descubrimiento':'IDEA!'};
+var colors={'asombro':'#FF6B35','tristeza':'#4A90D9','injusticia':'#DC2626','reflexion':'#7C3AED','descubrimiento':'#F59E0B'};
+var lb=labels[type]||'?';
+var cl=colors[type]||'#FFF';
 var sc=document.querySelector('a-scene');
 if(!sc) return;
 var cam=document.querySelector('a-camera');
 if(!cam) return;
 var pos=cam.object3D.getWorldPosition(new THREE.Vector3());
 var txt=document.createElement('a-text');
-txt.setAttribute('value',em);
+txt.setAttribute('value',lb);
+txt.setAttribute('color',cl);
 txt.setAttribute('align','center');
-txt.setAttribute('width','8');
-txt.setAttribute('position',pos.x+' '+(pos.y+2)+' '+pos.z);
+txt.setAttribute('width','6');
+txt.setAttribute('position',pos.x+' '+(pos.y+1)+' '+(pos.z-1));
 txt.setAttribute('look-at','[camera]');
-txt.setAttribute('animation','property:position;to:'+pos.x+' '+(pos.y+5)+' '+pos.z+';dur:3000;easing:easeOutQuad');
+txt.setAttribute('animation','property:position;to:'+pos.x+' '+(pos.y+4)+' '+(pos.z-1)+';dur:3000;easing:easeOutQuad');
 txt.setAttribute('animation__fade','property:material.opacity;from:1;to:0;dur:3000');
 sc.appendChild(txt);
 setTimeout(function(){txt.remove();},3500);
 }
-
 
 
