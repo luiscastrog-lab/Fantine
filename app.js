@@ -8,6 +8,7 @@ var bis=[0.3,0.3,0.15,0.2,0.2,0.4,0.3,0.25,0.4,0.15,0.25,0.25,0.15,0.2];
 var userEntered=false;
 var isVR=false;
 var activeVP=null;
+var hoveredEl=null;
 
 window.addEventListener('DOMContentLoaded',function(){
 firebase.initializeApp({databaseURL:'https://fantine-vr-default-rtdb.firebaseio.com/'});
@@ -50,46 +51,60 @@ if(scene){
 scene.addEventListener('enter-vr',function(){isVR=true;});
 scene.addEventListener('exit-vr',function(){isVR=false;});
 scene.addEventListener('loaded',function(){
+
 for(var i=0;i<ids.length;i++){(function(idx){
 var el=document.getElementById(ids[idx]);
 if(!el) return;
 el.addEventListener('click',function(){openPanel(idx);});
-el.addEventListener('mousedown',function(){openPanel(idx);});
-el.addEventListener('mouseenter',function(){if(userEntered) el.setAttribute('material','emissiveIntensity','0.8');});
-el.addEventListener('mouseleave',function(){el.setAttribute('material','emissiveIntensity',String(bis[idx]));});
-el.addEventListener('raycaster-intersected',function(){if(userEntered) el.setAttribute('material','emissiveIntensity','0.8');});
-el.addEventListener('raycaster-intersected-cleared',function(){el.setAttribute('material','emissiveIntensity',String(bis[idx]));});
+el.addEventListener('mouseenter',function(){
+if(userEntered) el.setAttribute('material','emissiveIntensity','0.8');
+hoveredEl=el;
+});
+el.addEventListener('mouseleave',function(){
+el.setAttribute('material','emissiveIntensity',String(bis[idx]));
+if(hoveredEl===el) hoveredEl=null;
+});
+el.addEventListener('raycaster-intersected',function(){
+if(userEntered) el.setAttribute('material','emissiveIntensity','0.8');
+hoveredEl=el;
+});
+el.addEventListener('raycaster-intersected-cleared',function(){
+el.setAttribute('material','emissiveIntensity',String(bis[idx]));
+if(hoveredEl===el) hoveredEl=null;
+});
 })(i);}
 
 for(var c=0;c<14;c++){(function(ci2){
 var cb=document.getElementById('cx'+ci2);
 if(!cb) return;
 cb.addEventListener('click',function(){closeVP(ci2);});
-cb.addEventListener('mousedown',function(){closeVP(ci2);});
+cb.addEventListener('raycaster-intersected',function(){hoveredEl=cb;});
+cb.addEventListener('raycaster-intersected-cleared',function(){if(hoveredEl===cb) hoveredEl=null;});
 })(c);}
+
+function onVRClick(){
+if(!userEntered) return;
+if(hoveredEl){
+var oi2=ids.indexOf(hoveredEl.id);
+if(oi2>=0){openPanel(oi2);return;}
+for(var k=0;k<14;k++){if(hoveredEl.id==='cx'+k){closeVP(k);return;}}
+hoveredEl.emit('click');
+}
+}
 
 var rh=document.getElementById('rhand');
 var lh=document.getElementById('lhand');
-function onTrigger(hand){
-if(!userEntered) return;
-var rc=hand.components.raycaster;
-if(!rc) return;
-var ints=rc.intersectedEls;
-if(ints&&ints.length>0){
-var hit=ints[0];
-var oi2=ids.indexOf(hit.id);
-if(oi2>=0){openPanel(oi2);return;}
-for(var k=0;k<14;k++){if(hit.id==='cx'+k){closeVP(k);return;}}
-hit.emit('click');
-}
-}
 if(rh){
-rh.addEventListener('triggerdown',function(){onTrigger(rh);});
-rh.addEventListener('gripdown',function(){onTrigger(rh);});
+rh.addEventListener('triggerdown',onVRClick);
+rh.addEventListener('gripdown',onVRClick);
+rh.addEventListener('bbuttondown',onVRClick);
+rh.addEventListener('abuttondown',onVRClick);
 }
 if(lh){
-lh.addEventListener('triggerdown',function(){onTrigger(lh);});
-lh.addEventListener('gripdown',function(){onTrigger(lh);});
+lh.addEventListener('triggerdown',onVRClick);
+lh.addEventListener('gripdown',onVRClick);
+lh.addEventListener('xbuttondown',onVRClick);
+lh.addEventListener('ybuttondown',onVRClick);
 }
 
 var cm=document.querySelector('a-camera');
