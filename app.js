@@ -167,15 +167,13 @@ if(sr) sr.update({zone:zona});
 
 function ov(){
 var sc=document.querySelector('a-scene');
-if(isVR&&sc&&sc.is('vr-mode')){
+if(sc&&sc.is('vr-mode')){
 sc.exitVR();
 setTimeout(function(){
-var p0=document.getElementById('p0');
-if(p0) p0.style.display='none';
 document.getElementById('vo').classList.add('a');
 document.getElementById('yp').src='https://www.youtube.com/embed/xOyrZSaeZa0?autoplay=1&rel=0';
 if(ba) ba.pause();
-},500);
+},800);
 } else {
 var p0=document.getElementById('p0');
 if(p0) p0.style.display='none';
@@ -185,17 +183,12 @@ if(ba) ba.pause();
 }
 }
 
-function ov(){
-if(isVR){
-window.location.href='https://www.youtube.com/watch?v=xOyrZSaeZa0';
-} else {
-var p0=document.getElementById('p0');
-if(p0) p0.style.display='none';
-document.getElementById('vo').classList.add('a');
-document.getElementById('yp').src='https://www.youtube.com/embed/xOyrZSaeZa0?autoplay=1&rel=0';
-if(ba) ba.pause();
+function cv(){
+document.getElementById('yp').src='';
+document.getElementById('vo').classList.remove('a');
+if(ms&&ba) ba.play();
 }
-}
+
 function openPanel(idx){
 if(!userEntered) return;
 if(isVR){
