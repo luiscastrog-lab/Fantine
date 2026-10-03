@@ -83,8 +83,16 @@ cb.addEventListener('raycaster-intersected-cleared',function(){if(hoveredEl===cb
 })(c);}
 
 function ov(){
-if(isVR){
-window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
+var scene=document.querySelector('a-scene');
+if(isVR&&scene&&scene.is('vr-mode')){
+scene.exitVR();
+setTimeout(function(){
+var p0=document.getElementById('p0');
+if(p0) p0.style.display='none';
+document.getElementById('vo').classList.add('a');
+document.getElementById('yp').src='https://www.youtube.com/embed/xOyrZSaeZa0?autoplay=1&rel=0';
+if(ba) ba.pause();
+},500);
 } else {
 var p0=document.getElementById('p0');
 if(p0) p0.style.display='none';
