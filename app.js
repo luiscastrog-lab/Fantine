@@ -9,6 +9,27 @@ var userEntered=false;
 var isVR=false;
 var activeVP=null;
 var hoveredEl=null;
+AFRAME.registerComponent('thumbstick-move',{
+init:function(){
+this.speed=0.05;
+this.axes=[0,0];
+this.el.addEventListener('axismove',function(e){
+if(e.detail.axis){this.axes=e.detail.axis;}
+}.bind(this));
+},
+tick:function(){
+if(this.axes===0&&this.axes===0)return;
+var rig=document.getElementById('rig');
+if(!rig)return;
+var cam=document.querySelector('[camera]');
+if(!cam)return;
+var dir=new THREE.Vector3(this.axes,0,this.axes);
+dir.multiplyScalar(this.speed);
+var rot=cam.object3D.rotation;
+dir.applyAxisAngle(new THREE.Vector3(0,1,0),rot.y);
+rig.object3D.position.add(dir);
+}
+});
 
 window.addEventListener('DOMContentLoaded',function(){
 firebase.initializeApp({databaseURL:'https://fantine-vr-default-rtdb.firebaseio.com/'});
