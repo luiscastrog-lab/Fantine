@@ -82,14 +82,45 @@ cb.addEventListener('raycaster-intersected',function(){hoveredEl=cb;});
 cb.addEventListener('raycaster-intersected-cleared',function(){if(hoveredEl===cb) hoveredEl=null;});
 })(c);}
 
-function onVRClick(){
-if(!userEntered) return;
-if(hoveredEl){
-var oi2=ids.indexOf(hoveredEl.id);
-if(oi2>=0){openPanel(oi2);return;}
-for(var k=0;k<14;k++){if(hoveredEl.id==='cx'+k){closeVP(k);return;}}
-hoveredEl.emit('click');
+function ov(){
+if(isVR){
+window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
+} else {
+var p0=document.getElementById('p0');
+if(p0) p0.style.display='none';
+document.getElementById('vo').classList.add('a');
+document.getElementById('yp').src='https://www.youtube.com/embed/xOyrZSaeZa0?autoplay=1&rel=0';
+if(ba) ba.pause();
 }
+}
+🎬 Cómo funciona ahora
+Table
+
+
+
+Modo
+
+
+Comportamiento
+
+
+PC	Se abre el video embebido dentro de la página (como antes)
+VR (Meta Quest)	Se abre YouTube en una nueva pestaña del navegador del Quest
+Ver más
+En el Meta Quest, cuando el alumno presione "Ver Video":
+
+Se abre YouTube en el navegador del Quest
+Ve el video musical "At the End of the Day"
+Al terminar, cierra la pestaña de YouTube
+Regresa automáticamente a la Fábrica de Fantine
+Haz el cambio en app.js → Commit → prueba en el Meta Quest. 🥽🎬🏭
+
+
+
+
+19:48
+
+
 }
 
 var rh=document.getElementById('rhand');
