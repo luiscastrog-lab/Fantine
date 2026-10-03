@@ -166,21 +166,15 @@ if(sr) sr.update({zone:zona});
 }
 
 function ov(){
-var sc=document.querySelector('a-scene');
-if(sc&&sc.is('vr-mode')){
-sc.exitVR();
-setTimeout(function(){
-document.getElementById('vo').classList.add('a');
-document.getElementById('yp').src='https://www.youtube.com/embed/xOyrZSaeZa0?autoplay=1&rel=0';
-if(ba) ba.pause();
-},800);
-} else {
+if(isVR){
+window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
+return;
+}
 var p0=document.getElementById('p0');
 if(p0) p0.style.display='none';
 document.getElementById('vo').classList.add('a');
 document.getElementById('yp').src='https://www.youtube.com/embed/xOyrZSaeZa0?autoplay=1&rel=0';
 if(ba) ba.pause();
-}
 }
 
 function cv(){
