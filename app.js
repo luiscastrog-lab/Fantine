@@ -82,53 +82,22 @@ cb.addEventListener('raycaster-intersected',function(){hoveredEl=cb;});
 cb.addEventListener('raycaster-intersected-cleared',function(){if(hoveredEl===cb) hoveredEl=null;});
 })(c);}
 
-function ov(){
-var scene=document.querySelector('a-scene');
-if(isVR&&scene&&scene.is('vr-mode')){
-scene.exitVR();
-setTimeout(function(){
-var p0=document.getElementById('p0');
-if(p0) p0.style.display='none';
-document.getElementById('vo').classList.add('a');
-document.getElementById('yp').src='https://www.youtube.com/embed/xOyrZSaeZa0?autoplay=1&rel=0';
-if(ba) ba.pause();
-},500);
-} else {
-var p0=document.getElementById('p0');
-if(p0) p0.style.display='none';
-document.getElementById('vo').classList.add('a');
-document.getElementById('yp').src='https://www.youtube.com/embed/xOyrZSaeZa0?autoplay=1&rel=0';
-if(ba) ba.pause();
+var vp=document.getElementById('vplay');
+if(vp){
+vp.addEventListener('click',function(){ov();});
+vp.addEventListener('raycaster-intersected',function(){hoveredEl=vp;});
+vp.addEventListener('raycaster-intersected-cleared',function(){if(hoveredEl===vp) hoveredEl=null;});
 }
+
+function onVRClick(){
+if(!userEntered) return;
+if(hoveredEl){
+var oi2=ids.indexOf(hoveredEl.id);
+if(oi2>=0){openPanel(oi2);return;}
+for(var k=0;k<14;k++){if(hoveredEl.id==='cx'+k){closeVP(k);return;}}
+if(hoveredEl.id==='vplay'){ov();return;}
+hoveredEl.emit('click');
 }
-🎬 Cómo funciona ahora
-Table
-
-
-
-Modo
-
-
-Comportamiento
-
-
-PC	Se abre el video embebido dentro de la página (como antes)
-VR (Meta Quest)	Se abre YouTube en una nueva pestaña del navegador del Quest
-Ver más
-En el Meta Quest, cuando el alumno presione "Ver Video":
-
-Se abre YouTube en el navegador del Quest
-Ve el video musical "At the End of the Day"
-Al terminar, cierra la pestaña de YouTube
-Regresa automáticamente a la Fábrica de Fantine
-Haz el cambio en app.js → Commit → prueba en el Meta Quest. 🥽🎬🏭
-
-
-
-
-19:48
-
-
 }
 
 var rh=document.getElementById('rhand');
@@ -145,8 +114,7 @@ lh.addEventListener('gripdown',onVRClick);
 lh.addEventListener('xbuttondown',onVRClick);
 lh.addEventListener('ybuttondown',onVRClick);
 }
-var vp=document.getElementById('vplay');
-if(vp){vp.addEventListener('click',function(){ov();});vp.addEventListener('raycaster-intersected',function(){hoveredEl=vp;});vp.addEventListener('raycaster-intersected-cleared',function(){if(hoveredEl===vp)hoveredEl=null;});}
+
 var cm=document.querySelector('a-camera');
 if(cm){setInterval(function(){if(!userEntered) return;var p=cm.object3D.getWorldPosition(new THREE.Vector3());var z2=zi?zi.textContent:'';var n='';if(p.z<-12&&p.x>-10)n='CINE';else if(p.x<-10)n='ZONA 5';else if(p.z<5&&p.x<=10)n='ZONA 1';else if(p.x>10)n='ZONA 3';else if(p.z>=18)n='ZONA 4';else if(p.z>=5)n='ZONA 2';if(n&&n!==z2){if(zi)zi.textContent=n;if(sr)sr.update({zone:n});}},2000);}
 });
@@ -198,11 +166,23 @@ if(sr) sr.update({zone:zona});
 }
 
 function ov(){
+var sc=document.querySelector('a-scene');
+if(isVR&&sc&&sc.is('vr-mode')){
+sc.exitVR();
+setTimeout(function(){
 var p0=document.getElementById('p0');
 if(p0) p0.style.display='none';
 document.getElementById('vo').classList.add('a');
 document.getElementById('yp').src='https://www.youtube.com/embed/xOyrZSaeZa0?autoplay=1&rel=0';
 if(ba) ba.pause();
+},500);
+} else {
+var p0=document.getElementById('p0');
+if(p0) p0.style.display='none';
+document.getElementById('vo').classList.add('a');
+document.getElementById('yp').src='https://www.youtube.com/embed/xOyrZSaeZa0?autoplay=1&rel=0';
+if(ba) ba.pause();
+}
 }
 
 function cv(){
