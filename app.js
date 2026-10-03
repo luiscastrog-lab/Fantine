@@ -11,19 +11,15 @@ var activeVP=null;
 var hoveredEl=null;
 AFRAME.registerComponent('quest-move',{
 tick:function(){
-var dominated=navigator.getGamepads?navigator.getGamepads():[];
-var gp=null;
-for(var i=0;i<dominated.length;i++){
-if(dominated[i]&&dominated[i].mapping==='xr-standard'&&dominated[i].hand==='left'){gp=dominated[i];break;}
-}
-if(!gp){
-for(var j=0;j<dominated.length;j++){
-if(dominated[j]&&dominated[j].axes&&dominated[j].axes.length>=4){gp=dominated[j];break;}
-}
-}
-if(!gp||!gp.axes)return;
-var ax=gp.axes||0;
-var ay=gp.axes||0;
+var session=this.el.sceneEl.renderer.xr.getSession();
+if(!session)return;
+var sources=session.inputSources;
+if(!sources)return;
+for(var i=0;i<sources.length;i++){
+var src=sources[i];
+if(src.handedness==='left'&&src.gamepad){
+var ax=src.gamepad.axes||0;
+var ay=src.gamepad.axes||0;
 if(Math.abs(ax)<0.15)ax=0;
 if(Math.abs(ay)<0.15)ay=0;
 if(ax===0&&ay===0)return;
@@ -35,6 +31,9 @@ var spd=0.06;
 var dir=new THREE.Vector3(ax*spd,0,ay*spd);
 dir.applyAxisAngle(new THREE.Vector3(0,1,0),cam.object3D.rotation.y);
 rig.object3D.position.add(dir);
+return;
+}
+}
 }
 });
 
