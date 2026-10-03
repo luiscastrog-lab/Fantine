@@ -155,6 +155,20 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:#1a1a2e}
 <a-light type="point" color="#D4A574" intensity="0.3" distance="12" position="0 4 10"></a-light>
 <a-light type="point" color="#C4A882" intensity="0.3" distance="12" position="13 4 25"></a-light>
 <a-light type="point" color="#8B8682" intensity="0.3" distance="15" position="0 4 28"></a-light>
+<a-entity id="rpanel" visible="false" position="0 1 -2">
+<a-plane width="3.5" height="0.6" material="color:#1A1A2E;opacity:0.9" position="0 0 0"></a-plane>
+<a-text value="Reacciones:" color="#D4A574" align="left" width="2" position="-1.6 0.15 0.01" scale="0.8 0.8 0.8"></a-text>
+<a-box class="clickable" id="re0" position="-1.2 -0.1 0.02" width="0.35" height="0.35" depth="0.02" material="color:#1A1A2E;emissive:#FF5900;emissiveIntensity:0.2"></a-box>
+<a-text value="😲" align="center" width="3" position="-1.2 -0.1 0.03" scale="0.7 0.7 0.7"></a-text>
+<a-box class="clickable" id="re1" position="-0.6 -0.1 0.02" width="0.35" height="0.35" depth="0.02" material="color:#1A1A2E;emissive:#FF5900;emissiveIntensity:0.2"></a-box>
+<a-text value="😢" align="center" width="3" position="-0.6 -0.1 0.03" scale="0.7 0.7 0.7"></a-text>
+<a-box class="clickable" id="re2" position="0 -0.1 0.02" width="0.35" height="0.35" depth="0.02" material="color:#1A1A2E;emissive:#FF5900;emissiveIntensity:0.2"></a-box>
+<a-text value="😡" align="center" width="3" position="0 -0.1 0.03" scale="0.7 0.7 0.7"></a-text>
+<a-box class="clickable" id="re3" position="0.6 -0.1 0.02" width="0.35" height="0.35" depth="0.02" material="color:#1A1A2E;emissive:#FF5900;emissiveIntensity:0.2"></a-box>
+<a-text value="🤔" align="center" width="3" position="0.6 -0.1 0.03" scale="0.7 0.7 0.7"></a-text>
+<a-box class="clickable" id="re4" position="1.2 -0.1 0.02" width="0.35" height="0.35" depth="0.02" material="color:#1A1A2E;emissive:#FF5900;emissiveIntensity:0.2"></a-box>
+<a-text value="💡" align="center" width="3" position="1.2 -0.1 0.03" scale="0.7 0.7 0.7"></a-text>
+</a-entity>
 <a-entity id="rig" movement-controls="fly:false;speed:0.15" position="0 0 -15">
 <a-entity camera look-controls="pointerLockEnabled:false" position="0 1.6 0">
 <a-cursor fuse="false" raycaster="objects:.clickable" material="color:#FF5900;opacity:0.7" geometry="primitive:ring;radiusInner:0.015;radiusOuter:0.025"></a-cursor>
