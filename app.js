@@ -123,6 +123,18 @@ rb.addEventListener('click',function(){re(rnames[ri]);showVREmoji(rnames[ri]);})
 rb.addEventListener('raycaster-intersected',function(){hoveredEl=rb;rb.setAttribute('material','emissiveIntensity','0.6');});
 rb.addEventListener('raycaster-intersected-cleared',function(){if(hoveredEl===rb)hoveredEl=null;rb.setAttribute('material','emissiveIntensity','0.2');});
 })(r);}
+var zclasses=['re-z2','re-z3','re-z4','re-z5'];
+for(var zz=0;zz<zclasses.length;zz++){
+var zels=document.querySelectorAll('.'+zclasses[zz]);
+zels.forEach(function(zel){
+zel.addEventListener('click',function(){
+var rt=this.getAttribute('data-re');
+if(rt){re(rt);showVREmoji(rt);}
+});
+zel.addEventListener('raycaster-intersected',function(){hoveredEl=this;this.setAttribute('material','emissiveIntensity','0.8');});
+zel.addEventListener('raycaster-intersected-cleared',function(){if(hoveredEl===this)hoveredEl=null;this.setAttribute('material','emissiveIntensity','0.5');});
+});
+}
 
 var rp=document.getElementById('rpanel');
 if(rp){setInterval(function(){if(!isVR||!userEntered)return;var cam=document.querySelector('a-camera');if(!cam)return;var dir=new THREE.Vector3(0,0,-1.5);dir.applyQuaternion(cam.object3D.quaternion);var cp=cam.object3D.getWorldPosition(new THREE.Vector3());rp.object3D.position.set(cp.x+dir.x,cp.y-0.4,cp.z+dir.z);rp.object3D.lookAt(cp.x,cp.y,cp.z);},100);}
