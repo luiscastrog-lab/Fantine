@@ -8,35 +8,7 @@ var bis=[0.3,0.3,0.15,0.2,0.2,0.4,0.3,0.25,0.4,0.15,0.25,0.25,0.15,0.2];
 var userEntered=false;
 var isVR=false;
 var activeVP=null;
-var hoveredEl=null;
-AFRAME.registerComponent('quest-move',{
-tick:function(){
-var session=this.el.sceneEl.renderer.xr.getSession();
-if(!session)return;
-var sources=session.inputSources;
-if(!sources)return;
-for(var i=0;i<sources.length;i++){
-var src=sources[i];
-if(src.handedness==='left'&&src.gamepad){
-var ax=src.gamepad.axes||0;
-var ay=src.gamepad.axes||0;
-if(Math.abs(ax)<0.15)ax=0;
-if(Math.abs(ay)<0.15)ay=0;
-if(ax===0&&ay===0)return;
-var rig=document.getElementById('rig');
-if(!rig)return;
-var cam=document.querySelector('[camera]');
-if(!cam)return;
-var spd=0.06;
-var dir=new THREE.Vector3(ax*spd,0,ay*spd);
-dir.applyAxisAngle(new THREE.Vector3(0,1,0),cam.object3D.rotation.y);
-rig.object3D.position.add(dir);
-return;
-}
-}
-}
-});
-
+var rnames=['asombro','tristeza','injusticia','reflexion','descubrimiento'];
 
 window.addEventListener('DOMContentLoaded',function(){
 firebase.initializeApp({databaseURL:'https://fantine-vr-default-rtdb.firebaseio.com/'});
@@ -86,19 +58,9 @@ if(!el) return;
 el.addEventListener('click',function(){openPanel(idx);});
 el.addEventListener('mouseenter',function(){
 if(userEntered) el.setAttribute('material','emissiveIntensity','0.8');
-hoveredEl=el;
 });
 el.addEventListener('mouseleave',function(){
 el.setAttribute('material','emissiveIntensity',String(bis[idx]));
-if(hoveredEl===el) hoveredEl=null;
-});
-el.addEventListener('raycaster-intersected',function(){
-if(userEntered) el.setAttribute('material','emissiveIntensity','0.8');
-hoveredEl=el;
-});
-el.addEventListener('raycaster-intersected-cleared',function(){
-el.setAttribute('material','emissiveIntensity',String(bis[idx]));
-if(hoveredEl===el) hoveredEl=null;
 });
 })(i);}
 
@@ -106,47 +68,21 @@ for(var c=0;c<14;c++){(function(ci2){
 var cb=document.getElementById('cx'+ci2);
 if(!cb) return;
 cb.addEventListener('click',function(){closeVP(ci2);});
-cb.addEventListener('raycaster-intersected',function(){hoveredEl=cb;});
-cb.addEventListener('raycaster-intersected-cleared',function(){if(hoveredEl===cb) hoveredEl=null;});
 })(c);}
 
 var vp=document.getElementById('vplay');
 if(vp){
 vp.addEventListener('click',function(){ov();});
-vp.addEventListener('raycaster-intersected',function(){hoveredEl=vp;});
-vp.addEventListener('raycaster-intersected-cleared',function(){if(hoveredEl===vp) hoveredEl=null;});
 }
 
-function onVRClick(){
-if(!userEntered) return;
-if(hoveredEl){
-hoveredEl.emit('click');
-}
-}
-
-var rh=document.getElementById('rhand');
-var lh=document.getElementById('lhand');
-if(rh){
-rh.addEventListener('triggerdown',onVRClick);
-rh.addEventListener('gripdown',onVRClick);
-rh.addEventListener('bbuttondown',onVRClick);
-rh.addEventListener('abuttondown',onVRClick);
-}
-if(lh){
-lh.addEventListener('triggerdown',onVRClick);
-lh.addEventListener('gripdown',onVRClick);
-lh.addEventListener('xbuttondown',onVRClick);
-lh.addEventListener('ybuttondown',onVRClick);
-}
-
-var rnames=['asombro','tristeza','injusticia','reflexion','descubrimiento'];
 for(var r=0;r<5;r++){(function(ri){
 var rb=document.getElementById('re'+ri);
 if(!rb) return;
 rb.addEventListener('click',function(){re(rnames[ri]);showVREmoji(rnames[ri]);});
-rb.addEventListener('raycaster-intersected',function(){hoveredEl=rb;rb.setAttribute('material','emissiveIntensity','0.6');});
-rb.addEventListener('raycaster-intersected-cleared',function(){if(hoveredEl===rb)hoveredEl=null;rb.setAttribute('material','emissiveIntensity','0.2');});
+rb.addEventListener('mouseenter',function(){rb.setAttribute('material','emissiveIntensity','0.6');});
+rb.addEventListener('mouseleave',function(){rb.setAttribute('material','emissiveIntensity','0.2');});
 })(r);}
+
 var zclasses=['re-z2','re-z3','re-z4','re-z5'];
 for(var zz=0;zz<zclasses.length;zz++){
 var zels=document.querySelectorAll('.'+zclasses[zz]);
@@ -155,16 +91,40 @@ zel.addEventListener('click',function(){
 var rt=this.getAttribute('data-re');
 if(rt){re(rt);showVREmoji(rt);}
 });
-zel.addEventListener('raycaster-intersected',function(){hoveredEl=this;this.setAttribute('material','emissiveIntensity','0.8');});
-zel.addEventListener('raycaster-intersected-cleared',function(){if(hoveredEl===this)hoveredEl=null;this.setAttribute('material','emissiveIntensity','0.5');});
+zel.addEventListener('mouseenter',function(){this.setAttribute('material','emissiveIntensity','0.8');});
+zel.addEventListener('mouseleave',function(){this.setAttribute('material','emissiveIntensity','0.5');});
 });
 }
 
 var rp=document.getElementById('rpanel');
 if(rp){setInterval(function(){if(!isVR||!userEntered)return;var cam=document.querySelector('a-camera');if(!cam)return;var dir=new THREE.Vector3(0,0,-1.5);dir.applyQuaternion(cam.object3D.quaternion);var cp=cam.object3D.getWorldPosition(new THREE.Vector3());rp.object3D.position.set(cp.x+dir.x,cp.y-0.4,cp.z+dir.z);rp.object3D.lookAt(cp.x,cp.y,cp.z);},100);}
-var rp=document.getElementById('rpanel');
+
 var cm=document.querySelector('a-camera');
 if(cm){setInterval(function(){if(!userEntered) return;var p=cm.object3D.getWorldPosition(new THREE.Vector3());var z2=zi?zi.textContent:'';var n='';if(p.z<-12&&p.x>-10)n='CINE';else if(p.x<-10)n='ZONA 5';else if(p.z<5&&p.x<=10)n='ZONA 1';else if(p.x>10)n='ZONA 3';else if(p.z>=18)n='ZONA 4';else if(p.z>=5)n='ZONA 2';if(n&&n!==z2){if(zi)zi.textContent=n;if(sr)sr.update({zone:n});}},2000);}
+
+/* --- QUEST VR CLICK HANDLER --- */
+function handleVRTrigger(hand){
+if(!userEntered||!isVR) return;
+var rc=hand.components.raycaster;
+if(!rc) return;
+var ints=rc.intersectedEls;
+if(!ints||ints.length===0) return;
+var hit=ints[0];
+if(!hit) return;
+hit.emit('click');
+}
+
+var rh=document.getElementById('rhand');
+var lh=document.getElementById('lhand');
+if(rh){
+rh.addEventListener('triggerdown',function(){handleVRTrigger(rh);});
+rh.addEventListener('gripdown',function(){handleVRTrigger(rh);});
+}
+if(lh){
+lh.addEventListener('triggerdown',function(){handleVRTrigger(lh);});
+}
+/* --- FIN QUEST VR CLICK HANDLER --- */
+
 });
 }
 });
@@ -214,7 +174,6 @@ if(rp&&isVR){rp.object3D.position.set(x,1.2,z-1.5);rp.setAttribute('visible','tr
 if(zi) zi.textContent=zona;
 if(sr) sr.update({zone:zona});
 }
-
 
 function ov(){
 if(isVR){
@@ -276,5 +235,4 @@ txt.setAttribute('animation__fade','property:material.opacity;from:1;to:0;dur:30
 sc.appendChild(txt);
 setTimeout(function(){txt.remove();},3500);
 }
-
 
