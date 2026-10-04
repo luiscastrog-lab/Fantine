@@ -1,32 +1,5 @@
 
 /* =========================================
-   COMPONENTE: quest-click
-   Registra ANTES de que la escena cargue.
-   Escucha triggerdown y emite click en el
-   objeto apuntado por el laser.
-   ========================================= */
-AFRAME.registerComponent('quest-click',{
-init:function(){
-var el=this.el;
-el.addEventListener('triggerdown',function(){
-var rc=el.components['laser-controls'];
-if(!rc) return;
-var cursor=el.components.cursor;
-if(cursor && cursor.intersectedEl){
-cursor.intersectedEl.emit('click');
-return;
-}
-var raycaster=el.components.raycaster;
-if(!raycaster) return;
-var ints=raycaster.intersectedEls;
-if(ints && ints.length>0){
-ints[0].emit('click');
-}
-});
-}
-});
-
-/* =========================================
    VARIABLES GLOBALES
    ========================================= */
 var zi,oi,ci;
@@ -211,7 +184,7 @@ if(sr) sr.update({zone:zona});
    ========================================= */
 function ov(){
 if(isVR){
-window.open('vr://com.oculus.vrshell?uri=https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
+window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
 return;
 }
 var p0=document.getElementById('p0');
