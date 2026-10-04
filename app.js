@@ -60,6 +60,8 @@ document.head.appendChild(st);
    ========================================= */
 var scene=document.querySelector('a-scene');
 if(scene){
+
+/* --- ENTER VR: conectar trigger con gaze cursor --- */
 scene.addEventListener('enter-vr',function(){
 isVR=true;
 var checkS=setInterval(function(){
@@ -68,44 +70,23 @@ try{sess=scene.renderer.xr.getSession();}catch(e){}
 if(sess){
 clearInterval(checkS);
 sess.addEventListener('selectstart',function(){
+/* Buscar en gaze cursor (circulo rojo) */
 var cur=document.querySelector('a-cursor');
 if(cur&&cur.components&&cur.components.cursor){
 var tgt=cur.components.cursor.intersectedEl;
-if(tgt) tgt.emit('click');
+if(tgt){tgt.emit('click');return;}
 }
+/* Buscar en laser derecho */
 var rh=document.getElementById('rhand');
 if(rh&&rh.components&&rh.components.raycaster){
 var ri=rh.components.raycaster.intersectedEls;
-if(ri&&ri.length>0) ri.emit('click');
+if(ri&&ri.length>0){ri[0].emit('click');return;}
 }
+/* Buscar en laser izquierdo */
 var lh=document.getElementById('lhand');
 if(lh&&lh.components&&lh.components.raycaster){
 var li=lh.components.raycaster.intersectedEls;
-if(li&&li.length>0) li.emit('click');
-}
-});
-}
-},300);
-});
-
-/* =============================================
-   CONEXIÓN TRIGGER → GAZE CURSOR (WebXR API)
-   Cuando presionas el trigger, busca qué objeto
-   está apuntando el cursor rojo (gaze) y emite
-   click en ese objeto.
-   ============================================= */
-var checkSession=setInterval(function(){
-var xrSession=null;
-try{xrSession=scene.renderer.xr.getSession();}catch(e){}
-if(xrSession){
-clearInterval(checkSession);
-xrSession.addEventListener('selectstart',function(){
-var cursor=document.querySelector('a-cursor');
-if(cursor&&cursor.components&&cursor.components.cursor){
-var target=cursor.components.cursor.intersectedEl;
-if(target){
-target.emit('click');
-}
+if(li&&li.length>0){li[0].emit('click');return;}
 }
 });
 }
@@ -257,7 +238,6 @@ if(ms&&ba) ba.play();
 
 /* =========================================
    FUNCIÓN: ABRIR PANEL DE INFORMACIÓN
-   Siempre usa paneles HTML (p0-p13)
    ========================================= */
 function openPanel(idx){
 if(!userEntered) return;
