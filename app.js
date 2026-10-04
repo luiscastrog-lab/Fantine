@@ -1,4 +1,7 @@
 
+/* =========================================
+   VARIABLES GLOBALES
+   ========================================= */
 var zi,oi,ci;
 var db,mn='',mi='',sr,cr=null,ms=false,dc=0,disc={};
 var ba,ca;
@@ -7,9 +10,11 @@ var pids=['p0','p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12','p
 var bis=[0.3,0.3,0.15,0.2,0.2,0.4,0.3,0.25,0.4,0.15,0.25,0.25,0.15,0.2];
 var userEntered=false;
 var isVR=false;
-var activeVP=null;
 var rnames=['asombro','tristeza','injusticia','reflexion','descubrimiento'];
 
+/* =========================================
+   INICIALIZACIÓN
+   ========================================= */
 window.addEventListener('DOMContentLoaded',function(){
 firebase.initializeApp({databaseURL:'https://fantine-vr-default-rtdb.firebaseio.com/'});
 db=firebase.database();
@@ -20,6 +25,10 @@ ba=new Audio('https://luiscastrog-lab.github.io/Fantine/musica.mp3');ba.loop=tru
 ca=new Audio('https://luiscastrog-lab.github.io/Fantine/campana.mp3');ca.volume=0.5;
 
 document.getElementById('ni').addEventListener('keypress',function(e){if(e.key==='Enter')go();});
+
+/* =========================================
+   FIREBASE LISTENERS
+   ========================================= */
 db.ref('online').on('value',function(s){if(ci) ci.innerHTML='&#128994;'+s.numChildren();});
 
 db.ref('reactions').orderByChild('timestamp').limitToLast(1).on('child_added',function(s){
@@ -46,12 +55,16 @@ var st=document.createElement('style');
 st.textContent='@keyframes fu{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-300px) scale(1.5)}}';
 document.head.appendChild(st);
 
+/* =========================================
+   ESCENA A-FRAME
+   ========================================= */
 var scene=document.querySelector('a-scene');
 if(scene){
 scene.addEventListener('enter-vr',function(){isVR=true;});
 scene.addEventListener('exit-vr',function(){isVR=false;});
 scene.addEventListener('loaded',function(){
 
+/* --- OBJETOS INTERACTIVOS (14 objetos) --- */
 for(var i=0;i<ids.length;i++){(function(idx){
 var el=document.getElementById(ids[idx]);
 if(!el) return;
@@ -64,17 +77,20 @@ el.setAttribute('material','emissiveIntensity',String(bis[idx]));
 });
 })(i);}
 
+/* --- BOTONES CERRAR PANEL VR (vp0) --- */
 for(var c=0;c<14;c++){(function(ci2){
 var cb=document.getElementById('cx'+ci2);
 if(!cb) return;
 cb.addEventListener('click',function(){closeVP(ci2);});
 })(c);}
 
+/* --- BOTÓN VER VIDEO --- */
 var vp=document.getElementById('vplay');
 if(vp){
 vp.addEventListener('click',function(){ov();});
 }
 
+/* --- ESFERAS DE REACCIONES ZONA 1 (re0-re4) --- */
 for(var r=0;r<5;r++){(function(ri){
 var rb=document.getElementById('re'+ri);
 if(!rb) return;
@@ -83,6 +99,7 @@ rb.addEventListener('mouseenter',function(){rb.setAttribute('material','emissive
 rb.addEventListener('mouseleave',function(){rb.setAttribute('material','emissiveIntensity','0.2');});
 })(r);}
 
+/* --- ESFERAS DE REACCIONES ZONAS 2-5 --- */
 var zclasses=['re-z2','re-z3','re-z4','re-z5'];
 for(var zz=0;zz<zclasses.length;zz++){
 var zels=document.querySelectorAll('.'+zclasses[zz]);
@@ -96,16 +113,23 @@ zel.addEventListener('mouseleave',function(){this.setAttribute('material','emiss
 });
 }
 
+/* --- DETECCIÓN DE ZONA --- */
 var cm=document.querySelector('a-camera');
 if(cm){setInterval(function(){if(!userEntered) return;var p=cm.object3D.getWorldPosition(new THREE.Vector3());var z2=zi?zi.textContent:'';var n='';if(p.z<-12&&p.x>-10)n='CINE';else if(p.x<-10)n='ZONA 5';else if(p.z<5&&p.x<=10)n='ZONA 1';else if(p.x>10)n='ZONA 3';else if(p.z>=18)n='ZONA 4';else if(p.z>=5)n='ZONA 2';if(n&&n!==z2){if(zi)zi.textContent=n;if(sr)sr.update({zone:n});}},2000);}
 
-/* laser-controls en A-Frame 1.5.0 emite click automaticamente al presionar trigger */
-/* NO se necesita handler personalizado - se elimino handleVRTrigger */
+/* =========================================
+   NOTA: NO se usa handler personalizado de VR.
+   laser-controls en A-Frame 1.5.0 emite 'click'
+   automaticamente al presionar el trigger.
+   ========================================= */
 
 });
 }
 });
 
+/* =========================================
+   FUNCIÓN: ENTRAR A LA FÁBRICA
+   ========================================= */
 function go(){
 var n=document.getElementById('ni').value.trim();
 if(!n){alert('Escribe tu nombre');return;}
@@ -124,11 +148,17 @@ db.ref('online/'+mi).onDisconnect().remove();
 db.ref('activity').push({user:mn,type:'joined',timestamp:new Date().toISOString()});
 }
 
+/* =========================================
+   FUNCIÓN: ENVIAR REACCIÓN A FIREBASE
+   ========================================= */
 function re(t){
 if(!mi)return;
 db.ref('reactions').push({user:mn,emoji:t,zone:zi?zi.textContent:'',timestamp:new Date().toISOString()});
 }
 
+/* =========================================
+   FUNCIÓN: PUBLICAR EN MURO COLABORATIVO
+   ========================================= */
 function sm(){
 var t=document.getElementById('mt').value.trim();
 if(!t)return;
@@ -137,6 +167,9 @@ document.getElementById('mt').value='';
 document.getElementById('mb').style.display='none';
 }
 
+/* =========================================
+   FUNCIÓN: TELETRANSPORTE
+   ========================================= */
 function tp(x,z,zona){
 document.getElementById('tm').style.display='none';
 document.getElementById('tb').style.display='block';
@@ -150,6 +183,9 @@ if(zi) zi.textContent=zona;
 if(sr) sr.update({zone:zona});
 }
 
+/* =========================================
+   FUNCIÓN: ABRIR VIDEO
+   ========================================= */
 function ov(){
 if(isVR){
 window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
@@ -162,15 +198,22 @@ document.getElementById('yp').src='https://www.youtube.com/embed/xOyrZSaeZa0?aut
 if(ba) ba.pause();
 }
 
+/* =========================================
+   FUNCIÓN: CERRAR VIDEO
+   ========================================= */
 function cv(){
 document.getElementById('yp').src='';
 document.getElementById('vo').classList.remove('a');
 if(ms&&ba) ba.play();
 }
 
+/* =========================================
+   FUNCIÓN: ABRIR PANEL DE INFORMACIÓN
+   Siempre usa paneles HTML (p0-p13)
+   Funcionan tanto en PC como en Quest browser
+   ========================================= */
 function openPanel(idx){
 if(!userEntered) return;
-/* Siempre mostrar paneles HTML - funcionan tanto en PC como en Quest browser */
 for(var j=0;j<pids.length;j++){
 var pj=document.getElementById(pids[j]);
 if(pj) pj.style.display='none';
@@ -181,12 +224,17 @@ if(ids[idx]==='campana'){try{ca.currentTime=0;ca.play();}catch(e){}}
 if(!disc[ids[idx]]){disc[ids[idx]]=true;dc++;if(oi)oi.textContent=dc+'/14';if(sr)sr.update({objectsFound:dc});var f=document.getElementById('fc');if(f)f.textContent=dc;}
 }
 
+/* =========================================
+   FUNCIÓN: CERRAR PANEL VR (vp0)
+   ========================================= */
 function closeVP(idx){
 var v=document.getElementById('vp'+idx);
 if(v) v.setAttribute('visible','false');
-activeVP=null;
 }
 
+/* =========================================
+   FUNCIÓN: MOSTRAR EMOJI FLOTANTE EN 3D
+   ========================================= */
 function showVREmoji(type){
 var labels={'asombro':'WOW!','tristeza':'TRISTE','injusticia':'NO!','reflexion':'HMM...','descubrimiento':'IDEA!'};
 var colors={'asombro':'#FF6B35','tristeza':'#4A90D9','injusticia':'#DC2626','reflexion':'#7C3AED','descubrimiento':'#F59E0B'};
