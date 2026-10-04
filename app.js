@@ -98,17 +98,58 @@ scene.addEventListener('exit-vr',function(){isVR=false;});
 scene.addEventListener('loaded',function(){
 
 /* --- OBJETOS INTERACTIVOS (14 objetos) --- */
-for(var i=0;i<ids.length;i++){(function(idx){
-var el=document.getElementById(ids[idx]);
-if(!el) return;
-el.addEventListener('click',function(){openPanel(idx);});
-el.addEventListener('mouseenter',function(){
-if(userEntered) el.setAttribute('material','emissiveIntensity','0.8');
-});
-el.addEventListener('mouseleave',function(){
-el.setAttribute('material','emissiveIntensity',String(bis[idx]));
-});
-})(i);}
+function openPanel(idx){
+if(!userEntered) return;
+if(isVR){
+var cam=document.querySelector('a-camera');
+if(!cam) return;
+var pos=new THREE.Vector3();
+cam.object3D.getWorldPosition(pos);
+var dir=new THREE.Vector3(0,0,-1);
+cam.object3D.getWorldDirection(dir);
+var tx=pos.x+dir.x*2;
+var ty=pos.y;
+var tz=pos.z+dir.z*2;
+var old=document.getElementById('vrpanel');
+if(old) old.remove();
+var titles=['SALA DE CINE','CARTEL FABRICA','PORTON','INSTRUCCIONES','LETRERO','CARTA DE FANTINE','DIARIO','LIBRO CUENTAS','DECRETO','ESPEJO','RELOJ','CAMPANA','MURO','PUERTA SALIDA'];
+var bg=document.createElement('a-plane');
+bg.setAttribute('id','vrpanel');
+bg.setAttribute('width','3');
+bg.setAttribute('height','1.5');
+bg.setAttribute('color','#1A1A2E');
+bg.setAttribute('opacity','0.9');
+bg.setAttribute('position',tx+' '+ty+' '+tz);
+bg.setAttribute('look-at','[camera]');
+var tt=document.createElement('a-text');
+tt.setAttribute('value',titles[idx]||'INFO');
+tt.setAttribute('color','#FF5900');
+tt.setAttribute('align','center');
+tt.setAttribute('width','4');
+tt.setAttribute('position','0 0.4 0.01');
+bg.appendChild(tt);
+var desc=document.createElement('a-text');
+desc.setAttribute('value','Objeto descubierto: '+ids[idx]+'
+Mira otro objeto para cerrar');
+desc.setAttribute('color','#FFFFFF');
+desc.setAttribute('align','center');
+desc.setAttribute('width','3');
+desc.setAttribute('position','0 -0.1 0.01');
+bg.appendChild(desc);
+document.querySelector('a-scene').appendChild(bg);
+setTimeout(function(){if(bg.parentNode) bg.remove();},5000);
+}else{
+for(var j=0;j<pids.length;j++){
+var pj=document.getElementById(pids[j]);
+if(pj) pj.style.display='none';
+}
+var pi=document.getElementById(pids[idx]);
+if(pi) pi.style.display='block';
+}
+if(ids[idx]==='campana'){try{ca.currentTime=0;ca.play();}catch(e){}}
+if(!disc[ids[idx]]){disc[ids[idx]]=true;dc++;if(oi)oi.textContent=dc+'/14';if(sr)sr.update({objectsFound:dc});var f=document.getElementById('fc');if(f)f.textContent=dc;}
+}
+
 
 /* --- BOTONES CERRAR PANEL (HTML) --- */
 for(var c=0;c<14;c++){(function(ci2){
