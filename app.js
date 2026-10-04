@@ -69,7 +69,7 @@ var sess=null;
 try{sess=scene.renderer.xr.getSession();}catch(e){}
 if(sess){
 clearInterval(checkS);
-sess.addEventListener('selectstart',function(){
+sess.addEventListener('selectstart',function(){try{navigator.getGamepads().hapticActuators.pulse(1.0,200);}catch(e){}
 /* Buscar en gaze cursor (circulo rojo) */
 var cur=document.querySelector('a-cursor');
 if(cur&&cur.components&&cur.components.cursor){
