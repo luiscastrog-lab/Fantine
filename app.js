@@ -11,6 +11,7 @@ var bis=[0.3,0.3,0.15,0.2,0.2,0.4,0.3,0.25,0.4,0.15,0.25,0.25,0.15,0.2];
 var userEntered=false;
 var isVR=false;
 var rnames=['asombro','tristeza','injusticia','reflexion','descubrimiento'];
+var titles=['SALA DE CINE','CARTEL FABRICA','PORTON','INSTRUCCIONES','LETRERO','CARTA DE FANTINE','DIARIO','LIBRO CUENTAS','DECRETO','ESPEJO','RELOJ','CAMPANA','MURO','PUERTA SALIDA'];
 
 /* =========================================
    INICIALIZACIÓN
@@ -61,7 +62,6 @@ document.head.appendChild(st);
 var scene=document.querySelector('a-scene');
 if(scene){
 
-/* --- ENTER/EXIT VR --- */
 scene.addEventListener('enter-vr',function(){isVR=true;});
 scene.addEventListener('exit-vr',function(){isVR=false;});
 
@@ -208,32 +208,23 @@ if(ms&&ba) ba.play();
 
 /* =========================================
    FUNCIÓN: ABRIR PANEL DE INFORMACIÓN
-   En VR: muestra panel 3D flotante frente al usuario
-   En PC: muestra panel HTML (div) como antes
+   VR = panel 3D flotante frente al usuario
+   PC = panel HTML como antes
    ========================================= */
 function openPanel(idx){
 if(!userEntered) return;
 if(isVR){
-var cam=document.querySelector('a-camera');
+var cam=document.querySelector('[camera]');
 if(!cam) return;
-var pos=new THREE.Vector3();
-cam.object3D.getWorldPosition(pos);
-var dir=new THREE.Vector3(0,0,-1);
-cam.object3D.getWorldDirection(dir);
-var tx=pos.x+dir.x*2;
-var ty=pos.y;
-var tz=pos.z+dir.z*2;
 var old=document.getElementById('vrpanel');
 if(old) old.remove();
-var titles=['SALA DE CINE','CARTEL FABRICA','PORTON','INSTRUCCIONES','LETRERO','CARTA DE FANTINE','DIARIO','LIBRO CUENTAS','DECRETO','ESPEJO','RELOJ','CAMPANA','MURO','PUERTA SALIDA'];
 var bg=document.createElement('a-plane');
 bg.setAttribute('id','vrpanel');
 bg.setAttribute('width','3');
 bg.setAttribute('height','1.5');
 bg.setAttribute('color','#1A1A2E');
 bg.setAttribute('opacity','0.9');
-bg.setAttribute('position',tx+' '+ty+' '+tz);
-bg.setAttribute('look-at','[camera]');
+bg.setAttribute('position','0 0 -2');
 var tt=document.createElement('a-text');
 tt.setAttribute('value',titles[idx]||'INFO');
 tt.setAttribute('color','#FF5900');
@@ -242,13 +233,13 @@ tt.setAttribute('width','4');
 tt.setAttribute('position','0 0.4 0.01');
 bg.appendChild(tt);
 var desc=document.createElement('a-text');
-desc.setAttribute('value','Objeto descubierto: '+ids[idx]+'\nMira otro objeto para cerrar');
+desc.setAttribute('value','Objeto descubierto: '+ids[idx]+'\nDesaparece en 5 segundos');
 desc.setAttribute('color','#FFFFFF');
 desc.setAttribute('align','center');
 desc.setAttribute('width','3');
 desc.setAttribute('position','0 -0.1 0.01');
 bg.appendChild(desc);
-document.querySelector('a-scene').appendChild(bg);
+cam.appendChild(bg);
 setTimeout(function(){if(bg.parentNode) bg.remove();},5000);
 }else{
 for(var j=0;j<pids.length;j++){
@@ -264,8 +255,8 @@ if(!disc[ids[idx]]){disc[ids[idx]]=true;dc++;if(oi)oi.textContent=dc+'/14';if(sr
 
 /* =========================================
    FUNCIÓN: MOSTRAR EMOJI FLOTANTE EN 3D
-   Usa getWorldDirection para colocar el texto
-   FRENTE al usuario sin importar hacia dónde mire
+   Se adjunta a la cámara para que siempre
+   aparezca frente al usuario
    ========================================= */
 function showVREmoji(type){
 var labels={'asombro':'WOW!','tristeza':'TRISTE','injusticia':'NO!','reflexion':'HMM...','descubrimiento':'IDEA!'};
@@ -274,24 +265,17 @@ var lb=labels[type]||'?';
 var cl=colors[type]||'#FFF';
 var sc=document.querySelector('a-scene');
 if(!sc) return;
-var cam=document.querySelector('a-camera');
+var cam=document.querySelector('[camera]');
 if(!cam) return;
-var pos=new THREE.Vector3();
-cam.object3D.getWorldPosition(pos);
-var dir=new THREE.Vector3(0,0,-1);
-cam.object3D.getWorldDirection(dir);
-var tx=pos.x+dir.x*2;
-var ty=pos.y+0.5;
-var tz=pos.z+dir.z*2;
 var txt=document.createElement('a-text');
 txt.setAttribute('value',lb);
 txt.setAttribute('color',cl);
 txt.setAttribute('align','center');
 txt.setAttribute('width','8');
-txt.setAttribute('position',tx+' '+ty+' '+tz);
-txt.setAttribute('animation','property:position;to:'+tx+' '+(ty+3)+' '+tz+';dur:3000;easing:easeOutQuad');
+txt.setAttribute('position','0 0.5 -2');
+txt.setAttribute('animation','property:position;to:0 3.5 -2;dur:3000;easing:easeOutQuad');
 txt.setAttribute('animation__fade','property:material.opacity;from:1;to:0;dur:3000');
-sc.appendChild(txt);
-setTimeout(function(){txt.remove();},3500);
+cam.appendChild(txt);
+setTimeout(function(){if(txt.parentNode) txt.remove();},3500);
 }
 
