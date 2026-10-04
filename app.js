@@ -60,8 +60,34 @@ document.head.appendChild(st);
    ========================================= */
 var scene=document.querySelector('a-scene');
 if(scene){
-scene.addEventListener('enter-vr',function(){isVR=true;});
+scene.addEventListener('enter-vr',function(){
+isVR=true;
+/* =============================================
+   CONEXIÓN TRIGGER → GAZE CURSOR (WebXR API)
+   Cuando presionas el trigger, busca qué objeto
+   está apuntando el cursor rojo (gaze) y emite
+   click en ese objeto.
+   ============================================= */
+var checkSession=setInterval(function(){
+var xrSession=null;
+try{xrSession=scene.renderer.xr.getSession();}catch(e){}
+if(xrSession){
+clearInterval(checkSession);
+xrSession.addEventListener('selectstart',function(){
+var cursor=document.querySelector('a-cursor');
+if(cursor&&cursor.components&&cursor.components.cursor){
+var target=cursor.components.cursor.intersectedEl;
+if(target){
+target.emit('click');
+}
+}
+});
+}
+},300);
+});
+
 scene.addEventListener('exit-vr',function(){isVR=false;});
+
 scene.addEventListener('loaded',function(){
 
 /* --- OBJETOS INTERACTIVOS (14 objetos) --- */
