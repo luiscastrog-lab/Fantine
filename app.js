@@ -120,18 +120,9 @@ vp.addEventListener('raycaster-intersected-cleared',function(){if(hoveredEl===vp
 function onVRClick(){
 if(!userEntered) return;
 if(hoveredEl){
-var oi2=ids.indexOf(hoveredEl.id);
-if(oi2>=0){openPanel(oi2);return;}
-for(var k=0;k<14;k++){if(hoveredEl.id==='cx'+k){closeVP(k);return;}}
-if(hoveredEl.id==='vplay'){ov();return;}
-var rnames=['asombro','tristeza','injusticia','reflexion','descubrimiento'];
-for(var r=0;r<5;r++){if(hoveredEl.id==='re'+r){re(rnames[r]);showVREmoji(rnames[r]);return;}}
-var dre=hoveredEl.getAttribute('data-re');
-if(dre){re(dre);showVREmoji(dre);return;}
 hoveredEl.emit('click');
 }
 }
-
 
 var rh=document.getElementById('rhand');
 var lh=document.getElementById('lhand');
