@@ -263,17 +263,23 @@ var sc=document.querySelector('a-scene');
 if(!sc) return;
 var cam=document.querySelector('a-camera');
 if(!cam) return;
-var pos=cam.object3D.getWorldPosition(new THREE.Vector3());
+var pos=new THREE.Vector3();
+cam.object3D.getWorldPosition(pos);
+var dir=new THREE.Vector3(0,0,-1);
+cam.object3D.getWorldDirection(dir);
+var tx=pos.x+dir.x*2;
+var ty=pos.y+0.5;
+var tz=pos.z+dir.z*2;
 var txt=document.createElement('a-text');
 txt.setAttribute('value',lb);
 txt.setAttribute('color',cl);
 txt.setAttribute('align','center');
-txt.setAttribute('width','6');
-txt.setAttribute('position',pos.x+' '+(pos.y+1)+' '+(pos.z-1));
-txt.setAttribute('look-at','[camera]');
-txt.setAttribute('animation','property:position;to:'+pos.x+' '+(pos.y+4)+' '+(pos.z-1)+';dur:3000;easing:easeOutQuad');
+txt.setAttribute('width','8');
+txt.setAttribute('position',tx+' '+ty+' '+tz);
+txt.setAttribute('animation','property:position;to:'+tx+' '+(ty+3)+' '+tz+';dur:3000;easing:easeOutQuad');
 txt.setAttribute('animation__fade','property:material.opacity;from:1;to:0;dur:3000');
 sc.appendChild(txt);
 setTimeout(function(){txt.remove();},3500);
 }
+
 
