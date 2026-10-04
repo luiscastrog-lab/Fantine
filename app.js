@@ -61,95 +61,24 @@ document.head.appendChild(st);
 var scene=document.querySelector('a-scene');
 if(scene){
 
-/* --- ENTER VR: conectar trigger con gaze cursor --- */
-scene.addEventListener('enter-vr',function(){
-isVR=true;
-var checkS=setInterval(function(){
-var sess=null;
-try{sess=scene.renderer.xr.getSession();}catch(e){}
-if(sess){
-clearInterval(checkS);
-sess.addEventListener('selectstart',function(){try{navigator.getGamepads().hapticActuators.pulse(1.0,200);}catch(e){}
-/* Buscar en gaze cursor (circulo rojo) */
-var cur=document.querySelector('a-cursor');
-if(cur&&cur.components&&cur.components.cursor){
-var tgt=cur.components.cursor.intersectedEl;
-if(tgt){tgt.emit('click');return;}
-}
-/* Buscar en laser derecho */
-var rh=document.getElementById('rhand');
-if(rh&&rh.components&&rh.components.raycaster){
-var ri=rh.components.raycaster.intersectedEls;
-if(ri&&ri.length>0){ri[0].emit('click');return;}
-}
-/* Buscar en laser izquierdo */
-var lh=document.getElementById('lhand');
-if(lh&&lh.components&&lh.components.raycaster){
-var li=lh.components.raycaster.intersectedEls;
-if(li&&li.length>0){li[0].emit('click');return;}
-}
-});
-}
-},300);
-});
-
+/* --- ENTER/EXIT VR --- */
+scene.addEventListener('enter-vr',function(){isVR=true;});
 scene.addEventListener('exit-vr',function(){isVR=false;});
 
 scene.addEventListener('loaded',function(){
 
 /* --- OBJETOS INTERACTIVOS (14 objetos) --- */
-function openPanel(idx){
-if(!userEntered) return;
-if(isVR){
-var cam=document.querySelector('a-camera');
-if(!cam) return;
-var pos=new THREE.Vector3();
-cam.object3D.getWorldPosition(pos);
-var dir=new THREE.Vector3(0,0,-1);
-cam.object3D.getWorldDirection(dir);
-var tx=pos.x+dir.x*2;
-var ty=pos.y;
-var tz=pos.z+dir.z*2;
-var old=document.getElementById('vrpanel');
-if(old) old.remove();
-var titles=['SALA DE CINE','CARTEL FABRICA','PORTON','INSTRUCCIONES','LETRERO','CARTA DE FANTINE','DIARIO','LIBRO CUENTAS','DECRETO','ESPEJO','RELOJ','CAMPANA','MURO','PUERTA SALIDA'];
-var bg=document.createElement('a-plane');
-bg.setAttribute('id','vrpanel');
-bg.setAttribute('width','3');
-bg.setAttribute('height','1.5');
-bg.setAttribute('color','#1A1A2E');
-bg.setAttribute('opacity','0.9');
-bg.setAttribute('position',tx+' '+ty+' '+tz);
-bg.setAttribute('look-at','[camera]');
-var tt=document.createElement('a-text');
-tt.setAttribute('value',titles[idx]||'INFO');
-tt.setAttribute('color','#FF5900');
-tt.setAttribute('align','center');
-tt.setAttribute('width','4');
-tt.setAttribute('position','0 0.4 0.01');
-bg.appendChild(tt);
-var desc=document.createElement('a-text');
-desc.setAttribute('value','Objeto descubierto: '+ids[idx]+'
-Mira otro objeto para cerrar');
-desc.setAttribute('color','#FFFFFF');
-desc.setAttribute('align','center');
-desc.setAttribute('width','3');
-desc.setAttribute('position','0 -0.1 0.01');
-bg.appendChild(desc);
-document.querySelector('a-scene').appendChild(bg);
-setTimeout(function(){if(bg.parentNode) bg.remove();},5000);
-}else{
-for(var j=0;j<pids.length;j++){
-var pj=document.getElementById(pids[j]);
-if(pj) pj.style.display='none';
-}
-var pi=document.getElementById(pids[idx]);
-if(pi) pi.style.display='block';
-}
-if(ids[idx]==='campana'){try{ca.currentTime=0;ca.play();}catch(e){}}
-if(!disc[ids[idx]]){disc[ids[idx]]=true;dc++;if(oi)oi.textContent=dc+'/14';if(sr)sr.update({objectsFound:dc});var f=document.getElementById('fc');if(f)f.textContent=dc;}
-}
-
+for(var i=0;i<ids.length;i++){(function(idx){
+var el=document.getElementById(ids[idx]);
+if(!el) return;
+el.addEventListener('click',function(){openPanel(idx);});
+el.addEventListener('mouseenter',function(){
+if(userEntered) el.setAttribute('material','emissiveIntensity','0.8');
+});
+el.addEventListener('mouseleave',function(){
+el.setAttribute('material','emissiveIntensity',String(bis[idx]));
+});
+})(i);}
 
 /* --- BOTONES CERRAR PANEL (HTML) --- */
 for(var c=0;c<14;c++){(function(ci2){
@@ -279,21 +208,64 @@ if(ms&&ba) ba.play();
 
 /* =========================================
    FUNCIÓN: ABRIR PANEL DE INFORMACIÓN
+   En VR: muestra panel 3D flotante frente al usuario
+   En PC: muestra panel HTML (div) como antes
    ========================================= */
 function openPanel(idx){
 if(!userEntered) return;
+if(isVR){
+var cam=document.querySelector('a-camera');
+if(!cam) return;
+var pos=new THREE.Vector3();
+cam.object3D.getWorldPosition(pos);
+var dir=new THREE.Vector3(0,0,-1);
+cam.object3D.getWorldDirection(dir);
+var tx=pos.x+dir.x*2;
+var ty=pos.y;
+var tz=pos.z+dir.z*2;
+var old=document.getElementById('vrpanel');
+if(old) old.remove();
+var titles=['SALA DE CINE','CARTEL FABRICA','PORTON','INSTRUCCIONES','LETRERO','CARTA DE FANTINE','DIARIO','LIBRO CUENTAS','DECRETO','ESPEJO','RELOJ','CAMPANA','MURO','PUERTA SALIDA'];
+var bg=document.createElement('a-plane');
+bg.setAttribute('id','vrpanel');
+bg.setAttribute('width','3');
+bg.setAttribute('height','1.5');
+bg.setAttribute('color','#1A1A2E');
+bg.setAttribute('opacity','0.9');
+bg.setAttribute('position',tx+' '+ty+' '+tz);
+bg.setAttribute('look-at','[camera]');
+var tt=document.createElement('a-text');
+tt.setAttribute('value',titles[idx]||'INFO');
+tt.setAttribute('color','#FF5900');
+tt.setAttribute('align','center');
+tt.setAttribute('width','4');
+tt.setAttribute('position','0 0.4 0.01');
+bg.appendChild(tt);
+var desc=document.createElement('a-text');
+desc.setAttribute('value','Objeto descubierto: '+ids[idx]+'\nMira otro objeto para cerrar');
+desc.setAttribute('color','#FFFFFF');
+desc.setAttribute('align','center');
+desc.setAttribute('width','3');
+desc.setAttribute('position','0 -0.1 0.01');
+bg.appendChild(desc);
+document.querySelector('a-scene').appendChild(bg);
+setTimeout(function(){if(bg.parentNode) bg.remove();},5000);
+}else{
 for(var j=0;j<pids.length;j++){
 var pj=document.getElementById(pids[j]);
 if(pj) pj.style.display='none';
 }
 var pi=document.getElementById(pids[idx]);
 if(pi) pi.style.display='block';
+}
 if(ids[idx]==='campana'){try{ca.currentTime=0;ca.play();}catch(e){}}
 if(!disc[ids[idx]]){disc[ids[idx]]=true;dc++;if(oi)oi.textContent=dc+'/14';if(sr)sr.update({objectsFound:dc});var f=document.getElementById('fc');if(f)f.textContent=dc;}
 }
 
 /* =========================================
    FUNCIÓN: MOSTRAR EMOJI FLOTANTE EN 3D
+   Usa getWorldDirection para colocar el texto
+   FRENTE al usuario sin importar hacia dónde mire
    ========================================= */
 function showVREmoji(type){
 var labels={'asombro':'WOW!','tristeza':'TRISTE','injusticia':'NO!','reflexion':'HMM...','descubrimiento':'IDEA!'};
@@ -322,5 +294,4 @@ txt.setAttribute('animation__fade','property:material.opacity;from:1;to:0;dur:30
 sc.appendChild(txt);
 setTimeout(function(){txt.remove();},3500);
 }
-
 
