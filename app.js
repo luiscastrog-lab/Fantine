@@ -62,6 +62,32 @@ var scene=document.querySelector('a-scene');
 if(scene){
 scene.addEventListener('enter-vr',function(){
 isVR=true;
+var checkS=setInterval(function(){
+var sess=null;
+try{sess=scene.renderer.xr.getSession();}catch(e){}
+if(sess){
+clearInterval(checkS);
+sess.addEventListener('selectstart',function(){
+var cur=document.querySelector('a-cursor');
+if(cur&&cur.components&&cur.components.cursor){
+var tgt=cur.components.cursor.intersectedEl;
+if(tgt) tgt.emit('click');
+}
+var rh=document.getElementById('rhand');
+if(rh&&rh.components&&rh.components.raycaster){
+var ri=rh.components.raycaster.intersectedEls;
+if(ri&&ri.length>0) ri.emit('click');
+}
+var lh=document.getElementById('lhand');
+if(lh&&lh.components&&lh.components.raycaster){
+var li=lh.components.raycaster.intersectedEls;
+if(li&&li.length>0) li.emit('click');
+}
+});
+}
+},300);
+});
+
 /* =============================================
    CONEXIÓN TRIGGER → GAZE CURSOR (WebXR API)
    Cuando presionas el trigger, busca qué objeto
