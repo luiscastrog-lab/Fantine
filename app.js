@@ -273,7 +273,7 @@ txt.setAttribute('color',cl);
 txt.setAttribute('align','center');
 txt.setAttribute('width','8');
 txt.setAttribute('position','0 -0.5 -2');
-txt.setAttribute('animation','property:position;to:0 3.5 -2;dur:3000;easing:easeOutQuad');
+txt.setAttribute('animation','property:position;to:0 0.5 -2;dur:3000;easing:easeOutQuad');
 txt.setAttribute('animation__fade','property:material.opacity;from:1;to:0;dur:3000');
 cam.appendChild(txt);
 setTimeout(function(){if(txt.parentNode) txt.remove();},3500);
