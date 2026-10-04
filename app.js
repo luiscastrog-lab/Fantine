@@ -96,34 +96,11 @@ zel.addEventListener('mouseleave',function(){this.setAttribute('material','emiss
 });
 }
 
-var rp=document.getElementById('rpanel');
-if(rp){setInterval(function(){if(!isVR||!userEntered)return;var cam=document.querySelector('a-camera');if(!cam)return;var dir=new THREE.Vector3(0,0,-1.5);dir.applyQuaternion(cam.object3D.quaternion);var cp=cam.object3D.getWorldPosition(new THREE.Vector3());rp.object3D.position.set(cp.x+dir.x,cp.y-0.4,cp.z+dir.z);rp.object3D.lookAt(cp.x,cp.y,cp.z);},100);}
-
 var cm=document.querySelector('a-camera');
 if(cm){setInterval(function(){if(!userEntered) return;var p=cm.object3D.getWorldPosition(new THREE.Vector3());var z2=zi?zi.textContent:'';var n='';if(p.z<-12&&p.x>-10)n='CINE';else if(p.x<-10)n='ZONA 5';else if(p.z<5&&p.x<=10)n='ZONA 1';else if(p.x>10)n='ZONA 3';else if(p.z>=18)n='ZONA 4';else if(p.z>=5)n='ZONA 2';if(n&&n!==z2){if(zi)zi.textContent=n;if(sr)sr.update({zone:n});}},2000);}
 
-/* --- QUEST VR CLICK HANDLER --- */
-function handleVRTrigger(hand){
-if(!userEntered||!isVR) return;
-var rc=hand.components.raycaster;
-if(!rc) return;
-var ints=rc.intersectedEls;
-if(!ints||ints.length===0) return;
-var hit=ints[0];
-if(!hit) return;
-hit.emit('click');
-}
-
-var rh=document.getElementById('rhand');
-var lh=document.getElementById('lhand');
-if(rh){
-rh.addEventListener('triggerdown',function(){handleVRTrigger(rh);});
-rh.addEventListener('gripdown',function(){handleVRTrigger(rh);});
-}
-if(lh){
-lh.addEventListener('triggerdown',function(){handleVRTrigger(lh);});
-}
-/* --- FIN QUEST VR CLICK HANDLER --- */
+/* laser-controls en A-Frame 1.5.0 emite click automaticamente al presionar trigger */
+/* NO se necesita handler personalizado - se elimino handleVRTrigger */
 
 });
 }
@@ -169,8 +146,6 @@ if(rig){
 rig.object3D.position.set(x,0,z);
 rig.setAttribute('position',x+' 0 '+z);
 }
-var rp=document.getElementById('rpanel');
-if(rp&&isVR){rp.object3D.position.set(x,1.2,z-1.5);rp.setAttribute('visible','true');}
 if(zi) zi.textContent=zona;
 if(sr) sr.update({zone:zona});
 }
@@ -195,14 +170,13 @@ if(ms&&ba) ba.play();
 
 function openPanel(idx){
 if(!userEntered) return;
-if(isVR){
-if(activeVP!==null){var o=document.getElementById('vp'+activeVP);if(o)o.setAttribute('visible','false');}
-var v=document.getElementById('vp'+idx);
-if(v){v.setAttribute('visible','true');activeVP=idx;}
-} else {
-for(var j=0;j<pids.length;j++) document.getElementById(pids[j]).style.display='none';
-document.getElementById(pids[idx]).style.display='block';
+/* Siempre mostrar paneles HTML - funcionan tanto en PC como en Quest browser */
+for(var j=0;j<pids.length;j++){
+var pj=document.getElementById(pids[j]);
+if(pj) pj.style.display='none';
 }
+var pi=document.getElementById(pids[idx]);
+if(pi) pi.style.display='block';
 if(ids[idx]==='campana'){try{ca.currentTime=0;ca.play();}catch(e){}}
 if(!disc[ids[idx]]){disc[ids[idx]]=true;dc++;if(oi)oi.textContent=dc+'/14';if(sr)sr.update({objectsFound:dc});var f=document.getElementById('fc');if(f)f.textContent=dc;}
 }
