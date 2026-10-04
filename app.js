@@ -1,5 +1,32 @@
 
 /* =========================================
+   COMPONENTE: quest-click
+   Registra ANTES de que la escena cargue.
+   Escucha triggerdown y emite click en el
+   objeto apuntado por el laser.
+   ========================================= */
+AFRAME.registerComponent('quest-click',{
+init:function(){
+var el=this.el;
+el.addEventListener('triggerdown',function(){
+var rc=el.components['laser-controls'];
+if(!rc) return;
+var cursor=el.components.cursor;
+if(cursor && cursor.intersectedEl){
+cursor.intersectedEl.emit('click');
+return;
+}
+var raycaster=el.components.raycaster;
+if(!raycaster) return;
+var ints=raycaster.intersectedEls;
+if(ints && ints.length>0){
+ints[0].emit('click');
+}
+});
+}
+});
+
+/* =========================================
    VARIABLES GLOBALES
    ========================================= */
 var zi,oi,ci;
@@ -77,11 +104,13 @@ el.setAttribute('material','emissiveIntensity',String(bis[idx]));
 });
 })(i);}
 
-/* --- BOTONES CERRAR PANEL VR (vp0) --- */
+/* --- BOTONES CERRAR PANEL (HTML) --- */
 for(var c=0;c<14;c++){(function(ci2){
 var cb=document.getElementById('cx'+ci2);
 if(!cb) return;
-cb.addEventListener('click',function(){closeVP(ci2);});
+cb.addEventListener('click',function(){
+document.getElementById(pids[ci2]).style.display='none';
+});
 })(c);}
 
 /* --- BOTÓN VER VIDEO --- */
@@ -116,12 +145,6 @@ zel.addEventListener('mouseleave',function(){this.setAttribute('material','emiss
 /* --- DETECCIÓN DE ZONA --- */
 var cm=document.querySelector('a-camera');
 if(cm){setInterval(function(){if(!userEntered) return;var p=cm.object3D.getWorldPosition(new THREE.Vector3());var z2=zi?zi.textContent:'';var n='';if(p.z<-12&&p.x>-10)n='CINE';else if(p.x<-10)n='ZONA 5';else if(p.z<5&&p.x<=10)n='ZONA 1';else if(p.x>10)n='ZONA 3';else if(p.z>=18)n='ZONA 4';else if(p.z>=5)n='ZONA 2';if(n&&n!==z2){if(zi)zi.textContent=n;if(sr)sr.update({zone:n});}},2000);}
-
-/* =========================================
-   NOTA: NO se usa handler personalizado de VR.
-   laser-controls en A-Frame 1.5.0 emite 'click'
-   automaticamente al presionar el trigger.
-   ========================================= */
 
 });
 }
@@ -188,7 +211,7 @@ if(sr) sr.update({zone:zona});
    ========================================= */
 function ov(){
 if(isVR){
-window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
+window.open('vr://com.oculus.vrshell?uri=https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
 return;
 }
 var p0=document.getElementById('p0');
@@ -210,7 +233,6 @@ if(ms&&ba) ba.play();
 /* =========================================
    FUNCIÓN: ABRIR PANEL DE INFORMACIÓN
    Siempre usa paneles HTML (p0-p13)
-   Funcionan tanto en PC como en Quest browser
    ========================================= */
 function openPanel(idx){
 if(!userEntered) return;
@@ -222,14 +244,6 @@ var pi=document.getElementById(pids[idx]);
 if(pi) pi.style.display='block';
 if(ids[idx]==='campana'){try{ca.currentTime=0;ca.play();}catch(e){}}
 if(!disc[ids[idx]]){disc[ids[idx]]=true;dc++;if(oi)oi.textContent=dc+'/14';if(sr)sr.update({objectsFound:dc});var f=document.getElementById('fc');if(f)f.textContent=dc;}
-}
-
-/* =========================================
-   FUNCIÓN: CERRAR PANEL VR (vp0)
-   ========================================= */
-function closeVP(idx){
-var v=document.getElementById('vp'+idx);
-if(v) v.setAttribute('visible','false');
 }
 
 /* =========================================
