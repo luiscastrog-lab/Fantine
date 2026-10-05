@@ -1,281 +1,268 @@
 
 /* =========================================
-   VARIABLES GLOBALES
+   APP.JS V2.0 — La Fabrica de Fantine
+   Logica: Firebase, login, clics, reacciones,
+   quest-move, audio, paneles 3D
    ========================================= */
+
+/* ═══ VARIABLES GLOBALES ═══ */
 var zi,oi,ci;
 var db,mn='',mi='',sr,cr=null,ms=false,dc=0,disc={};
 var ba,ca;
-var ids=['pantalla','cartel','porton','instrucciones','letrero','carta','diario','cuentas','decreto','espejo','reloj','campana','muro','puerta'];
-var pids=['p0','p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12','p13'];
-var bis=[0.3,0.3,0.15,0.2,0.2,0.4,0.3,0.25,0.4,0.15,0.25,0.25,0.15,0.2];
-var userEntered=false;
 var isVR=false;
-var rnames=['asombro','tristeza','injusticia','reflexion','descubrimiento'];
-var titles=['SALA DE CINE','CARTEL FABRICA','PORTON','INSTRUCCIONES','LETRERO','CARTA DE FANTINE','DIARIO','LIBRO CUENTAS','DECRETO','ESPEJO','RELOJ','CAMPANA','MURO','PUERTA SALIDA'];
+var activeVP=null;
+var ids=['pantalla','cartel','porton','letrero','instrucciones','carta','cuentas','diario','decreto','espejo','reloj','campana','muro','puerta'];
 
-/* =========================================
-   INICIALIZACIÓN
-   ========================================= */
+/* ═══ QUEST-MOVE (movimiento con joystick) ═══ */
+AFRAME.registerComponent('quest-move',{
+  tick:function(){
+    var s=this.el.sceneEl;
+    if(!s.is('vr-mode'))return;
+    var session=s.xrSession;
+    if(!session||!session.inputSources)return;
+    var sources=session.inputSources;
+    for(var i=0;i<sources.length;i++){
+      var src=sources[i];
+      if(src.handedness==='left'&&src.gamepad&&src.gamepad.axes.length>=4){
+        var ax=src.gamepad.axes[2];
+        var ay=src.gamepad.axes[3];
+        if(Math.abs(ax)>0.15||Math.abs(ay)>0.15){
+          var cam=document.querySelector('[camera]');
+          var rot=cam.object3D.rotation.y;
+          var dx=ax*0.06;
+          var dz=ay*0.06;
+          var mx=dx*Math.cos(rot)-dz*Math.sin(rot);
+          var mz=dx*Math.sin(rot)+dz*Math.cos(rot);
+          var rig=document.getElementById('rig');
+          var p=rig.object3D.position;
+          p.x+=mx;
+          p.z+=mz;
+        }
+      }
+    }
+  }
+});
+
+/* ═══ INICIALIZACION ═══ */
 window.addEventListener('DOMContentLoaded',function(){
-firebase.initializeApp({databaseURL:'https://fantine-vr-default-rtdb.firebaseio.com/'});
-db=firebase.database();
-zi=document.getElementById('zi');
-oi=document.getElementById('oi');
-ci=document.getElementById('ci');
-ba=new Audio('https://luiscastrog-lab.github.io/Fantine/musica.mp3');ba.loop=true;ba.volume=0.15;
-ca=new Audio('https://luiscastrog-lab.github.io/Fantine/campana.mp3');ca.volume=0.5;
 
-document.getElementById('ni').addEventListener('keypress',function(e){if(e.key==='Enter')go();});
+  /* Referencias DOM */
+  zi=document.getElementById('zi');
+  oi=document.getElementById('oi');
+  ci=document.getElementById('fc');
 
-/* =========================================
-   FIREBASE LISTENERS
-   ========================================= */
-db.ref('online').on('value',function(s){if(ci) ci.innerHTML='&#128994;'+s.numChildren();});
+  /* Firebase */
+  firebase.initializeApp({databaseURL:'https://fantine-vr-default-rtdb.firebaseio.com/'});
+  db=firebase.database();
 
-db.ref('reactions').orderByChild('timestamp').limitToLast(1).on('child_added',function(s){
-var d=s.val();if(!d)return;
-var el=document.createElement('div');
-el.style.cssText='position:absolute;font-size:48px;pointer-events:none;animation:fu 4s ease-out forwards;left:'+Math.random()*80+10+'%;bottom:10%';
-el.textContent=d.emoji;
-document.getElementById('fr').appendChild(el);
-setTimeout(function(){el.remove();},4500);
-});
+  /* Audio */
+  ba=document.getElementById('bgm');
+  ca=document.getElementById('sfx');
+  if(ba){ba.loop=true;ba.volume=0.3;}
+  if(ca){ca.volume=0.5;}
 
-db.ref('muro').orderByChild('timestamp').limitToLast(20).on('value',function(s){
-var b=document.getElementById('mm');if(!b)return;b.innerHTML='';
-s.forEach(function(c){
-var d=c.val();
-var v=document.createElement('div');
-v.style.cssText='margin:6px 0;padding:6px 10px;background:rgba(90,70,50,0.3);border-radius:6px;border-left:3px solid #FF5900';
-v.innerHTML='<b style="color:#FFB347">'+d.user+':</b> '+d.text;
-b.appendChild(v);
-});
-});
+  /* Boton entrar */
+  document.getElementById('eb').addEventListener('click',function(){
+    go();
+  });
 
-var st=document.createElement('style');
-st.textContent='@keyframes fu{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-300px) scale(1.5)}}';
-document.head.appendChild(st);
+  /* Enter con teclado */
+  document.getElementById('ni').addEventListener('keypress',function(e){
+    if(e.key==='Enter')go();
+  });
 
-/* =========================================
-   ESCENA A-FRAME
-   ========================================= */
-var scene=document.querySelector('a-scene');
-if(scene){
+  /* Detectar VR */
+  var sc=document.querySelector('a-scene');
+  sc.addEventListener('enter-vr',function(){isVR=true;});
+  sc.addEventListener('exit-vr',function(){isVR=false;});
 
-scene.addEventListener('enter-vr',function(){isVR=true;});
-scene.addEventListener('exit-vr',function(){isVR=false;});
+  /* Construir escena */
+  buildScene();
 
-scene.addEventListener('loaded',function(){
+  /* Asignar rig */
+  cr=document.getElementById('rig');
 
-/* --- OBJETOS INTERACTIVOS (14 objetos) --- */
-for(var i=0;i<ids.length;i++){(function(idx){
-var el=document.getElementById(ids[idx]);
-if(!el) return;
-el.addEventListener('click',function(){openPanel(idx);});
-el.addEventListener('mouseenter',function(){
-if(userEntered) el.setAttribute('material','emissiveIntensity','0.8');
-});
-el.addEventListener('mouseleave',function(){
-el.setAttribute('material','emissiveIntensity',String(bis[idx]));
-});
-})(i);}
+  /* Quest-move */
+  cr.setAttribute('quest-move','');
 
-/* --- BOTONES CERRAR PANEL (HTML) --- */
-for(var c=0;c<14;c++){(function(ci2){
-var cb=document.getElementById('cx'+ci2);
-if(!cb) return;
-cb.addEventListener('click',function(){
-document.getElementById(pids[ci2]).style.display='none';
-});
-})(c);}
-
-/* --- BOTÓN VER VIDEO --- */
-var vp=document.getElementById('vplay');
-if(vp){
-vp.addEventListener('click',function(){ov();});
-}
-
-/* --- ESFERAS DE REACCIONES ZONA 1 (re0-re4) --- */
-for(var r=0;r<5;r++){(function(ri){
-var rb=document.getElementById('re'+ri);
-if(!rb) return;
-rb.addEventListener('click',function(){re(rnames[ri]);showVREmoji(rnames[ri]);});
-rb.addEventListener('mouseenter',function(){rb.setAttribute('material','emissiveIntensity','0.6');});
-rb.addEventListener('mouseleave',function(){rb.setAttribute('material','emissiveIntensity','0.2');});
-})(r);}
-
-/* --- ESFERAS DE REACCIONES ZONAS 2-5 --- */
-var zclasses=['re-z2','re-z3','re-z4','re-z5'];
-for(var zz=0;zz<zclasses.length;zz++){
-var zels=document.querySelectorAll('.'+zclasses[zz]);
-zels.forEach(function(zel){
-zel.addEventListener('click',function(){
-var rt=this.getAttribute('data-re');
-if(rt){re(rt);showVREmoji(rt);}
-});
-zel.addEventListener('mouseenter',function(){this.setAttribute('material','emissiveIntensity','0.8');});
-zel.addEventListener('mouseleave',function(){this.setAttribute('material','emissiveIntensity','0.5');});
-});
-}
-
-/* --- DETECCIÓN DE ZONA --- */
-var cm=document.querySelector('a-camera');
-if(cm){setInterval(function(){if(!userEntered) return;var p=cm.object3D.getWorldPosition(new THREE.Vector3());var z2=zi?zi.textContent:'';var n='';if(p.z<-12&&p.x>-10)n='CINE';else if(p.x<-10)n='ZONA 5';else if(p.z<5&&p.x<=10)n='ZONA 1';else if(p.x>10)n='ZONA 3';else if(p.z>=18)n='ZONA 4';else if(p.z>=5)n='ZONA 2';if(n&&n!==z2){if(zi)zi.textContent=n;if(sr)sr.update({zone:n});}},2000);}
+  /* Clics en objetos interactivos */
+  setTimeout(function(){
+    var items=document.querySelectorAll('.clickable');
+    for(var i=0;i<items.length;i++){
+      items[i].addEventListener('click',function(){
+        var panel=this.getAttribute('data-panel');
+        var re=this.getAttribute('data-re');
+        if(re){
+          sendReaction(re);
+        } else if(panel){
+          openPanel(panel);
+        }
+      });
+    }
+  },2000);
 
 });
-}
-});
 
-/* =========================================
-   FUNCIÓN: ENTRAR A LA FÁBRICA
-   ========================================= */
+/* ═══ FUNCION LOGIN ═══ */
 function go(){
-var n=document.getElementById('ni').value.trim();
-if(!n){alert('Escribe tu nombre');return;}
-mn=n;
-mi=n.replace(/\s/g,'_')+'_'+Date.now();
-document.getElementById('ls').style.display='none';
-document.getElementById('tm').style.display='flex';
-document.getElementById('wn').textContent='Bienvenido, '+mn;
-document.getElementById('rb').style.display='block';
-userEntered=true;
-sr=db.ref('sessions/'+mi);
-sr.set({name:mn,joinedAt:new Date().toISOString(),zone:'MENU',objectsFound:0});
-sr.onDisconnect().update({leftAt:new Date().toISOString(),status:'offline'});
-db.ref('online/'+mi).set(true);
-db.ref('online/'+mi).onDisconnect().remove();
-db.ref('activity').push({user:mn,type:'joined',timestamp:new Date().toISOString()});
+  var n=document.getElementById('ni').value.trim();
+  if(!n){alert('Escribe tu nombre');return;}
+  mn=n;
+  mi=n.replace(/\s/g,'_')+'_'+Date.now();
+
+  /* Ocultar login, mostrar HUD */
+  document.getElementById('login').style.display='none';
+  document.getElementById('hud').style.display='block';
+
+  /* Registrar en Firebase */
+  sr=db.ref('sessions/'+mi);
+  sr.set({name:mn,entered:new Date().toISOString(),zone:'Sala de Cine',objects:0});
+  db.ref('online/'+mi).set({name:mn,time:new Date().toISOString()});
+  db.ref('online/'+mi).onDisconnect().remove();
+
+  /* Iniciar audio */
+  if(ba){
+    ba.play().then(function(){ms=true;}).catch(function(){
+      document.addEventListener('click',function tryAudio(){
+        ba.play().then(function(){ms=true;});
+        document.removeEventListener('click',tryAudio);
+      });
+    });
+  }
+
+  /* Actualizar zona */
+  updateZone('Sala de Cine');
 }
 
-/* =========================================
-   FUNCIÓN: ENVIAR REACCIÓN A FIREBASE
-   ========================================= */
-function re(t){
-if(!mi)return;
-db.ref('reactions').push({user:mn,emoji:t,zone:zi?zi.textContent:'',timestamp:new Date().toISOString()});
+/* ═══ ABRIR PANEL ═══ */
+function openPanel(id){
+  cp(); /* cerrar panel anterior */
+  dc++;
+  if(oi)oi.textContent=dc;
+  if(ci)ci.textContent=dc;
+  if(sr)sr.update({objects:dc});
+
+  /* Registrar actividad */
+  db.ref('activity/'+mi).push({
+    action:'open',
+    object:id,
+    zone:zi?zi.textContent:'',
+    time:new Date().toISOString()
+  });
+
+  if(isVR){
+    /* Panel 3D flotante en VR */
+    showVRPanel(id);
+  } else {
+    /* Panel 2D en PC */
+    var p=document.getElementById('p-'+id);
+    if(p)p.style.display='block';
+  }
+
+  /* Sonido campana */
+  if(ca){ca.currentTime=0;ca.play().catch(function(){});}
 }
 
-/* =========================================
-   FUNCIÓN: PUBLICAR EN MURO COLABORATIVO
-   ========================================= */
-function sm(){
-var t=document.getElementById('mt').value.trim();
-if(!t)return;
-db.ref('muro').push({user:mn,text:t,timestamp:new Date().toISOString()});
-document.getElementById('mt').value='';
-document.getElementById('mb').style.display='none';
+/* ═══ PANEL 3D EN VR ═══ */
+function showVRPanel(id){
+  /* Remover panel anterior */
+  if(activeVP){activeVP.parentNode.removeChild(activeVP);activeVP=null;}
+
+  var titles={
+    'pantalla':'SALA DE CINE\nVer Video: Mira el boton',
+    'porton':'LA PUERTA DE LA NECESIDAD\nTener trabajo es suficiente\npara tener dignidad?',
+    'letrero':'FABRIQUE MADELEINE\nBasta la buena intencion\npara hacer justicia?',
+    'cartel':'SE BUSCAN OBRERAS\n15 sous por jornada\nQue condiciones aceptarias?',
+    'instrucciones':'COMO NAVEGAR\nJoystick: caminar\nMira 2 seg: activar',
+    'carta':'QUERIDA FANTINE\nHasta donde llegarias\npor alguien que amas?',
+    'cuentas':'LOS NUMEROS DE LA MISERIA\nIngresos: 360 sous\nGastos: 420 sous = -60',
+    'diario':'JORNADA DE UNA OBRERA\n12 horas por 15 sous\nQue vale tu tiempo?',
+    'decreto':'NINGUN OBRERO SERA DESPEDIDO\nSIN CAUSA JUSTA\nBasta dictar reglas justas?',
+    'espejo':'QUIEN ERES REALMENTE?\nRevelarias tu verdad\nsi el precio fuera perderlo todo?',
+    'reloj':'TU TIEMPO NO TE PERTENECE\n5:45 AM - 12 horas\nEres dueno de tus horas?',
+    'campana':'LA CAMPANA DEL CAPATAZ\nSigue trabajando duro\nhasta que te caigas',
+    'muro':'MURO COLABORATIVO\nEscribe tu reflexion\nal salir de VR',
+    'puerta':'LA PREGUNTA QUE TE LLEVAS\nDonde termina la miseria\ny empieza la grandeza?'
+  };
+
+  var txt=titles[id]||id;
+  var cam=document.querySelector('[camera]');
+  var panel=document.createElement('a-entity');
+  panel.setAttribute('position','0 0 -1.5');
+  panel.innerHTML='<a-plane width="2" height="1.2" color="#1A1A2E" opacity="0.92" side="double"></a-plane>'+
+    '<a-text value="'+txt+'" color="#C8A951" align="center" width="3" position="0 0.1 0.01" side="double"></a-text>'+
+    '<a-text value="[Mira otro objeto para cerrar]" color="#FF5900" align="center" width="2.5" position="0 -0.45 0.01" side="double"></a-text>';
+  cam.appendChild(panel);
+  activeVP=panel;
+
+  /* Auto-cerrar en 8 seg */
+  setTimeout(function(){
+    if(activeVP===panel){
+      panel.parentNode.removeChild(panel);
+      activeVP=null;
+    }
+  },8000);
+
+  /* Si es pantalla de cine, abrir YouTube VR */
+  if(id==='pantalla'){
+    setTimeout(function(){
+      window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
+    },2000);
+  }
 }
 
-/* =========================================
-   FUNCIÓN: TELETRANSPORTE
-   ========================================= */
-function tp(x,z,zona){
-document.getElementById('tm').style.display='none';
-document.getElementById('tb').style.display='block';
-if(!ms){ms=true;try{ba.play();}catch(e){}}
-var rig=document.getElementById('rig');
-if(rig){
-rig.object3D.position.set(x,0,z);
-rig.setAttribute('position',x+' 0 '+z);
-}
-if(zi) zi.textContent=zona;
-if(sr) sr.update({zone:zona});
+/* ═══ CERRAR PANEL 2D ═══ */
+function cp(){
+  var ps=document.querySelectorAll('.ip');
+  for(var i=0;i<ps.length;i++){ps[i].style.display='none';}
+  var mi2=document.getElementById('mi');
+  if(mi2)mi2.style.display='none';
+  if(activeVP){activeVP.parentNode.removeChild(activeVP);activeVP=null;}
 }
 
-/* =========================================
-   FUNCIÓN: ABRIR VIDEO
-   ========================================= */
+/* ═══ VIDEO ═══ */
 function ov(){
-if(isVR){
-window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
-return;
-}
-var p0=document.getElementById('p0');
-if(p0) p0.style.display='none';
-document.getElementById('vo').classList.add('a');
-document.getElementById('yp').src='https://www.youtube.com/embed/xOyrZSaeZa0?autoplay=1&rel=0';
-if(ba) ba.pause();
+  if(isVR){
+    window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
+  } else {
+    var vo=document.getElementById('vo');
+    vo.style.display='flex';
+    document.getElementById('vf').src='https://www.youtube.com/embed/xOyrZSaeZa0?autoplay=1';
+  }
 }
 
-/* =========================================
-   FUNCIÓN: CERRAR VIDEO
-   ========================================= */
 function cv(){
-document.getElementById('yp').src='';
-document.getElementById('vo').classList.remove('a');
-if(ms&&ba) ba.play();
+  document.getElementById('vo').style.display='none';
+  document.getElementById('vf').src='';
 }
 
-/* =========================================
-   FUNCIÓN: ABRIR PANEL DE INFORMACIÓN
-   VR = panel 3D flotante frente al usuario
-   PC = panel HTML como antes
-   ========================================= */
-function openPanel(idx){
-if(!userEntered) return;
-if(isVR){
-var cam=document.querySelector('[camera]');
-if(!cam) return;
-var old=document.getElementById('vrpanel');
-if(old) old.remove();
-var bg=document.createElement('a-plane');
-bg.setAttribute('id','vrpanel');
-bg.setAttribute('width','3');
-bg.setAttribute('height','1.5');
-bg.setAttribute('color','#1A1A2E');
-bg.setAttribute('opacity','0.9');
-bg.setAttribute('position','0 0 -2');
-var tt=document.createElement('a-text');
-tt.setAttribute('value',titles[idx]||'INFO');
-tt.setAttribute('color','#FF5900');
-tt.setAttribute('align','center');
-tt.setAttribute('width','4');
-tt.setAttribute('position','0 0.4 0.01');
-bg.appendChild(tt);
-var desc=document.createElement('a-text');
-desc.setAttribute('value','Objeto descubierto: '+ids[idx]+'\nDesaparece en 5 segundos');
-desc.setAttribute('color','#FFFFFF');
-desc.setAttribute('align','center');
-desc.setAttribute('width','3');
-desc.setAttribute('position','0 -0.1 0.01');
-bg.appendChild(desc);
-cam.appendChild(bg);
-setTimeout(function(){if(bg.parentNode) bg.remove();},5000);
-}else{
-for(var j=0;j<pids.length;j++){
-var pj=document.getElementById(pids[j]);
-if(pj) pj.style.display='none';
-}
-var pi=document.getElementById(pids[idx]);
-if(pi) pi.style.display='block';
-}
-if(ids[idx]==='campana'){try{ca.currentTime=0;ca.play();}catch(e){}}
-if(!disc[ids[idx]]){disc[ids[idx]]=true;dc++;if(oi)oi.textContent=dc+'/14';if(sr)sr.update({objectsFound:dc});var f=document.getElementById('fc');if(f)f.textContent=dc;}
+/* ═══ MURO COLABORATIVO ═══ */
+function sm(){
+  document.getElementById('mi').style.display='block';
 }
 
-/* =========================================
-   FUNCIÓN: MOSTRAR EMOJI FLOTANTE EN 3D
-   Se adjunta a la cámara para que siempre
-   aparezca frente al usuario
-   ========================================= */
-function showVREmoji(type){
-var labels={'asombro':'WOW!','tristeza':'TRISTE','injusticia':'NO!','reflexion':'HMM...','descubrimiento':'IDEA!'};
-var colors={'asombro':'#FF6B35','tristeza':'#4A90D9','injusticia':'#DC2626','reflexion':'#7C3AED','descubrimiento':'#F59E0B'};
-var lb=labels[type]||'?';
-var cl=colors[type]||'#FFF';
-var sc=document.querySelector('a-scene');
-if(!sc) return;
-var cam=document.querySelector('[camera]');
-if(!cam) return;
-var txt=document.createElement('a-text');
-txt.setAttribute('value',lb);
-txt.setAttribute('color',cl);
-txt.setAttribute('align','center');
-txt.setAttribute('width','8');
-txt.setAttribute('position','0 -0.5 -2');
-txt.setAttribute('animation','property:position;to:0 0.5 -2;dur:3000;easing:easeOutQuad');
-txt.setAttribute('animation__fade','property:material.opacity;from:1;to:0;dur:3000');
-cam.appendChild(txt);
-setTimeout(function(){if(txt.parentNode) txt.remove();},3500);
+function wm(){
+  var t=document.getElementById('mt').value.trim();
+  if(!t)return;
+  db.ref('muro').push({
+    name:mn,
+    text:t,
+    zone:zi?zi.textContent:'',
+    time:new Date().toISOString()
+  });
+  document.getElementById('mt').value='';
+  document.getElementById('mi').style.display='none';
+  alert('Tu reflexion fue enviada al muro.');
 }
 
+/* ═══ REACCIONES ═══ */
+function sendReaction(type){
+  db.ref('reactions').push({
+    name:mn,
+    reaction:type,
+    zone:zi?zi.textContent:'',
+    time:new Date().toISOString()
+  });
+
+  if(isVR){
+    showVREmoji(type);
