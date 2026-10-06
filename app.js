@@ -168,22 +168,25 @@ function showVRPanel(id){
   /* Remover panel anterior */
   if(activeVP){activeVP.parentNode.removeChild(activeVP);activeVP=null;}
 
+
   var titles={
-    'pantalla':'SALA DE CINE\nVer Video: Mira el boton',
-    'porton':'LA PUERTA DE LA NECESIDAD\nTener trabajo es suficiente\npara tener dignidad?',
-    'letrero':'FABRIQUE MADELEINE\nBasta la buena intencion\npara hacer justicia?',
-    'cartel':'SE BUSCAN OBRERAS\n15 sous por jornada\nQue condiciones aceptarias?',
-    'instrucciones':'COMO NAVEGAR\nJoystick: caminar\nMira 2 seg: activar',
-    'carta':'QUERIDA FANTINE\nHasta donde llegarias\npor alguien que amas?',
-    'cuentas':'LOS NUMEROS DE LA MISERIA\nIngresos: 360 sous\nGastos: 420 sous = -60',
-    'diario':'JORNADA DE UNA OBRERA\n12 horas por 15 sous\nQue vale tu tiempo?',
-    'decreto':'NINGUN OBRERO SERA DESPEDIDO\nSIN CAUSA JUSTA\nBasta dictar reglas justas?',
-    'espejo':'QUIEN ERES REALMENTE?\nRevelarias tu verdad\nsi el precio fuera perderlo todo?',
-    'reloj':'TU TIEMPO NO TE PERTENECE\n5:45 AM - 12 horas\nEres dueno de tus horas?',
-    'campana':'LA CAMPANA DEL CAPATAZ\nSigue trabajando duro\nhasta que te caigas',
-    'muro':'MURO COLABORATIVO\nEscribe tu reflexion\nal salir de VR',
-    'puerta':'LA PREGUNTA QUE TE LLEVAS\nDonde termina la miseria\ny empieza la grandeza?'
+    'pantalla':'LA JORNADA QUE CAMBIO TODO\nAt the End of the Day\nQue diferencia hay entre\nvivir y sobrevivir?',
+    'porton':'LA PUERTA DE LA NECESIDAD\nFrankl: Al hombre se le puede\narrebatar todo salvo elegir\nsu actitud - Reflexiona',
+    'letrero':'FABRIQUE MADELEINE\nBasta la buena intencion\npara hacer justicia?\n- Tomas de Aquino',
+    'cartel':'SE BUSCAN OBRERAS\n15 sous x 12 horas\nPascal: La costumbre es\nnuestra naturaleza',
+    'instrucciones':'COMO NAVEGAR\nJoystick: caminar\nMira 2 seg: activar\nFlechas amarillas: ruta',
+    'carta':'QUERIDA COSETTE\nMarcel: Tener vs Ser\nFantine no tenia nada\npero ERA madre',
+    'cuentas':'LOS NUMEROS DE LA MISERIA\nIngresos: 360 Gastos: 420\nDeficit: -60 sous\nEs justo pedir sentido\na quien no puede comer?',
+    'diario':'JORNADA DE UNA OBRERA\n5:45AM-8PM sin descanso\nAgustin: Nuestro corazon\nesta inquieto...',
+    'decreto':'NINGUN OBRERO SERA\nDESPEDIDO SIN CAUSA JUSTA\nPero el capataz despidio\na Fantine - Quien falla?',
+    'espejo':'QUIEN ERES REALMENTE?\nPascal: El hombre supera\ninfinitamente al hombre\nValjean eligio la verdad',
+    'reloj':'5:45 AM - TU TIEMPO\nNO TE PERTENECE\nAgustin: En ti alma mia\nmido los tiempos',
+    'campana':'LA CAMPANA DEL CAPATAZ\nFrankl: sufrimiento con\nsentido vs absurdo\nCuando el trabajo destruye?',
+    'muro':'MURO COLABORATIVO\nEscribe tu reflexion\nQue te movio?\nQue pregunta te llevas?',
+    'puerta':'LA PREGUNTA QUE TE LLEVAS\nHugo: El espectaculo mas\ngrande es el interior\ndel alma'
   };
+
+
 
   var txt=titles[id]||id;
   var cam=document.querySelector('[camera]');
