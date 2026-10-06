@@ -187,7 +187,7 @@ function showVRPanel(id){
   var panel=document.createElement('a-entity');
    panel.setAttribute('position','0 0.1 -2.5');
   panel.innerHTML='<a-plane width="2" height="1.2" color="#1A1A2E" opacity="0.92" side="double"></a-plane>'+
-    '<a-text value="'+txt+'" color="#C8A951" align="center" width="3" position="0 0.1 0.01" side="double"></a-text>'+
+    '<a-text value="'+txt+'" color="#C8A951" align="center" width="4" position="0 0.1 0.01" side="double"></a-text>'+
     '<a-text value="[Mira otro objeto para cerrar]" color="#FF5900" align="center" width="2.5" position="0 -0.45 0.01" side="double"></a-text>';
   cam.appendChild(panel);
   activeVP=panel;
