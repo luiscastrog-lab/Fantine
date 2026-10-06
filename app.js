@@ -216,8 +216,17 @@ function showVRPanel(id){
         btns[b].addEventListener('click',function(){
           window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
         });
-        /* Tambien fuse-click para el cursor de mirada */
+      
+  /* Conectar click al boton VER VIDEO — solo en VR */
+  if(id==='pantalla'){
+    setTimeout(function(){
+      var btns=panel.querySelectorAll('.clickable');
+      for(var b=0;b<btns.length;b++){
+        btns[b].addEventListener('click',function(){
+          window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
+        });
         btns[b].addEventListener('mouseenter',function(){
+          if(!isVR)return;
           var self=this;
           self._fuseTimer=setTimeout(function(){
             window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
@@ -229,6 +238,8 @@ function showVRPanel(id){
       }
     },1000);
   }
+
+
 
   /* Auto-cerrar despues de 25 segundos */
   setTimeout(function(){
