@@ -1,262 +1,237 @@
 
 /* =========================================
-   ESCENA.JS V2.1 — La Fabrica de Fantine
-   Construye toda la geometria 3D
-   + Esferas de reaccion en cada zona
+   ESCENA.JS V2.5 — La Fabrica de Fantine
+   Incluye: Sala de Cine, Zonas 1-5,
+   Rompecabezas Colaborativo en Zona 4,
+   Señaletica, Esferas de Reaccion
    ========================================= */
 
 function buildScene(){
 var w=document.getElementById('world');
 var s='';
 
-/* ═══ FUNCION: Set de esferas de reaccion ═══ */
-function emoSet(x,y,z){
-  var e='';
-  e+='<a-entity position="'+x+' '+y+' '+z+'">';
-  e+='<a-text value="REACCIONES" color="#C8A951" align="center" width="1.8" position="0 0.85 0" side="double"></a-text>';
-  e+='<a-sphere class="emo clickable" data-re="wow" radius="0.1" position="0 0.65 0" color="#FF5900" material="emissive:#FF5900;emissiveIntensity:0.4"></a-sphere>';
-  e+='<a-text value="WOW" color="#FF5900" align="left" width="1.2" position="0.18 0.65 0" side="double"></a-text>';
-  e+='<a-sphere class="emo clickable" data-re="triste" radius="0.1" position="0 0.45 0" color="#3B82F6" material="emissive:#3B82F6;emissiveIntensity:0.4"></a-sphere>';
-  e+='<a-text value="TRISTE" color="#3B82F6" align="left" width="1.2" position="0.18 0.45 0" side="double"></a-text>';
-  e+='<a-sphere class="emo clickable" data-re="no" radius="0.1" position="0 0.25 0" color="#EF4444" material="emissive:#EF4444;emissiveIntensity:0.4"></a-sphere>';
-  e+='<a-text value="NO" color="#EF4444" align="left" width="1.2" position="0.18 0.25 0" side="double"></a-text>';
-  e+='<a-sphere class="emo clickable" data-re="hmm" radius="0.1" position="0 0.05 0" color="#7C3AED" material="emissive:#7C3AED;emissiveIntensity:0.4"></a-sphere>';
-  e+='<a-text value="HMM" color="#7C3AED" align="left" width="1.2" position="0.18 0.05 0" side="double"></a-text>';
-  e+='<a-sphere class="emo clickable" data-re="idea" radius="0.1" position="0 -0.15 0" color="#F59E0B" material="emissive:#F59E0B;emissiveIntensity:0.4"></a-sphere>';
-  e+='<a-text value="IDEA" color="#F59E0B" align="left" width="1.2" position="0.18 -0.15 0" side="double"></a-text>';
-  e+='</a-entity>';
-  return e;
-}
-
-/* ═══════════════════════════════════════
-   SALA DE CINE (Z=-24 a -18)
-   ═══════════════════════════════════════ */
-
-s+='<a-plane rotation="-90 0 0" width="10" height="8" position="0 0 -21" color="#1A1A2E"></a-plane>';
-s+='<a-box width="10" height="4" depth="0.2" position="0 2 -25" color="#1A1A2E"></a-box>';
-s+='<a-box width="0.2" height="4" depth="8" position="-5 2 -21" color="#1A1A2E"></a-box>';
-s+='<a-box width="0.2" height="4" depth="8" position="5 2 -21" color="#1A1A2E"></a-box>';
-s+='<a-box class="clickable" data-panel="pantalla" width="6" height="3" depth="0.1" position="0 2.2 -24.8" color="#111" material="emissive:#222;emissiveIntensity:0.2"></a-box>';
-s+='<a-box width="6.4" height="3.4" depth="0.05" position="0 2.2 -24.85" color="#C8A951" material="emissive:#C8A951;emissiveIntensity:0.15"></a-box>';
-s+='<a-box width="1.5" height="3.5" depth="0.1" position="-3.8 2 -24.7" color="#8B0000" material="emissive:#8B0000;emissiveIntensity:0.1"></a-box>';
-s+='<a-box width="1.5" height="3.5" depth="0.1" position="3.8 2 -24.7" color="#8B0000" material="emissive:#8B0000;emissiveIntensity:0.1"></a-box>';
-for(var r=0;r<3;r++){
-  for(var c=0;c<5;c++){
-    var bx=-3+(c*1.5);
-    var bz=-20+(r*1.5);
-    s+='<a-box width="0.8" height="0.6" depth="0.6" position="'+bx+' 0.3 '+bz+'" color="#4A1A1A" material="emissive:#4A1A1A;emissiveIntensity:0.05"></a-box>';
+/* ═══ SALA DE CINE (z: -28 a -18) ═══ */
+s+='<a-plane position="0 0 -28" rotation="0 0 0" width="10" height="0.1" color="#1A1A2E"></a-plane>';
+s+='<a-box position="0 0 -28" width="10" height="5" depth="0.2" color="#1A1A2E"></a-box>';
+s+='<a-plane position="0 2.5 -27.8" width="6" height="3.5" color="#0A0A15" material="emissive:#0A0A15;emissiveIntensity:0.1" class="clickable" data-panel="pantalla"></a-plane>';
+s+='<a-box position="-3.2 2.5 -27.7" width="0.3" height="4" depth="0.1" color="#8B0000" material="emissive:#8B0000;emissiveIntensity:0.2"></a-box>';
+s+='<a-box position="3.2 2.5 -27.7" width="0.3" height="4" depth="0.1" color="#8B0000" material="emissive:#8B0000;emissiveIntensity:0.2"></a-box>';
+s+='<a-box position="0 4.5 -27.7" width="6.7" height="0.3" depth="0.1" color="#C8A951" material="emissive:#C8A951;emissiveIntensity:0.3"></a-box>';
+/* Butacas */
+for(var row=0;row<3;row++){
+  for(var col=-2;col<=2;col++){
+    s+='<a-box position="'+(col*1.2)+' 0.4 '+(-24+row*1.5)+'" width="0.8" height="0.8" depth="0.8" color="#4A1A2E" material="emissive:#4A1A2E;emissiveIntensity:0.1"></a-box>';
   }
 }
-s+='<a-text value="SALA DE CINE" color="#C8A951" align="center" width="6" position="0 3.8 -24.7"></a-text>';
-s+='<a-light type="point" color="#FFE0C2" intensity="0.3" distance="12" position="0 3.5 -21"></a-light>';
-/* Esferas de reaccion — Sala de Cine */
-s+=emoSet(4.5,1.2,-18.5);
+s+='<a-entity light="type:point;color:#C8A951;intensity:0.3;distance:15" position="0 4 -23"></a-entity>';
+/* Piso cine */
+s+='<a-plane position="0 0 -23" rotation="-90 0 0" width="10" height="12" color="#1A1A2E"></a-plane>';
+/* Paredes cine */
+s+='<a-box position="-5 2.5 -23" width="0.2" height="5" depth="12" color="#2C1A1A"></a-box>';
+s+='<a-box position="5 2.5 -23" width="0.2" height="5" depth="12" color="#2C1A1A"></a-box>';
+/* Techo cine */
+s+='<a-plane position="0 5 -23" rotation="90 0 0" width="10" height="12" color="#0A0A15"></a-plane>';
 
+/* ═══ PASILLO CINE → ENTRADA (z: -18 a -14) ═══ */
+s+='<a-plane position="0 0 -16" rotation="-90 0 0" width="4" height="4" color="#3D2B1F" material="emissive:#3D2B1F;emissiveIntensity:0.05"></a-plane>';
+s+='<a-box position="-2 2 -16" width="0.2" height="4" depth="4" color="#4A3728"></a-box>';
+s+='<a-box position="2 2 -16" width="0.2" height="4" depth="4" color="#4A3728"></a-box>';
+s+='<a-text value="ZONA 1 →" color="#FFD700" align="center" width="3" position="0 2.5 -17.9" side="double"></a-text>';
+/* Flecha piso */
+s+='<a-triangle vertex-a="0 0.02 -17" vertex-b="-0.3 0.02 -16.5" vertex-c="0.3 0.02 -16.5" color="#FFD700" material="emissive:#FFD700;emissiveIntensity:0.5;side:double"></a-triangle>';
 
-/* ═══════════════════════════════════════
-   PASILLO CINE → ZONA 1 (Z=-18 a -14)
-   ═══════════════════════════════════════ */
+/* ═══ ZONA 1: ENTRADA (z: -14 a -8) ═══ */
+s+='<a-plane position="0 0 -11" rotation="-90 0 0" width="8" height="6" color="#5C4033" material="emissive:#5C4033;emissiveIntensity:0.05"></a-plane>';
+s+='<a-box position="-4 2.5 -11" width="0.2" height="5" depth="6" color="#4A3728"></a-box>';
+s+='<a-box position="4 2.5 -11" width="0.2" height="5" depth="6" color="#4A3728"></a-box>';
+/* Porton */
+s+='<a-box position="0 2 -13.8" width="3" height="4" depth="0.3" color="#3D2B1F" class="clickable" data-panel="porton" material="emissive:#C8A951;emissiveIntensity:0.15"></a-box>';
+s+='<a-text value="FABRIQUE MADELEINE" color="#C8A951" align="center" width="4" position="0 4.2 -13.7" side="double"></a-text>';
+/* Letrero */
+s+='<a-plane position="-3.5 2.5 -10" rotation="0 90 0" width="1.5" height="1" color="#2C1A1A" class="clickable" data-panel="letrero" material="emissive:#C8A951;emissiveIntensity:0.2"></a-plane>';
+s+='<a-text value="FABRIQUE\nMADELEINE" color="#C8A951" align="center" width="2" position="-3.4 2.5 -10" rotation="0 90 0" side="double"></a-text>';
+/* Cartel */
+s+='<a-plane position="3.5 2.5 -12" rotation="0 -90 0" width="1.5" height="1" color="#2C1A1A" class="clickable" data-panel="cartel" material="emissive:#C8A951;emissiveIntensity:0.2"></a-plane>';
+s+='<a-text value="SE BUSCAN\nOBRERAS" color="#FF5900" align="center" width="2" position="3.4 2.5 -12" rotation="0 -90 0" side="double"></a-text>';
+/* Instrucciones */
+s+='<a-plane position="3.5 1.5 -10" rotation="0 -90 0" width="1.2" height="0.8" color="#1A1A2E" class="clickable" data-panel="instrucciones" material="emissive:#3B82F6;emissiveIntensity:0.2"></a-plane>';
+s+='<a-text value="COMO\nNAVEGAR" color="#3B82F6" align="center" width="1.5" position="3.4 1.5 -10" rotation="0 -90 0" side="double"></a-text>';
+/* Esferas reaccion Z1 */
+s+='<a-sphere position="-3.5 1.8 -13" radius="0.15" color="#FF5900" class="clickable" data-re="wow" material="emissive:#FF5900;emissiveIntensity:0.5"></a-sphere>';
+s+='<a-text value="WOW" color="#FF5900" align="center" width="1.5" position="-3.5 2.1 -13" side="double"></a-text>';
+s+='<a-sphere position="-3.5 1.4 -13" radius="0.15" color="#3B82F6" class="clickable" data-re="triste" material="emissive:#3B82F6;emissiveIntensity:0.5"></a-sphere>';
+s+='<a-text value="TRISTE" color="#3B82F6" align="center" width="1.5" position="-3.5 1.1 -13" side="double"></a-text>';
+s+='<a-sphere position="-3.5 0.7 -13" radius="0.15" color="#EF4444" class="clickable" data-re="no" material="emissive:#EF4444;emissiveIntensity:0.5"></a-sphere>';
+s+='<a-sphere position="-3.5 0.3 -13" radius="0.15" color="#7C3AED" class="clickable" data-re="hmm" material="emissive:#7C3AED;emissiveIntensity:0.5"></a-sphere>';
+s+='<a-sphere position="-3.5 2.2 -13.5" radius="0.15" color="#F59E0B" class="clickable" data-re="idea" material="emissive:#F59E0B;emissiveIntensity:0.5"></a-sphere>';
+/* Flecha Z1→Z2 */
+s+='<a-text value="ZONA 2 →" color="#FFD700" align="center" width="3" position="0 2.5 -8.1" side="double"></a-text>';
+s+='<a-triangle vertex-a="0 0.02 -8.5" vertex-b="-0.3 0.02 -8" vertex-c="0.3 0.02 -8" color="#FFD700" material="emissive:#FFD700;emissiveIntensity:0.5;side:double"></a-triangle>';
 
-s+='<a-plane rotation="-90 0 0" width="4" height="4" position="0 0 -16" color="#3D2B1F"></a-plane>';
-s+='<a-box width="0.2" height="3" depth="4" position="-2 1.5 -16" color="#5C3A21"></a-box>';
-s+='<a-box width="0.2" height="3" depth="4" position="2 1.5 -16" color="#5C3A21"></a-box>';
-s+='<a-entity position="0 0.05 -16">';
-s+='<a-triangle vertex-a="0 0 -0.4" vertex-b="-0.3 0 0.2" vertex-c="0.3 0 0.2" rotation="-90 180 0" material="color:#FFD100;emissive:#FFD100;emissiveIntensity:0.4;side:double"></a-triangle>';
-s+='</a-entity>';
-s+='<a-light type="point" color="#FFE0C2" intensity="0.4" distance="8" position="0 2.5 -16"></a-light>';
+/* ═══ PASILLO ENTRADA → TALLER (z: -8 a -4) ═══ */
+s+='<a-plane position="0 0 -6" rotation="-90 0 0" width="4" height="4" color="#3D2B1F" material="emissive:#3D2B1F;emissiveIntensity:0.05"></a-plane>';
+s+='<a-box position="-2 2 -6" width="0.2" height="4" depth="4" color="#4A3728"></a-box>';
+s+='<a-box position="2 2 -6" width="0.2" height="4" depth="4" color="#4A3728"></a-box>';
 
+/* ═══ ZONA 2: TALLER (z: -4 a 4) ═══ */
+s+='<a-plane position="0 0 0" rotation="-90 0 0" width="8" height="8" color="#5C4033" material="emissive:#5C4033;emissiveIntensity:0.05"></a-plane>';
+s+='<a-box position="-4 2.5 0" width="0.2" height="5" depth="8" color="#4A3728"></a-box>';
+s+='<a-box position="4 2.5 0" width="0.2" height="5" depth="8" color="#4A3728"></a-box>';
+/* Carta */
+s+='<a-plane position="-3.5 2 1" rotation="0 90 0" width="1" height="0.7" color="#FFFDF8" class="clickable" data-panel="carta" material="emissive:#C8A951;emissiveIntensity:0.15"></a-plane>';
+s+='<a-text value="CARTA A\nCOSETTE" color="#1A1A2E" align="center" width="1.5" position="-3.4 2 1" rotation="0 90 0" side="double"></a-text>';
+/* Cuentas */
+s+='<a-plane position="3.5 2 -1" rotation="0 -90 0" width="1.2" height="0.8" color="#2C1A1A" class="clickable" data-panel="cuentas" material="emissive:#FF5900;emissiveIntensity:0.2"></a-plane>';
+s+='<a-text value="CUENTAS\nDE FANTINE" color="#FF5900" align="center" width="1.5" position="3.4 2 -1" rotation="0 -90 0" side="double"></a-text>';
+/* Diario */
+s+='<a-box position="0 1 0" width="0.8" height="0.1" depth="0.6" color="#8B7355" class="clickable" data-panel="diario" material="emissive:#C8A951;emissiveIntensity:0.2"></a-box>';
+s+='<a-text value="DIARIO" color="#C8A951" align="center" width="1.5" position="0 1.3 0" side="double"></a-text>';
+/* Esferas reaccion Z2 */
+s+='<a-sphere position="-3.5 1.8 -2" radius="0.15" color="#FF5900" class="clickable" data-re="wow" material="emissive:#FF5900;emissiveIntensity:0.5"></a-sphere>';
+s+='<a-sphere position="-3.5 1.4 -2" radius="0.15" color="#3B82F6" class="clickable" data-re="triste" material="emissive:#3B82F6;emissiveIntensity:0.5"></a-sphere>';
+s+='<a-sphere position="-3.5 1.0 -2" radius="0.15" color="#EF4444" class="clickable" data-re="no" material="emissive:#EF4444;emissiveIntensity:0.5"></a-sphere>';
+s+='<a-sphere position="-3.5 0.6 -2" radius="0.15" color="#7C3AED" class="clickable" data-re="hmm" material="emissive:#7C3AED;emissiveIntensity:0.5"></a-sphere>';
+s+='<a-sphere position="-3.5 2.2 -2" radius="0.15" color="#F59E0B" class="clickable" data-re="idea" material="emissive:#F59E0B;emissiveIntensity:0.5"></a-sphere>';
+/* Flecha Z2→Z3 */
+s+='<a-text value="ZONA 3 →" color="#FFD700" align="center" width="3" position="0 2.5 3.9" side="double"></a-text>';
+s+='<a-triangle vertex-a="0 0.02 3.5" vertex-b="-0.3 0.02 4" vertex-c="0.3 0.02 4" color="#FFD700" material="emissive:#FFD700;emissiveIntensity:0.5;side:double"></a-triangle>';
 
-/* ═══════════════════════════════════════
-   ZONA 1: ENTRADA DE LA FABRICA (Z=-14 a -8)
-   ═══════════════════════════════════════ */
+/* ═══ PASILLO TALLER → OFICINA (z: 4 a 8) ═══ */
+s+='<a-plane position="0 0 6" rotation="-90 0 0" width="4" height="4" color="#3D2B1F" material="emissive:#3D2B1F;emissiveIntensity:0.05"></a-plane>';
+s+='<a-box position="-2 2 6" width="0.2" height="4" depth="4" color="#4A3728"></a-box>';
+s+='<a-box position="2 2 6" width="0.2" height="4" depth="4" color="#4A3728"></a-box>';
 
-s+='<a-plane rotation="-90 0 0" width="10" height="8" position="0 0 -10" color="#8B7355"></a-plane>';
-s+='<a-box width="10" height="4" depth="0.2" position="0 2 -14" color="#5C3A21"></a-box>';
-s+='<a-box width="0.2" height="4" depth="8" position="-5 2 -10" color="#5C3A21"></a-box>';
-s+='<a-box width="0.2" height="4" depth="8" position="5 2 -10" color="#5C3A21"></a-box>';
-s+='<a-box class="clickable" data-panel="porton" width="2.5" height="3" depth="0.3" position="0 1.5 -13.8" color="#4A3728" material="emissive:#FF5900;emissiveIntensity:0.15">';
-s+='<a-text value="PORTON" color="#C8A951" align="center" width="3" position="0 0.8 0.2"></a-text>';
-s+='</a-box>';
-s+='<a-box class="clickable" data-panel="letrero" width="3" height="0.8" depth="0.1" position="0 3.5 -13.8" color="#C8A951" material="emissive:#C8A951;emissiveIntensity:0.3">';
-s+='<a-text value="FABRIQUE MADELEINE" color="#1A1A2E" align="center" width="4" position="0 0 0.1"></a-text>';
-s+='</a-box>';
-s+='<a-plane class="clickable" data-panel="cartel" width="1.2" height="1.5" position="-4.8 1.8 -12" rotation="0 90 0" color="#FFFDF8" material="emissive:#FF5900;emissiveIntensity:0.15">';
-s+='<a-text value="SE BUSCAN\\nOBRERAS\\n15 sous/dia" color="#1A1A2E" align="center" width="2" position="0 0 0.01"></a-text>';
-s+='</a-plane>';
-s+='<a-plane class="clickable" data-panel="instrucciones" width="1.2" height="1" position="4.8 1.8 -12" rotation="0 -90 0" color="#1A1A2E" material="emissive:#FF5900;emissiveIntensity:0.15">';
-s+='<a-text value="COMO\\nNAVEGAR" color="#FFD100" align="center" width="2" position="0 0 0.01"></a-text>';
-s+='</a-plane>';
-s+='<a-plane width="1.5" height="1" position="-4.8 3 -10" rotation="0 90 0" color="#1A1A2E" material="opacity:0.9">';
-s+='<a-text value="[CINE]>[AQUI]>TALLER>\\nOFICINA>PATIO>SALIDA" color="#FFD100" align="center" width="2.5" position="0 0 0.01"></a-text>';
-s+='</a-plane>';
-s+='<a-light type="point" color="#FFE0C2" intensity="0.5" distance="12" position="0 3 -10"></a-light>';
-/* Esferas de reaccion — Zona 1 */
-s+=emoSet(4.5,1.2,-8.5);
+/* ═══ ZONA 3: OFICINA (z: 8 a 16) ═══ */
+s+='<a-plane position="0 0 12" rotation="-90 0 0" width="8" height="8" color="#5C4033" material="emissive:#5C4033;emissiveIntensity:0.08"></a-plane>';
+s+='<a-box position="-4 2.5 12" width="0.2" height="5" depth="8" color="#4A3728"></a-box>';
+s+='<a-box position="4 2.5 12" width="0.2" height="5" depth="8" color="#4A3728"></a-box>';
+/* Decreto */
+s+='<a-plane position="0 2.5 8.2" width="2" height="1.5" color="#FFFDF8" class="clickable" data-panel="decreto" material="emissive:#C8A951;emissiveIntensity:0.15"></a-plane>';
+s+='<a-text value="DECRETO\nDEL ALCALDE" color="#1A1A2E" align="center" width="2.5" position="0 2.5 8.3" side="double"></a-text>';
+/* Espejo */
+s+='<a-circle position="-3.5 2.5 12" rotation="0 90 0" radius="0.6" color="#87CEEB" class="clickable" data-panel="espejo" material="emissive:#87CEEB;emissiveIntensity:0.3;metalness:0.8;roughness:0.2"></a-circle>';
+s+='<a-text value="ESPEJO" color="#C8A951" align="center" width="1.5" position="-3.4 3.3 12" rotation="0 90 0" side="double"></a-text>';
+/* Reloj */
+s+='<a-circle position="3.5 3 12" rotation="0 -90 0" radius="0.5" color="#2C1A1A" class="clickable" data-panel="reloj" material="emissive:#C8A951;emissiveIntensity:0.2"></a-circle>';
+s+='<a-text value="5:45" color="#C8A951" align="center" width="1.5" position="3.4 3 12" rotation="0 -90 0" side="double"></a-text>';
+/* Esferas reaccion Z3 */
+s+='<a-sphere position="-3.5 1.8 10" radius="0.15" color="#FF5900" class="clickable" data-re="wow" material="emissive:#FF5900;emissiveIntensity:0.5"></a-sphere>';
+s+='<a-sphere position="-3.5 1.4 10" radius="0.15" color="#3B82F6" class="clickable" data-re="triste" material="emissive:#3B82F6;emissiveIntensity:0.5"></a-sphere>';
+s+='<a-sphere position="-3.5 1.0 10" radius="0.15" color="#EF4444" class="clickable" data-re="no" material="emissive:#EF4444;emissiveIntensity:0.5"></a-sphere>';
+s+='<a-sphere position="-3.5 0.6 10" radius="0.15" color="#7C3AED" class="clickable" data-re="hmm" material="emissive:#7C3AED;emissiveIntensity:0.5"></a-sphere>';
+s+='<a-sphere position="-3.5 2.2 10" radius="0.15" color="#F59E0B" class="clickable" data-re="idea" material="emissive:#F59E0B;emissiveIntensity:0.5"></a-sphere>';
+/* Flecha Z3→Z4 */
+s+='<a-text value="ZONA 4 →" color="#FFD700" align="center" width="3" position="0 2.5 15.9" side="double"></a-text>';
+s+='<a-triangle vertex-a="0 0.02 15.5" vertex-b="-0.3 0.02 16" vertex-c="0.3 0.02 16" color="#FFD700" material="emissive:#FFD700;emissiveIntensity:0.5;side:double"></a-triangle>';
 
+/* ═══ PASILLO OFICINA → PATIO (z: 16 a 20) ═══ */
+s+='<a-plane position="0 0 18" rotation="-90 0 0" width="4" height="4" color="#3D2B1F" material="emissive:#3D2B1F;emissiveIntensity:0.05"></a-plane>';
+s+='<a-box position="-2 2 18" width="0.2" height="4" depth="4" color="#4A3728"></a-box>';
+s+='<a-box position="2 2 18" width="0.2" height="4" depth="4" color="#4A3728"></a-box>';
 
-/* ═══════════════════════════════════════
-   PASILLO Z1 → Z2 (Z=-8 a -4)
-   ═══════════════════════════════════════ */
+/* ═══ ZONA 4: PATIO + ROMPECABEZAS (z: 20 a 28) ═══ */
+s+='<a-plane position="0 0 24" rotation="-90 0 0" width="10" height="8" color="#6B8E23" material="emissive:#6B8E23;emissiveIntensity:0.08"></a-plane>';
+s+='<a-box position="-5 2.5 24" width="0.2" height="5" depth="8" color="#4A3728"></a-box>';
+s+='<a-box position="5 2.5 24" width="0.2" height="5" depth="8" color="#4A3728"></a-box>';
+/* Campana */
+s+='<a-cone position="3.5 3.5 22" radius-bottom="0.3" radius-top="0.05" height="0.5" color="#C8A951" class="clickable" data-panel="campana" material="emissive:#C8A951;emissiveIntensity:0.3"></a-cone>';
+s+='<a-text value="CAMPANA" color="#C8A951" align="center" width="1.5" position="3.5 4.2 22" side="double"></a-text>';
 
-s+='<a-plane rotation="-90 0 0" width="4" height="4" position="0 0 -6" color="#3D2B1F"></a-plane>';
-s+='<a-box width="0.2" height="3" depth="4" position="-2 1.5 -6" color="#5C3A21"></a-box>';
-s+='<a-box width="0.2" height="3" depth="4" position="2 1.5 -6" color="#5C3A21"></a-box>';
-s+='<a-entity position="0 0.05 -6">';
-s+='<a-triangle vertex-a="0 0 -0.4" vertex-b="-0.3 0 0.2" vertex-c="0.3 0 0.2" rotation="-90 180 0" material="color:#FFD100;emissive:#FFD100;emissiveIntensity:0.4;side:double"></a-triangle>';
-s+='</a-entity>';
-s+='<a-text value="TALLER >" color="#FFD100" align="center" width="3" position="0 2.5 -5" rotation="0 0 0"></a-text>';
-s+='<a-light type="point" color="#FFE0C2" intensity="0.4" distance="8" position="0 2.5 -6"></a-light>';
+/* --- MARCO DEL ROMPECABEZAS (pared izquierda) --- */
+s+='<a-text value="ROMPECABEZAS COLABORATIVO" color="#C8A951" align="center" width="4" position="-4.7 4.3 24" rotation="0 90 0" side="double"></a-text>';
+s+='<a-text value="Mira una pieza 2 seg → luego mira su lugar en el marco" color="#FFE0C2" align="center" width="3.5" position="-4.7 0.5 24" rotation="0 90 0" side="double"></a-text>';
 
+/* Marco dorado */
+s+='<a-box position="-4.8 2.4 24" rotation="0 90 0" width="3.4" height="3.4" depth="0.05" color="#C8A951" material="emissive:#C8A951;emissiveIntensity:0.2"></a-box>';
+/* Fondo oscuro del marco */
+s+='<a-box position="-4.75 2.4 24" rotation="0 90 0" width="3.2" height="3.2" depth="0.06" color="#1A1A2E"></a-box>';
 
-/* ═══════════════════════════════════════
-   ZONA 2: TALLER DE LAS OBRERAS (Z=-4 a 4)
-   ═══════════════════════════════════════ */
+/* 16 SLOTS vacios en el marco (4x4) — cada slot es 0.75 x 0.75 */
+var slotSize=0.75;
+var startY=0.975; /* fila 0 abajo */
+var startZ=22.875; /* col 0 izquierda */
+for(var row=0;row<4;row++){
+  for(var col=0;col<4;col++){
+    var pn=row*4+col;
+    var sy=startY+(row*slotSize)+(slotSize/2);
+    var sz=startZ+(col*slotSize)+(slotSize/2);
+    s+='<a-plane id="slot-'+pn+'" class="clickable" data-slot="'+pn+'" position="-4.7 '+sy+' '+sz+'" rotation="0 90 0" width="'+slotSize+'" height="'+slotSize+'" color="#2C2C4E" material="emissive:#2C2C4E;emissiveIntensity:0.1;side:double" opacity="0.8"></a-plane>';
+    s+='<a-text value="'+(pn+1)+'" color="rgba(200,169,81,0.3)" align="center" width="1" position="-4.68 '+sy+' '+sz+'" rotation="0 90 0" side="double"></a-text>';
+  }
+}
 
-s+='<a-plane rotation="-90 0 0" width="10" height="8" position="0 0 0" color="#6B5B4F"></a-plane>';
-s+='<a-box width="0.2" height="4" depth="8" position="-5 2 0" color="#5C3A21"></a-box>';
-s+='<a-box width="0.2" height="4" depth="8" position="5 2 0" color="#5C3A21"></a-box>';
-s+='<a-plane class="clickable" data-panel="carta" width="0.8" height="1" position="-4.8 1.5 -1" rotation="0 90 0" color="#FFFDF8" material="emissive:#FF5900;emissiveIntensity:0.2">';
-s+='<a-text value="Querida\\nCosette..." color="#1A1A2E" align="center" width="1.5" position="0 0 0.01"></a-text>';
-s+='</a-plane>';
-s+='<a-box class="clickable" data-panel="cuentas" width="0.8" height="0.1" depth="0.6" position="2 0.9 1" color="#4A3728" material="emissive:#FF5900;emissiveIntensity:0.2">';
-s+='<a-text value="CUENTAS" color="#C8A951" align="center" width="2" position="0 0.06 0" rotation="-90 0 0"></a-text>';
-s+='</a-box>';
-s+='<a-box width="1.5" height="0.8" depth="1" position="2 0.4 1" color="#5C3A21"></a-box>';
-s+='<a-plane class="clickable" data-panel="diario" width="1" height="1.2" position="4.8 1.8 1" rotation="0 -90 0" color="#D4C5A9" material="emissive:#FF5900;emissiveIntensity:0.2">';
-s+='<a-text value="JORNADA\\nDE UNA\\nOBRERA" color="#1A1A2E" align="center" width="1.8" position="0 0 0.01"></a-text>';
-s+='</a-plane>';
-s+='<a-plane width="1.5" height="1" position="-4.8 3 2" rotation="0 90 0" color="#1A1A2E" material="opacity:0.9">';
-s+='<a-text value="CINE>ENTRADA>[AQUI]>\\nOFICINA>PATIO>SALIDA" color="#FFD100" align="center" width="2.5" position="0 0 0.01"></a-text>';
-s+='</a-plane>';
-s+='<a-light type="point" color="#FFE0C2" intensity="0.5" distance="12" position="0 3 0"></a-light>';
-/* Esferas de reaccion — Zona 2 */
-s+=emoSet(4.5,1.2,3.5);
+/* 16 PIEZAS flotando desordenadas por el patio */
+var piecePositions=[
+  {x:2,y:1.5,z:21},{x:-2,y:2,z:22},{x:3,y:1,z:23},{x:-1,y:2.5,z:21.5},
+  {x:1,y:1.2,z:25},{x:-3,y:1.8,z:26},{x:2.5,y:2.2,z:27},{x:0,y:1.5,z:22.5},
+  {x:-2.5,y:1,z:23.5},{x:3.5,y:2,z:24.5},{x:-1.5,y:2.3,z:25.5},{x:1.5,y:1.7,z:26.5},
+  {x:-0.5,y:1.3,z:21.2},{x:2.8,y:2.1,z:22.8},{x:-3.2,y:1.6,z:24.2},{x:0.5,y:2.4,z:27.5}
+];
+var offsets=[
+  [0,0],[0.25,0],[0.5,0],[0.75,0],
+  [0,0.25],[0.25,0.25],[0.5,0.25],[0.75,0.25],
+  [0,0.5],[0.25,0.5],[0.5,0.5],[0.75,0.5],
+  [0,0.75],[0.25,0.75],[0.5,0.75],[0.75,0.75]
+];
+for(var i=0;i<16;i++){
+  var pp=piecePositions[i];
+  var ox=offsets[i][0];
+  var oy=offsets[i][1];
+  s+='<a-plane id="piece-'+i+'" class="clickable" data-piece="'+i+'" ';
+  s+='position="'+pp.x+' '+pp.y+' '+pp.z+'" ';
+  s+='rotation="0 '+(Math.random()*60-30)+' 0" ';
+  s+='width="0.7" height="0.7" ';
+  s+='material="src:Fantine.jpg;repeat:0.25 0.25;offset:'+ox+' '+oy+';emissive:#FFF;emissiveIntensity:0.15;side:double" ';
+  s+='animation="property:position;to:'+pp.x+' '+(pp.y+0.1)+' '+pp.z+';dir:alternate;dur:2000;loop:true;easing:easeInOutSine">';
+  s+='</a-plane>';
+}
 
+/* Esferas reaccion Z4 */
+s+='<a-sphere position="4.5 1.8 22" radius="0.15" color="#FF5900" class="clickable" data-re="wow" material="emissive:#FF5900;emissiveIntensity:0.5"></a-sphere>';
+s+='<a-sphere position="4.5 1.4 22" radius="0.15" color="#3B82F6" class="clickable" data-re="triste" material="emissive:#3B82F6;emissiveIntensity:0.5"></a-sphere>';
+s+='<a-sphere position="4.5 1.0 22" radius="0.15" color="#EF4444" class="clickable" data-re="no" material="emissive:#EF4444;emissiveIntensity:0.5"></a-sphere>';
+s+='<a-sphere position="4.5 0.6 22" radius="0.15" color="#7C3AED" class="clickable" data-re="hmm" material="emissive:#7C3AED;emissiveIntensity:0.5"></a-sphere>';
+s+='<a-sphere position="4.5 2.2 22" radius="0.15" color="#F59E0B" class="clickable" data-re="idea" material="emissive:#F59E0B;emissiveIntensity:0.5"></a-sphere>';
 
-/* ═══════════════════════════════════════
-   PASILLO Z2 → Z3 (Z=4 a 8)
-   ═══════════════════════════════════════ */
+/* Flecha Z4→Z5 */
+s+='<a-text value="ZONA 5 →" color="#FFD700" align="center" width="3" position="0 2.5 27.9" side="double"></a-text>';
+s+='<a-triangle vertex-a="0 0.02 27.5" vertex-b="-0.3 0.02 28" vertex-c="0.3 0.02 28" color="#FFD700" material="emissive:#FFD700;emissiveIntensity:0.5;side:double"></a-triangle>';
 
-s+='<a-plane rotation="-90 0 0" width="4" height="4" position="0 0 6" color="#3D2B1F"></a-plane>';
-s+='<a-box width="0.2" height="3" depth="4" position="-2 1.5 6" color="#5C3A21"></a-box>';
-s+='<a-box width="0.2" height="3" depth="4" position="2 1.5 6" color="#5C3A21"></a-box>';
-s+='<a-entity position="0 0.05 6">';
-s+='<a-triangle vertex-a="0 0 -0.4" vertex-b="-0.3 0 0.2" vertex-c="0.3 0 0.2" rotation="-90 180 0" material="color:#FFD100;emissive:#FFD100;emissiveIntensity:0.4;side:double"></a-triangle>';
-s+='</a-entity>';
-s+='<a-text value="OFICINA >" color="#FFD100" align="center" width="3" position="0 2.5 7" rotation="0 0 0"></a-text>';
-s+='<a-light type="point" color="#FFE0C2" intensity="0.4" distance="8" position="0 2.5 6"></a-light>';
+/* ═══ PASILLO PATIO → SALIDA (z: 28 a 32) ═══ */
+s+='<a-plane position="0 0 30" rotation="-90 0 0" width="4" height="4" color="#3D2B1F" material="emissive:#3D2B1F;emissiveIntensity:0.05"></a-plane>';
+s+='<a-box position="-2 2 30" width="0.2" height="4" depth="4" color="#4A3728"></a-box>';
+s+='<a-box position="2 2 30" width="0.2" height="4" depth="4" color="#4A3728"></a-box>';
 
+/* ═══ ZONA 5: SALIDA (z: 32+) ═══ */
+s+='<a-plane position="0 0 36" rotation="-90 0 0" width="8" height="8" color="#5C4033" material="emissive:#5C4033;emissiveIntensity:0.08"></a-plane>';
+s+='<a-box position="-4 2.5 36" width="0.2" height="5" depth="8" color="#4A3728"></a-box>';
+s+='<a-box position="4 2.5 36" width="0.2" height="5" depth="8" color="#4A3728"></a-box>';
+/* Muro */
+s+='<a-box position="0 2 33" width="3" height="2.5" depth="0.2" color="#4A3728" class="clickable" data-panel="muro" material="emissive:#C8A951;emissiveIntensity:0.1"></a-box>';
+s+='<a-text value="MURO\nCOLABORATIVO" color="#C8A951" align="center" width="3" position="0 2 33.2" side="double"></a-text>';
+/* Puerta salida */
+s+='<a-box position="0 2 39.8" width="3" height="4" depth="0.3" color="#3D2B1F" class="clickable" data-panel="puerta" material="emissive:#C8A951;emissiveIntensity:0.15"></a-box>';
+s+='<a-text value="SALIDA" color="#C8A951" align="center" width="3" position="0 4.2 39.7" side="double"></a-text>';
+/* Esferas reaccion Z5 */
+s+='<a-sphere position="-3.5 1.8 35" radius="0.15" color="#FF5900" class="clickable" data-re="wow" material="emissive:#FF5900;emissiveIntensity:0.5"></a-sphere>';
+s+='<a-sphere position="-3.5 1.4 35" radius="0.15" color="#3B82F6" class="clickable" data-re="triste" material="emissive:#3B82F6;emissiveIntensity:0.5"></a-sphere>';
+s+='<a-sphere position="-3.5 1.0 35" radius="0.15" color="#EF4444" class="clickable" data-re="no" material="emissive:#EF4444;emissiveIntensity:0.5"></a-sphere>';
+s+='<a-sphere position="-3.5 0.6 35" radius="0.15" color="#7C3AED" class="clickable" data-re="hmm" material="emissive:#7C3AED;emissiveIntensity:0.5"></a-sphere>';
+s+='<a-sphere position="-3.5 2.2 35" radius="0.15" color="#F59E0B" class="clickable" data-re="idea" material="emissive:#F59E0B;emissiveIntensity:0.5"></a-sphere>';
 
-/* ═══════════════════════════════════════
-   ZONA 3: OFICINA DEL PADRE MADELEINE (Z=8 a 16)
-   ═══════════════════════════════════════ */
+/* ═══ ILUMINACION GENERAL ═══ */
+s+='<a-entity light="type:ambient;color:#FFF;intensity:0.6"></a-entity>';
+s+='<a-entity light="type:point;color:#C8A951;intensity:0.5;distance:20" position="0 4 -11"></a-entity>';
+s+='<a-entity light="type:point;color:#C8A951;intensity:0.5;distance:20" position="0 4 0"></a-entity>';
+s+='<a-entity light="type:point;color:#C8A951;intensity:0.5;distance:20" position="0 4 12"></a-entity>';
+s+='<a-entity light="type:point;color:#C8A951;intensity:0.5;distance:20" position="0 4 24"></a-entity>';
+s+='<a-entity light="type:point;color:#C8A951;intensity:0.5;distance:20" position="0 4 36"></a-entity>';
 
-s+='<a-plane rotation="-90 0 0" width="10" height="8" position="0 0 12" color="#5C4A3A"></a-plane>';
-s+='<a-box width="0.2" height="4" depth="8" position="-5 2 12" color="#4A3728"></a-box>';
-s+='<a-box width="0.2" height="4" depth="8" position="5 2 12" color="#4A3728"></a-box>';
-s+='<a-box width="2.5" height="0.8" depth="1.2" position="0 0.4 13" color="#3D2B1F"></a-box>';
-s+='<a-plane class="clickable" data-panel="decreto" width="1.2" height="1.5" position="-4.8 1.8 11" rotation="0 90 0" color="#FFFDF8" material="emissive:#FF5900;emissiveIntensity:0.2">';
-s+='<a-text value="DECRETO\\nNINGUN OBRERO\\nSERA DESPEDIDO\\nSIN CAUSA JUSTA" color="#1A1A2E" align="center" width="2" position="0 0 0.01"></a-text>';
-s+='</a-plane>';
-s+='<a-circle class="clickable" data-panel="espejo" radius="0.8" position="4.8 2 12" rotation="0 -90 0" color="#B8C4D0" material="emissive:#FF5900;emissiveIntensity:0.15;metalness:0.8;roughness:0.2">';
-s+='<a-text value="?" color="#1A1A2E" align="center" width="2" position="0 0 0.01"></a-text>';
-s+='</a-circle>';
-s+='<a-ring position="4.78 2 12" rotation="0 -90 0" radius-inner="0.8" radius-outer="0.95" color="#C8A951" material="emissive:#C8A951;emissiveIntensity:0.2"></a-ring>';
-s+='<a-plane width="1.5" height="1" position="-4.8 3 14" rotation="0 90 0" color="#1A1A2E" material="opacity:0.9">';
-s+='<a-text value="CINE>ENTRADA>TALLER>\\n[AQUI]>PATIO>SALIDA" color="#FFD100" align="center" width="2.5" position="0 0 0.01"></a-text>';
-s+='</a-plane>';
-s+='<a-light type="point" color="#FFE0C2" intensity="0.5" distance="12" position="0 3 12"></a-light>';
-/* Esferas de reaccion — Zona 3 */
-s+=emoSet(4.5,1.2,15.5);
+/* Cielo */
+s+='<a-sky color="#0A0A15"></a-sky>';
 
-/* ═══════════════════════════════════════
-   PASILLO Z3 → Z4 (Z=16 a 20)
-   ═══════════════════════════════════════ */
-
-s+='<a-plane rotation="-90 0 0" width="4" height="4" position="0 0 18" color="#3D2B1F"></a-plane>';
-s+='<a-box width="0.2" height="3" depth="4" position="-2 1.5 18" color="#5C3A21"></a-box>';
-s+='<a-box width="0.2" height="3" depth="4" position="2 1.5 18" color="#5C3A21"></a-box>';
-s+='<a-entity position="0 0.05 18">';
-s+='<a-triangle vertex-a="0 0 -0.4" vertex-b="-0.3 0 0.2" vertex-c="0.3 0 0.2" rotation="-90 180 0" material="color:#FFD100;emissive:#FFD100;emissiveIntensity:0.4;side:double"></a-triangle>';
-s+='</a-entity>';
-s+='<a-text value="PATIO >" color="#FFD100" align="center" width="3" position="0 2.5 19" rotation="0 0 0"></a-text>';
-s+='<a-light type="point" color="#FFE0C2" intensity="0.4" distance="8" position="0 2.5 18"></a-light>';
-
-
-/* ═══════════════════════════════════════
-   ZONA 4: EL PATIO (Z=20 a 28)
-   ═══════════════════════════════════════ */
-
-s+='<a-plane rotation="-90 0 0" width="10" height="8" position="0 0 24" color="#7A7A6D"></a-plane>';
-s+='<a-box width="0.2" height="4" depth="8" position="-5 2 24" color="#6B6B5E"></a-box>';
-s+='<a-box width="0.2" height="4" depth="8" position="5 2 24" color="#6B6B5E"></a-box>';
-s+='<a-sky color="#2C3E50" radius="80"></a-sky>';
-s+='<a-cylinder class="clickable" data-panel="reloj" radius="0.5" height="0.1" position="-4.8 2.5 23" rotation="0 0 90" color="#C8A951" material="emissive:#FF5900;emissiveIntensity:0.2">';
-s+='<a-text value="5:45" color="#1A1A2E" align="center" width="1.5" position="0 0 0.06" rotation="0 0 0"></a-text>';
-s+='</a-cylinder>';
-s+='<a-entity class="clickable" data-panel="campana" position="4.8 2.5 23">';
-s+='<a-cone radius-bottom="0.4" radius-top="0.1" height="0.6" color="#C8A951" material="emissive:#FF5900;emissiveIntensity:0.2" rotation="0 0 0"></a-cone>';
-s+='<a-text value="CAMPANA" color="#C8A951" align="center" width="2" position="0 -0.5 0"></a-text>';
-s+='</a-entity>';
-s+='<a-box class="clickable" data-panel="muro" width="4" height="2.5" depth="0.2" position="0 1.5 27.8" color="#5C5C4E" material="emissive:#FF5900;emissiveIntensity:0.1">';
-s+='<a-text value="MURO COLABORATIVO\\nEscribe tu reflexion" color="#FFD100" align="center" width="5" position="0 0.5 0.15"></a-text>';
-s+='</a-box>';
-s+='<a-plane width="1.5" height="1" position="-4.8 3 26" rotation="0 90 0" color="#1A1A2E" material="opacity:0.9">';
-s+='<a-text value="CINE>ENTRADA>TALLER>\\nOFICINA>[AQUI]>SALIDA" color="#FFD100" align="center" width="2.5" position="0 0 0.01"></a-text>';
-s+='</a-plane>';
-s+='<a-light type="point" color="#B0C4DE" intensity="0.5" distance="12" position="0 3 24"></a-light>';
-/* Esferas de reaccion — Zona 4 */
-s+=emoSet(4.5,1.2,27);
-
-
-/* ═══════════════════════════════════════
-   PASILLO Z4 → Z5 (Z=28 a 32)
-   ═══════════════════════════════════════ */
-
-s+='<a-plane rotation="-90 0 0" width="4" height="4" position="0 0 30" color="#3D2B1F"></a-plane>';
-s+='<a-box width="0.2" height="3" depth="4" position="-2 1.5 30" color="#5C3A21"></a-box>';
-s+='<a-box width="0.2" height="3" depth="4" position="2 1.5 30" color="#5C3A21"></a-box>';
-s+='<a-entity position="0 0.05 30">';
-s+='<a-triangle vertex-a="0 0 -0.4" vertex-b="-0.3 0 0.2" vertex-c="0.3 0 0.2" rotation="-90 180 0" material="color:#FFD100;emissive:#FFD100;emissiveIntensity:0.4;side:double"></a-triangle>';
-s+='</a-entity>';
-s+='<a-text value="SALIDA >" color="#FFD100" align="center" width="3" position="0 2.5 31" rotation="0 0 0"></a-text>';
-s+='<a-light type="point" color="#FFE0C2" intensity="0.4" distance="8" position="0 2.5 30"></a-light>';
-
-
-/* ═══════════════════════════════════════
-   ZONA 5: LA PUERTA DE SALIDA (Z=32 a 38)
-   ═══════════════════════════════════════ */
-
-s+='<a-plane rotation="-90 0 0" width="10" height="6" position="0 0 35" color="#8B7355"></a-plane>';
-s+='<a-box width="10" height="4" depth="0.2" position="0 2 38" color="#5C3A21"></a-box>';
-s+='<a-box width="0.2" height="4" depth="6" position="-5 2 35" color="#5C3A21"></a-box>';
-s+='<a-box width="0.2" height="4" depth="6" position="5 2 35" color="#5C3A21"></a-box>';
-s+='<a-box class="clickable" data-panel="puerta" width="2" height="3" depth="0.3" position="0 1.5 37.8" color="#4A3728" material="emissive:#FF5900;emissiveIntensity:0.2">';
-s+='<a-text value="SALIDA" color="#C8A951" align="center" width="3" position="0 0.8 0.2"></a-text>';
-s+='</a-box>';
-s+='<a-text value="Donde termina la miseria\\ny donde empieza la\\ngrandeza del hombre?" color="#C8A951" align="center" width="6" position="0 3.2 37.8"></a-text>';
-s+='<a-plane width="1.5" height="1" position="-4.8 3 35" rotation="0 90 0" color="#1A1A2E" material="opacity:0.9">';
-s+='<a-text value="CINE>ENTRADA>TALLER>\\nOFICINA>PATIO>[AQUI]" color="#FFD100" align="center" width="2.5" position="0 0 0.01"></a-text>';
-s+='</a-plane>';
-s+='<a-light type="point" color="#FFE0C2" intensity="0.5" distance="12" position="0 3 35"></a-light>';
-/* Esferas de reaccion — Zona 5 */
-s+=emoSet(4.5,1.2,36);
-
-
-/* ═══════════════════════════════════════
-   TECHOS
-   ═══════════════════════════════════════ */
-
-s+='<a-plane rotation="90 0 0" width="10" height="8" position="0 4 -21" color="#2C1A1A"></a-plane>';
-s+='<a-plane rotation="90 0 0" width="10" height="8" position="0 4 -10" color="#3D2B1F"></a-plane>';
-s+='<a-plane rotation="90 0 0" width="10" height="8" position="0 4 0" color="#3D2B1F"></a-plane>';
-s+='<a-plane rotation="90 0 0" width="10" height="8" position="0 4 12" color="#3D2B1F"></a-plane>';
-s+='<a-plane rotation="90 0 0" width="10" height="6" position="0 4 35" color="#3D2B1F"></a-plane>';
-s+='<a-plane rotation="90 0 0" width="4" height="4" position="0 3 -16" color="#2C1A1A"></a-plane>';
-s+='<a-plane rotation="90 0 0" width="4" height="4" position="0 3 -6" color="#2C1A1A"></a-plane>';
-s+='<a-plane rotation="90 0 0" width="4" height="4" position="0 3 6" color="#2C1A1A"></a-plane>';
-s+='<a-plane rotation="90 0 0" width="4" height="4" position="0 3 18" color="#2C1A1A"></a-plane>';
-s+='<a-plane rotation="90 0 0" width="4" height="4" position="0 3 30" color="#2C1A1A"></a-plane>';
+/* Techo general */
+s+='<a-plane position="0 5 12" rotation="90 0 0" width="12" height="70" color="#2C1A1A" material="emissive:#2C1A1A;emissiveIntensity:0.02"></a-plane>';
 
 w.innerHTML=s;
 }
