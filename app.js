@@ -1,8 +1,8 @@
 
 /* =========================================
-   APP.JS V2.2 — La Fabrica de Fantine
-   Corregido: emoji sube, no se encima,
-   cine abre video, reacciones compartidas
+   APP.JS V2.3 — La Fabrica de Fantine
+   Corregido: HMM animado, panel fijo en mundo,
+   video funcional con fuse, reacciones compartidas
    ========================================= */
 
 /* ═══ VARIABLES GLOBALES ═══ */
@@ -146,8 +146,6 @@ function openPanel(id){
   if(ca){ca.currentTime=0;ca.play().catch(function(){});}
 }
 
-/* ═══ PANEL 3D EN VR ═══ */
-
 /* ═══ PANEL 3D EN VR — FIJO EN EL MUNDO ═══ */
 function showVRPanel(id){
   if(activeVP){
@@ -156,7 +154,7 @@ function showVRPanel(id){
   }
 
   var titles={
-    'pantalla':'SALA DE CINE\nAt the End of the Day\nLes Miserables\n\nEnfoca el boton naranja\npara VER VIDEO',
+    'pantalla':'SALA DE CINE\nAt the End of the Day\nLes Miserables\n\nEnfoca el boton naranja\n2 segundos para VER VIDEO',
     'porton':'LA PUERTA DE LA NECESIDAD\nFrankl: Al hombre se le puede\narrebatar todo salvo elegir\nsu actitud - Reflexiona',
     'letrero':'FABRIQUE MADELEINE\nBasta la buena intencion\npara hacer justicia?\n- Tomas de Aquino',
     'cartel':'SE BUSCAN OBRERAS\n15 sous x 12 horas\nPascal: La costumbre es\nnuestra naturaleza',
@@ -181,12 +179,10 @@ function showVRPanel(id){
   cam.object3D.getWorldPosition(camPos);
   cam.object3D.getWorldDirection(camDir);
 
-  /* Panel a 2.5m frente a donde mira el usuario */
   var panelX=camPos.x - camDir.x*2.5;
-  var panelY=camPos.y - camDir.y*2.5;
+  var panelY=camPos.y;
   var panelZ=camPos.z - camDir.z*2.5;
 
-  /* Calcular rotacion para que mire al usuario */
   var rotY=Math.atan2(camDir.x,camDir.z)*(180/Math.PI);
 
   var world=document.getElementById('world');
@@ -194,39 +190,50 @@ function showVRPanel(id){
   panel.setAttribute('position',panelX+' '+panelY+' '+panelZ);
   panel.setAttribute('rotation','0 '+rotY+' 0');
 
-  var h='<a-plane width="3" height="2" color="#1A1A2E" opacity="0.92" side="double"></a-plane>';
-  h+='<a-text value="'+txt+'" color="#C8A951" align="center" width="4" position="0 0.2 0.02" side="double"></a-text>';
-  h+='<a-text value="[Mira otro objeto para cerrar]" color="#FF5900" align="center" width="2.5" position="0 -0.8 0.02" side="double"></a-text>';
+  var h='<a-plane width="3" height="2.2" color="#1A1A2E" opacity="0.92" side="double"></a-plane>';
+  h+='<a-text value="'+txt+'" color="#C8A951" align="center" width="4" position="0 0.3 0.02" side="double"></a-text>';
+  h+='<a-text value="[Mira otro objeto para cerrar]" color="#FF5900" align="center" width="2.5" position="0 -0.9 0.02" side="double"></a-text>';
 
   /* Boton VER VIDEO solo para pantalla del cine */
   if(id==='pantalla'){
-    h+='<a-box class="clickable" id="vr-video-btn" width="1.8" height="0.4" depth="0.05" position="0 -0.5 0.03" color="#FF5900" material="emissive:#FF5900;emissiveIntensity:0.4"></a-box>';
-    h+='<a-text value=">>> VER VIDEO <<<" color="#FFFDF8" align="center" width="3" position="0 -0.5 0.06" side="double"></a-text>';
+    h+='<a-box class="clickable" width="1.8" height="0.4" depth="0.05" position="0 -0.55 0.03" color="#FF5900" material="emissive:#FF5900;emissiveIntensity:0.4">';
+    h+='<a-text value="VER VIDEO" color="#FFFDF8" align="center" width="3" position="0 0 0.04" side="double"></a-text>';
+    h+='</a-box>';
   }
 
   panel.innerHTML=h;
   world.appendChild(panel);
   activeVP=panel;
 
-  /* Conectar click al boton VER VIDEO */
+  /* Conectar click al boton VER VIDEO con delay para que A-Frame lo registre */
   if(id==='pantalla'){
     setTimeout(function(){
-      var vb=document.getElementById('vr-video-btn');
-      if(vb){
-        vb.addEventListener('click',function(){
+      var btns=panel.querySelectorAll('.clickable');
+      for(var b=0;b<btns.length;b++){
+        btns[b].addEventListener('click',function(){
           window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
         });
+        /* Tambien fuse-click para el cursor de mirada */
+        btns[b].addEventListener('mouseenter',function(){
+          var self=this;
+          self._fuseTimer=setTimeout(function(){
+            window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
+          },2000);
+        });
+        btns[b].addEventListener('mouseleave',function(){
+          if(this._fuseTimer)clearTimeout(this._fuseTimer);
+        });
       }
-    },500);
+    },1000);
   }
 
-  /* Auto-cerrar despues de 20 segundos */
+  /* Auto-cerrar despues de 25 segundos */
   setTimeout(function(){
     if(activeVP===panel){
       try{panel.parentNode.removeChild(panel);}catch(e){}
       activeVP=null;
     }
-  },20000);
+  },25000);
 }
 
 /* ═══ CERRAR PANEL 2D ═══ */
@@ -300,7 +307,6 @@ function sendReaction(type){
 
 /* ═══ EMOJI 3D EN VR (local — sube flotando) ═══ */
 function showVREmoji(type){
-  /* Remover emoji anterior para que no se encimen */
   if(activeEmoji){
     try{activeEmoji.parentNode.removeChild(activeEmoji);}catch(e){}
     activeEmoji=null;
@@ -315,27 +321,30 @@ function showVREmoji(type){
   txt.setAttribute('align','center');
   txt.setAttribute('width','5');
   txt.setAttribute('side','double');
-  txt.object3D.position.set(0,-0.3,-1.5);
+  txt.setAttribute('position','0 -0.3 -1.5');
   cam.appendChild(txt);
   activeEmoji=txt;
 
-  /* Animacion con object3D (mas rapido que setAttribute) */
-  var startY=-0.3;
-  var endY=0.5;
-  var dur=2500;
-  var t0=performance.now();
-  function anim(now){
-    var p=(now-t0)/dur;
-    if(p>=1){
-      try{txt.parentNode.removeChild(txt);}catch(e){}
-      if(activeEmoji===txt)activeEmoji=null;
-      return;
+  /* Esperar 1 frame para que A-Frame inicialice object3D */
+  requestAnimationFrame(function(){
+    var startY=-0.3;
+    var endY=0.5;
+    var dur=2500;
+    var t0=performance.now();
+    function anim(now){
+      if(!txt.parentNode){return;}
+      var p=(now-t0)/dur;
+      if(p>=1){
+        try{txt.parentNode.removeChild(txt);}catch(e){}
+        if(activeEmoji===txt)activeEmoji=null;
+        return;
+      }
+      var y=startY+(endY-startY)*p;
+      txt.setAttribute('position','0 '+y+' -1.5');
+      requestAnimationFrame(anim);
     }
-    var y=startY+(endY-startY)*p;
-    txt.object3D.position.y=y;
     requestAnimationFrame(anim);
-  }
-  requestAnimationFrame(anim);
+  });
 }
 
 /* ═══ REACCIONES COMPARTIDAS (Firebase) ═══ */
@@ -362,23 +371,27 @@ function showSharedReaction(type,name){
     txt.setAttribute('align','center');
     txt.setAttribute('width','3');
     txt.setAttribute('side','double');
-    txt.object3D.position.set(rx,2.5,rz);
+    txt.setAttribute('position',rx+' 2.5 '+rz);
     world.appendChild(txt);
 
-    var startY=2.5;
-    var endY=4.0;
-    var dur=3000;
-    var t0=performance.now();
-    function anim(now){
-      var p=(now-t0)/dur;
-      if(p>=1){
-        try{txt.parentNode.removeChild(txt);}catch(e){}
-        return;
+    requestAnimationFrame(function(){
+      var startY=2.5;
+      var endY=4.0;
+      var dur=3000;
+      var t0=performance.now();
+      function anim(now){
+        if(!txt.parentNode){return;}
+        var p=(now-t0)/dur;
+        if(p>=1){
+          try{txt.parentNode.removeChild(txt);}catch(e){}
+          return;
+        }
+        var y=startY+(endY-startY)*p;
+        txt.setAttribute('position',rx+' '+y+' '+rz);
+        requestAnimationFrame(anim);
       }
-      txt.object3D.position.y=startY+(endY-startY)*p;
       requestAnimationFrame(anim);
-    }
-    requestAnimationFrame(anim);
+    });
   } else {
     var fb=document.createElement('div');
     fb.style.cssText='position:fixed;top:20%;left:'+(20+Math.random()*60)+'%;font-size:32px;font-weight:bold;color:'+colors[type]+';z-index:999;text-shadow:2px 2px 4px rgba(0,0,0,0.5);pointer-events:none;opacity:0.8;';
