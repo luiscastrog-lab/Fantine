@@ -1,8 +1,8 @@
 
 /* =========================================
-   APP.JS V2.3 — La Fabrica de Fantine
-   Corregido: HMM animado, panel fijo en mundo,
-   video funcional con fuse, reacciones compartidas
+   APP.JS V2.4 — La Fabrica de Fantine
+   LIMPIO: sin duplicados, controles corregidos,
+   emoji sube, panel fijo, video funcional
    ========================================= */
 
 /* ═══ VARIABLES GLOBALES ═══ */
@@ -13,8 +13,6 @@ var isVR=false;
 var activeVP=null;
 var activeEmoji=null;
 var ids=['pantalla','cartel','porton','letrero','instrucciones','carta','cuentas','diario','decreto','espejo','reloj','campana','muro','puerta'];
-
-/* ═══ QUEST-MOVE (movimiento con joystick) ═══ */
 
 /* ═══ QUEST-MOVE (movimiento con joystick — direccion corregida) ═══ */
 AFRAME.registerComponent('quest-move',{
@@ -45,7 +43,6 @@ AFRAME.registerComponent('quest-move',{
     }
   }
 });
-
 
 /* ═══ INICIALIZACION ═══ */
 window.addEventListener('DOMContentLoaded',function(){
@@ -175,7 +172,6 @@ function showVRPanel(id){
 
   var txt=titles[id]||id;
 
-  /* Calcular posicion FIJA en el mundo frente al usuario */
   var cam=document.querySelector('[camera]');
   var camPos=new THREE.Vector3();
   var camDir=new THREE.Vector3();
@@ -197,7 +193,6 @@ function showVRPanel(id){
   h+='<a-text value="'+txt+'" color="#C8A951" align="center" width="4" position="0 0.3 0.02" side="double"></a-text>';
   h+='<a-text value="[Mira otro objeto para cerrar]" color="#FF5900" align="center" width="2.5" position="0 -0.9 0.02" side="double"></a-text>';
 
-  /* Boton VER VIDEO solo para pantalla del cine */
   if(id==='pantalla'){
     h+='<a-box class="clickable" width="1.8" height="0.4" depth="0.05" position="0 -0.55 0.03" color="#FF5900" material="emissive:#FF5900;emissiveIntensity:0.4">';
     h+='<a-text value="VER VIDEO" color="#FFFDF8" align="center" width="3" position="0 0 0.04" side="double"></a-text>';
@@ -208,15 +203,6 @@ function showVRPanel(id){
   world.appendChild(panel);
   activeVP=panel;
 
-  /* Conectar click al boton VER VIDEO con delay para que A-Frame lo registre */
-  if(id==='pantalla'){
-    setTimeout(function(){
-      var btns=panel.querySelectorAll('.clickable');
-      for(var b=0;b<btns.length;b++){
-        btns[b].addEventListener('click',function(){
-          window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
-        });
-      
   /* Conectar click al boton VER VIDEO — solo en VR */
   if(id==='pantalla'){
     setTimeout(function(){
@@ -238,8 +224,6 @@ function showVRPanel(id){
       }
     },1000);
   }
-
-
 
   /* Auto-cerrar despues de 25 segundos */
   setTimeout(function(){
@@ -339,7 +323,6 @@ function showVREmoji(type){
   cam.appendChild(txt);
   activeEmoji=txt;
 
-  /* Esperar 1 frame para que A-Frame inicialice object3D */
   requestAnimationFrame(function(){
     var startY=-0.3;
     var endY=0.5;
