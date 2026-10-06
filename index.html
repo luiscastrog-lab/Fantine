@@ -4,244 +4,191 @@
 <head>
 <meta charset="utf-8">
 <title>UV1: La Fabrica de Fantine</title>
-
-<!-- ═══ ESTILOS ═══ -->
+<script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <style>
-body{margin:0;overflow:hidden;font-family:'Segoe UI',Arial,sans-serif;}
-#login{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#1A1A2E,#16213E);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;color:#FFFDF8;}
-#login h1{font-size:2.2em;color:#C8A951;margin-bottom:5px;text-shadow:2px 2px 8px rgba(0,0,0,0.5);}
-#login h2{font-size:1.1em;color:#FF5900;margin-top:0;}
-#login input{padding:14px 20px;font-size:18px;border:2px solid #C8A951;border-radius:12px;background:rgba(255,255,255,0.1);color:#FFFDF8;width:280px;text-align:center;margin:10px 0;}
+body{margin:0;overflow:hidden;font-family:'Segoe UI',sans-serif;background:#1A1A2E;}
+#login{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#1A1A2E,#2D1B4E);display:flex;align-items:center;justify-content:center;z-index:999;flex-direction:column;}
+#login h1{color:#C8A951;font-size:2.2em;margin-bottom:8px;text-shadow:0 2px 8px rgba(0,0,0,0.5);}
+#login p{color:#FFE0C2;font-size:1em;margin-bottom:20px;}
+#login input{padding:14px 24px;font-size:18px;border-radius:12px;border:2px solid #C8A951;background:rgba(255,255,255,0.1);color:#FFFDF8;text-align:center;width:280px;margin-bottom:16px;}
 #login input::placeholder{color:rgba(255,253,248,0.5);}
-#eb{padding:14px 40px;font-size:18px;background:#FF5900;color:#FFFDF8;border:none;border-radius:12px;cursor:pointer;margin-top:10px;font-weight:bold;}
-#eb:hover{background:#E04E00;}
-#hud{display:none;position:fixed;top:10px;left:10px;z-index:90;background:rgba(26,26,46,0.85);color:#FFFDF8;padding:10px 16px;border-radius:10px;font-size:13px;border:1px solid #C8A951;}
-.ip{display:none;position:fixed;bottom:0;left:0;width:100%;background:rgba(26,26,46,0.95);color:#FFFDF8;padding:20px;z-index:80;border-top:3px solid #C8A951;max-height:40vh;overflow-y:auto;}
-.ip h3{color:#C8A951;margin:0 0 8px 0;}
-.ip p{margin:5px 0;line-height:1.5;}
-.ip .cb{position:absolute;top:10px;right:15px;color:#FF5900;font-size:24px;cursor:pointer;font-weight:bold;}
-.ip .ab{display:inline-block;margin-top:10px;padding:8px 20px;background:#FF5900;color:#FFFDF8;border:none;border-radius:8px;cursor:pointer;font-size:14px;}
-#vo{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:100;align-items:center;justify-content:center;flex-direction:column;}
-#vo iframe{width:90%;max-width:900px;height:70vh;border:3px solid #C8A951;border-radius:12px;}
-#vo button{margin-top:15px;padding:10px 30px;background:#FF5900;color:#FFFDF8;border:none;border-radius:8px;font-size:16px;cursor:pointer;}
-#mi{display:none;position:fixed;bottom:60px;left:50%;transform:translateX(-50%);background:rgba(26,26,46,0.95);padding:20px;border-radius:12px;border:2px solid #C8A951;z-index:85;width:350px;}
-#mi textarea{width:100%;height:80px;background:rgba(255,255,255,0.1);color:#FFFDF8;border:1px solid #C8A951;border-radius:8px;padding:10px;font-size:14px;resize:none;}
-#mi button{margin-top:8px;padding:8px 20px;background:#FF5900;color:#FFFDF8;border:none;border-radius:8px;cursor:pointer;}
-.re{position:fixed;bottom:10px;right:10px;z-index:80;display:flex;gap:6px;}
-.re button{width:40px;height:40px;border-radius:50%;border:2px solid #C8A951;font-size:18px;cursor:pointer;background:rgba(26,26,46,0.8);color:#FFFDF8;}
-.re button:hover{background:#FF5900;}
+#login button{padding:14px 48px;font-size:18px;background:#FF5900;color:#FFFDF8;border:none;border-radius:12px;cursor:pointer;font-weight:bold;box-shadow:0 4px 12px rgba(255,89,0,0.3);}
+#hud{position:fixed;top:10px;left:10px;background:rgba(26,26,46,0.85);color:#C8A951;padding:12px 18px;border-radius:12px;font-size:14px;z-index:99;display:none;border:1px solid rgba(200,169,81,0.3);}
+.ip{display:none;position:fixed;bottom:0;left:0;width:100%;background:rgba(26,26,46,0.95);color:#FFFDF8;padding:20px;z-index:98;border-top:3px solid #C8A951;max-height:40vh;overflow-y:auto;}
+.ip h3{color:#C8A951;margin:0 0 8px 0;font-size:1.2em;}
+.ip p{margin:4px 0;line-height:1.5;font-size:0.95em;}
+.ip .q{color:#FF5900;font-style:italic;margin-top:8px;font-weight:bold;}
+.ip button{margin-top:10px;padding:8px 20px;background:#FF5900;color:#FFFDF8;border:none;border-radius:8px;cursor:pointer;font-weight:bold;}
+.cb{position:fixed;top:10px;right:10px;background:rgba(26,26,46,0.85);padding:8px;border-radius:12px;z-index:98;display:none;border:1px solid rgba(200,169,81,0.3);}
+.cb button{display:block;margin:4px;padding:10px;border:none;border-radius:8px;cursor:pointer;font-size:20px;width:44px;height:44px;text-align:center;}
+#vo{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:200;align-items:center;justify-content:center;flex-direction:column;}
+#vo iframe{width:90%;max-width:800px;height:50vh;border:none;border-radius:12px;}
+#vo button{margin-top:16px;padding:12px 32px;background:#FF5900;color:#FFFDF8;border:none;border-radius:12px;cursor:pointer;font-size:16px;font-weight:bold;}
+#mi{display:none;position:fixed;bottom:60px;left:50%;transform:translateX(-50%);background:rgba(26,26,46,0.95);padding:20px;border-radius:12px;z-index:100;border:2px solid #C8A951;text-align:center;}
+#mi textarea{width:280px;height:80px;padding:10px;border-radius:8px;border:1px solid #C8A951;background:rgba(255,255,255,0.1);color:#FFFDF8;font-size:14px;resize:none;}
+#mi button{margin-top:10px;padding:10px 24px;background:#FF5900;color:#FFFDF8;border:none;border-radius:8px;cursor:pointer;font-weight:bold;}
 </style>
-
-<!-- ═══ SCRIPTS EXTERNOS (UNA SOLA VEZ) ═══ -->
-<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body>
 
-<!-- ═══ PANTALLA DE LOGIN ═══ -->
+<!-- ===== LOGIN ===== -->
 <div id="login">
-  <h1>La Fabrica de Fantine</h1>
-  <h2>Miseria y Grandeza del Hombre</h2>
-  <p style="margin:15px 0 5px;color:#C8A951;">Escribe tu nombre completo:</p>
-  <input type="text" id="ni" placeholder="Tu nombre aqui..." autocomplete="off">
-  <button id="eb">Entrar a la Fabrica</button>
-  <p style="font-size:11px;margin-top:20px;color:rgba(255,253,248,0.5);">Persona y Trascendencia · Universidad Anahuac Mayab</p>
+<h1>🏭 La Fabrica de Fantine</h1>
+<p>Persona y Trascendencia · Miseria y Grandeza del Hombre</p>
+<input type="text" id="ni" placeholder="Escribe tu nombre" autocomplete="off">
+<button id="eb">Entrar a la Fabrica</button>
 </div>
 
-<!-- ═══ HUD (INFO EN PANTALLA) ═══ -->
+<!-- ===== HUD ===== -->
 <div id="hud">
-  <span>Zona: <strong id="zi">—</strong></span><br>
-  <span>Objetos: <strong id="oi">0</strong></span>
-  <span style="margin-left:10px;" id="fc"></span>
+📍 Zona: <span id="zi">—</span><br>
+🔍 Objetos: <span id="oi">0</span> | 🧩 Puzzle: <span id="pc">0</span>/16
 </div>
 
-<!-- ═══ PANELES 2D (SOLO PC) — STORYTELLING V2.0 ═══ -->
+<!-- ===== BOTONES REACCION 2D ===== -->
+<div class="cb" id="rbar">
+<button onclick="sendReaction('wow')" style="background:#FF5900;color:#FFF;">!</button>
+<button onclick="sendReaction('triste')" style="background:#3B82F6;color:#FFF;">T</button>
+<button onclick="sendReaction('no')" style="background:#EF4444;color:#FFF;">✕</button>
+<button onclick="sendReaction('hmm')" style="background:#7C3AED;color:#FFF;">?</button>
+<button onclick="sendReaction('idea')" style="background:#F59E0B;color:#FFF;">💡</button>
+</div>
+
+<!-- ===== PANELES 2D ===== -->
 <div class="ip" id="p-pantalla">
-  <span class="cb" onclick="cp()">✕</span>
-  <h3>LA JORNADA QUE CAMBIO TODO</h3>
-  <p>"At the End of the Day" — Les Miserables (2012)</p>
-  <p>Los obreros cantan mientras trabajan: "Al final del dia solo eres otro dia mas viejo." Fijate en los rostros. Fijate en las manos. Fijate en quien vigila y quien obedece.</p>
-  <p>Pascal escribio: <em>"El hombre no es mas que una cana, la mas debil de la naturaleza; pero es una cana pensante."</em> Estos obreros son canas. Pero piensan? O solo sobreviven?</p>
-  <p><strong>Reflexiona:</strong> Que diferencia hay entre vivir y sobrevivir?</p>
-  <button class="ab" onclick="ov()">▶ Ver Video</button>
+<h3>🎬 Sala de Cine — At the End of the Day</h3>
+<p>Acabas de ver el video en Brightspace. Ahora estas en el lugar donde todo comenzo.</p>
+<p class="q">¿Que viste en los rostros de las obreras? ¿Que escuchaste en sus voces?</p>
+<button onclick="cp()">✕ Cerrar</button>
 </div>
 
 <div class="ip" id="p-porton">
-  <span class="cb" onclick="cp()">✕</span>
-  <h3>LA PUERTA DE LA NECESIDAD</h3>
-  <p>Fantine cruzo esta puerta en 1823. Habia sido abandonada, expulsada de su hogar y rechazada por la sociedad. La fabrica era su ultima esperanza.</p>
-  <p>San Agustin decia que el corazon humano esta inquieto hasta que descansa en algo que lo trasciende. Pero Fantine no buscaba trascendencia — buscaba pan.</p>
-  <p>Viktor Frankl, desde Auschwitz, responderia: <em>"Al hombre se le puede arrebatar todo salvo la ultima de las libertades humanas: elegir la actitud personal ante un conjunto de circunstancias."</em></p>
-  <p><strong>Reflexiona:</strong> Tener trabajo es suficiente para tener dignidad? O la dignidad exige algo mas?</p>
+<h3>🚪 La Puerta de la Necesidad</h3>
+<p>Fantine cruzo esta puerta buscando trabajo. No tenia opciones. Viktor Frankl escribio: "Al hombre se le puede arrebatar todo salvo una cosa: elegir su actitud ante cualquier circunstancia."</p>
+<p class="q">¿Fantine elegia entrar, o la empujaba la necesidad?</p>
+<button onclick="cp()">✕ Cerrar</button>
 </div>
 
 <div class="ip" id="p-letrero">
-  <span class="cb" onclick="cp()">✕</span>
-  <h3>FABRIQUE MADELEINE — UNA PROMESA DE JUSTICIA</h3>
-  <p>El Padre Madeleine — que en realidad era Jean Valjean — fundo esta fabrica para dar trabajo a los pobres de Montreuil-sur-Mer. Su intencion era noble: transformar la miseria en oportunidad.</p>
-  <p>Tomas de Aquino senalaba: la justicia no es solo dar a cada quien lo suyo, sino reconocer la dignidad intrinseca de cada persona. Madeleine creo empleos, pero creo condiciones dignas?</p>
-  <p><strong>Reflexiona:</strong> Basta la buena intencion para hacer justicia? Puede un sistema creado con buenas intenciones producir resultados injustos?</p>
+<h3>🏭 Fabrique Madeleine</h3>
+<p>El alcalde Madeleine (Valjean) creo esta fabrica para dar trabajo digno. Tomas de Aquino enseno que la justicia es "dar a cada uno lo que le corresponde."</p>
+<p class="q">¿Basta la buena intencion para hacer justicia?</p>
+<button onclick="cp()">✕ Cerrar</button>
 </div>
 
 <div class="ip" id="p-cartel">
-  <span class="cb" onclick="cp()">✕</span>
-  <h3>SE BUSCAN OBRERAS — 15 SOUS POR DIA</h3>
-  <p>15 sous al dia. 12 horas de jornada. Sin seguro. Sin descanso. Sin voz.</p>
-  <p>En 1823, esto era legal. Hoy nos parece inhumano. Pero Pascal nos advierte: <em>"La costumbre es nuestra naturaleza."</em> Lo que hoy nos escandaliza, ayer era normal. Y lo que hoy aceptamos como normal... manana nos escandalizara?</p>
-  <p>Piensa en tu propia vida: que condiciones laborales aceptas hoy sin cuestionar?</p>
-  <p><strong>Reflexiona:</strong> Donde esta el limite entre necesidad y explotacion? Quien lo define?</p>
+<h3>📋 Se Buscan Obreras — 15 sous por 12 horas</h3>
+<p>Este era el salario de una obrera en 1823. Pascal escribio: "La costumbre es nuestra naturaleza." Lo que hoy nos parece injusto, entonces era "normal."</p>
+<p class="q">¿Que injusticias de hoy aceptamos como normales?</p>
+<button onclick="cp()">✕ Cerrar</button>
 </div>
 
 <div class="ip" id="p-instrucciones">
-  <span class="cb" onclick="cp()">✕</span>
-  <h3>COMO NAVEGAR LA FABRICA</h3>
-  <p><strong>Meta Quest:</strong> Joystick izquierdo para caminar. Mira un objeto brillante 2 segundos para activarlo. Usa las esferas de colores para expresar lo que sientes.</p>
-  <p><strong>PC:</strong> Mouse para mirar + teclas W A S D para caminar. Clic en los objetos brillantes.</p>
-  <p><strong>Ruta:</strong> Sigue las flechas amarillas en el piso. Cine > Entrada > Taller > Oficina > Patio > Salida</p>
+<h3>📖 Como Navegar</h3>
+<p>🕹️ Joystick izquierdo: caminar | 👀 Mira un objeto 2 seg: activar panel | 🟡 Flechas amarillas: seguir la ruta | 🔴🔵🟢🟡🟣 Esferas: reaccionar</p>
+<button onclick="cp()">✕ Cerrar</button>
 </div>
 
 <div class="ip" id="p-carta">
-  <span class="cb" onclick="cp()">✕</span>
-  <h3>QUERIDA COSETTE...</h3>
-  <p>Esta carta nunca llego. Fantine escribia a su hija cada semana, sin saber que los Thenardier la maltrataban, la vestian con harapos y la usaban como sirvienta.</p>
-  <p>Gabriel Marcel distingue entre "tener" y "ser": Fantine no tenia nada — ni dinero, ni salud, ni libertad. Pero era madre. Y ese "ser" la sostenia.</p>
-  <p><strong>Reflexiona:</strong> El amor justifica cualquier sacrificio? O hay sacrificios que destruyen a quien los hace?</p>
+<h3>💌 Querida Cosette</h3>
+<p>Fantine escribia cartas a su hija que nunca llegaban. Gabriel Marcel distinguio entre TENER y SER: Fantine no TENIA nada, pero ERA madre.</p>
+<p class="q">¿Que define mas a una persona: lo que tiene o lo que es?</p>
+<button onclick="cp()">✕ Cerrar</button>
 </div>
 
 <div class="ip" id="p-cuentas">
-  <span class="cb" onclick="cp()">✕</span>
-  <h3>LOS NUMEROS DE LA MISERIA</h3>
-  <p>Ingresos mensuales: 360 sous. Pago por Cosette: 300 sous. Le quedan: 60 sous. Costo minimo de vida: 120 sous. Deficit: -60 sous.</p>
-  <p>Los numeros no mienten. Fantine estaba matematicamente condenada. No importaba cuanto trabajara — el sistema estaba disenado para que nunca saliera de la miseria.</p>
-  <p>Frankl diria que incluso aqui, Fantine tenia una eleccion: el sentido. Pero es justo pedirle sentido a alguien que no puede comer?</p>
-  <p><strong>Reflexiona:</strong> Cuando los numeros no cuadran, que es lo primero que se sacrifica: la salud, la dignidad o la esperanza?</p>
+<h3>📊 Los Numeros de la Miseria</h3>
+<p>Ingresos: 360 sous/mes | Gastos: 420 sous/mes | Deficit: -60 sous. Frankl preguntaba por el sentido del sufrimiento.</p>
+<p class="q">¿Es justo pedir sentido a quien no puede comer?</p>
+<button onclick="cp()">✕ Cerrar</button>
 </div>
 
 <div class="ip" id="p-diario">
-  <span class="cb" onclick="cp()">✕</span>
-  <h3>JORNADA DE UNA OBRERA — 1823</h3>
-  <p>5:45 AM — Despertar sin calefaccion. 6:00 AM — Caminar 30 min a la fabrica. 6:30-18:30 — Trabajar 12 horas de pie. 12:00 PM — 15 minutos para comer pan. 7:00 PM — Cenar lo que haya. 8:00 PM — Dormir. Manana sera igual.</p>
-  <p>Agustin escribio: <em>"Nos hiciste, Senor, para ti, y nuestro corazon esta inquieto hasta que descanse en ti."</em> Pero cuando descansa el corazon de una obrera que trabaja 12 horas?</p>
-  <p><strong>Reflexiona:</strong> Si tu jornada fuera asi, que perderia sentido en tu vida? Que conservarias a toda costa?</p>
+<h3>📔 Jornada de una Obrera</h3>
+<p>5:45 AM a 8:00 PM sin descanso. San Agustin escribio: "Nuestro corazon esta inquieto hasta que descansa en Ti."</p>
+<p class="q">¿Donde encontraba Fantine descanso para su corazon?</p>
+<button onclick="cp()">✕ Cerrar</button>
 </div>
 
 <div class="ip" id="p-decreto">
-  <span class="cb" onclick="cp()">✕</span>
-  <h3>NINGUN OBRERO SERA DESPEDIDO SIN CAUSA JUSTA</h3>
-  <p>El Padre Madeleine firmo este decreto. Pero Fantine fue despedida por el capataz — no por Madeleine. El capataz descubrio que tenia una hija ilegitima y la echo por "inmoralidad." Madeleine nunca se entero.</p>
-  <p>Tomas de Aquino ensenaba: una ley injusta no es verdadera ley. Pero que pasa cuando la ley es justa pero quienes la aplican no lo son?</p>
-  <p><strong>Reflexiona:</strong> Quien es responsable cuando el sistema falla: quien disena las reglas o quien las ejecuta?</p>
+<h3>📜 Decreto del Alcalde</h3>
+<p>"Ningun obrero sera despedido sin causa justa." Pero el capataz despidio a Fantine por ser madre soltera.</p>
+<p class="q">¿Quien falla: la ley, quien la aplica, o la sociedad que juzga?</p>
+<button onclick="cp()">✕ Cerrar</button>
 </div>
 
 <div class="ip" id="p-espejo">
-  <span class="cb" onclick="cp()">✕</span>
-  <h3>QUIEN ERES REALMENTE?</h3>
-  <p>Jean Valjean vivia con una identidad falsa. "Padre Madeleine" era una mascara. Era alcalde, empresario, benefactor. Pero por dentro seguia siendo el expresidiario 24601.</p>
-  <p>Un dia tuvo que elegir: revelar su verdad y perderlo todo, o callar y dejar que un inocente fuera condenado. Eligio la verdad. Eligio la grandeza.</p>
-  <p>Pascal escribio: <em>"El hombre supera infinitamente al hombre."</em> Valjean supero al hombre que era.</p>
-  <p><strong>Reflexiona:</strong> Que parte de ti escondes para ser aceptado? Revelarias tu verdad si el precio fuera perderlo todo?</p>
+<h3>🪞 ¿Quien Eres Realmente?</h3>
+<p>Pascal escribio: "El hombre supera infinitamente al hombre." Valjean se miro al espejo y eligio la verdad.</p>
+<p class="q">¿Que ves cuando te miras sin mascara?</p>
+<button onclick="cp()">✕ Cerrar</button>
 </div>
 
 <div class="ip" id="p-reloj">
-  <span class="cb" onclick="cp()">✕</span>
-  <h3>5:45 AM — TU TIEMPO NO TE PERTENECE</h3>
-  <p>Este reloj marca las 5:45 de la manana. Cada dia. Sin excepcion. El tiempo de Fantine no le pertenecia — pertenecia a la fabrica, al capataz, a los Thenardier.</p>
-  <p>Agustin descubrio que el tiempo verdadero no esta en las manecillas sino en el alma: <em>"En ti, alma mia, mido los tiempos."</em></p>
-  <p><strong>Reflexiona:</strong> Eres dueno de tus horas? Si tuvieras 4 horas libres al dia — verdaderamente libres — que harias con ellas?</p>
+<h3>⏰ 5:45 AM — Tu Tiempo No Te Pertenece</h3>
+<p>San Agustin reflexiono: "En ti, alma mia, mido los tiempos." El tiempo de Fantine pertenecia a otros.</p>
+<p class="q">¿A quien le pertenece tu tiempo?</p>
+<button onclick="cp()">✕ Cerrar</button>
 </div>
 
 <div class="ip" id="p-campana">
-  <span class="cb" onclick="cp()">✕</span>
-  <h3>LA CAMPANA DEL CAPATAZ</h3>
-  <p>Suena para marcar el ritmo. No tu ritmo — el ritmo de la produccion. "Sigue trabajando. Mas rapido. No pares."</p>
-  <p>Frankl distinguia entre el sufrimiento con sentido y el sufrimiento absurdo. El trabajo dignifica cuando tiene proposito. Pero cuando solo sirve para enriquecer a otro mientras tu te consumes... sigue siendo digno?</p>
-  <p><strong>Reflexiona:</strong> Cuando el trabajo deja de dignificar y empieza a destruir? Como lo reconoces?</p>
+<h3>🔔 La Campana del Capataz</h3>
+<p>Frankl distinguio entre sufrimiento con sentido y sufrimiento absurdo.</p>
+<p class="q">¿Cuando el trabajo dignifica y cuando destruye?</p>
+<button onclick="cp()">✕ Cerrar</button>
 </div>
 
 <div class="ip" id="p-muro">
-  <span class="cb" onclick="cp()">✕</span>
-  <h3>MURO COLABORATIVO — TU VOZ IMPORTA</h3>
-  <p>Has recorrido la fabrica. Has visto la miseria de cerca. Ahora es tu turno de hablar.</p>
-  <p>Escribe una reflexion breve. No busques la respuesta perfecta — busca tu respuesta honesta. Que te movio? Que te incomodo? Que pregunta te llevas?</p>
-  <button class="ab" onclick="sm()">Escribir en el Muro</button>
+<h3>🧱 Muro Colaborativo</h3>
+<p>Escribe tu reflexion. ¿Que te movio? ¿Que pregunta te llevas?</p>
+<button onclick="sm()">✏️ Escribir en el muro</button>
+<button onclick="cp()">✕ Cerrar</button>
 </div>
 
 <div class="ip" id="p-puerta">
-  <span class="cb" onclick="cp()">✕</span>
-  <h3>LA PREGUNTA QUE TE LLEVAS</h3>
-  <p>Has recorrido la Fabrica de Fantine. Has visto como la miseria marca los cuerpos, las decisiones y las relaciones. Pero tambien has visto destellos de grandeza: el amor de una madre, la busqueda de justicia, la eleccion de la verdad.</p>
-  <p>Victor Hugo escribio: <em>"Hay un espectaculo mas grande que el mar, y es el cielo. Hay un espectaculo mas grande que el cielo, y es el interior del alma."</em></p>
-  <p><strong>La pregunta central:</strong> <em>"Donde termina la miseria y donde empieza la grandeza del hombre?"</em></p>
-  <p><strong>Lleva esta pregunta al Foro de Brightspace.</strong></p>
+<h3>🚪 La Pregunta que Te Llevas</h3>
+<p>Victor Hugo escribio: "El espectaculo mas grande es el interior del alma."</p>
+<p class="q">¿Que descubriste de ti mismo en este recorrido?</p>
+<button onclick="cp()">✕ Cerrar</button>
 </div>
 
-<!-- ═══ VIDEO OVERLAY ═══ -->
+<!-- ===== VIDEO OVERLAY (solo PC) ===== -->
 <div id="vo">
-  <iframe id="vf" allow="autoplay;encrypted-media" allowfullscreen></iframe>
-  <button onclick="cv()">Cerrar Video y Regresar</button>
+<iframe id="vf" src="" allowfullscreen></iframe>
+<button onclick="cv()">✕ Cerrar Video</button>
 </div>
 
-<!-- ═══ MURO INPUT ═══ -->
+<!-- ===== MURO INPUT ===== -->
 <div id="mi">
-  <p style="color:#C8A951;margin:0 0 8px;">Tu reflexion:</p>
-  <textarea id="mt" placeholder="Escribe aqui tu reflexion..."></textarea>
-  <button onclick="wm()">Enviar al Muro</button>
+<p style="color:#C8A951;font-weight:bold;">Tu reflexion:</p>
+<textarea id="mt" placeholder="Escribe aqui..."></textarea><br>
+<button onclick="wm()">Enviar al Muro</button>
 </div>
 
-<!-- ═══ REACCIONES 2D (SOLO PC) ═══ -->
-<div class="re" id="re2d">
-  <button onclick="sendReaction('wow')" title="Wow!">!</button>
-  <button onclick="sendReaction('triste')" title="Triste">T</button>
-  <button onclick="sendReaction('no')" title="No!">N</button>
-  <button onclick="sendReaction('hmm')" title="Hmm...">?</button>
-  <button onclick="sendReaction('idea')" title="Idea!">*</button>
-</div>
-
-<!-- ═══ AUDIO ═══ -->
+<!-- ===== AUDIO ===== -->
 <audio id="bgm" src="musica.mp3" preload="auto"></audio>
 <audio id="sfx" src="campana.mp3" preload="auto"></audio>
+<audio id="bingo" src="Bingo.mp3" preload="auto"></audio>
 
-<!-- ═══ ESCENA A-FRAME ═══ -->
-<a-scene vr-mode-ui="enabled:true" loading-screen="enabled:false" renderer="antialias:false;colorManagement:true" fog="type:exponential;color:#2C1A1A;density:0.008">
-
-  <!-- Contenedor de la escena 3D -->
-  <a-entity id="world"></a-entity>
-
-  <!-- Esferas de reaccion 3D (VR) -->
-  <a-entity id="rpanel" position="-4 1 -10">
-    <a-text value="REACCIONES" color="#C8A951" align="center" width="2" position="0 1.4 0"></a-text>
-    <a-sphere class="emo clickable" data-re="wow" radius="0.12" position="0 1.1 0" color="#FF5900" material="emissive:#FF5900;emissiveIntensity:0.3"></a-sphere>
-    <a-text value="WOW" color="#FF5900" align="center" width="1.5" position="0.3 1.1 0"></a-text>
-    <a-sphere class="emo clickable" data-re="triste" radius="0.12" position="0 0.8 0" color="#3B82F6" material="emissive:#3B82F6;emissiveIntensity:0.3"></a-sphere>
-    <a-text value="TRISTE" color="#3B82F6" align="center" width="1.5" position="0.3 0.8 0"></a-text>
-    <a-sphere class="emo clickable" data-re="no" radius="0.12" position="0 0.5 0" color="#EF4444" material="emissive:#EF4444;emissiveIntensity:0.3"></a-sphere>
-    <a-text value="NO" color="#EF4444" align="center" width="1.5" position="0.3 0.5 0"></a-text>
-    <a-sphere class="emo clickable" data-re="hmm" radius="0.12" position="0 0.2 0" color="#7C3AED" material="emissive:#7C3AED;emissiveIntensity:0.3"></a-sphere>
-    <a-text value="HMM" color="#7C3AED" align="center" width="1.5" position="0.3 0.2 0"></a-text>
-    <a-sphere class="emo clickable" data-re="idea" radius="0.12" position="0 -0.1 0" color="#F59E0B" material="emissive:#F59E0B;emissiveIntensity:0.3"></a-sphere>
-    <a-text value="IDEA" color="#F59E0B" align="center" width="1.5" position="0.3 -0.1 0"></a-text>
-  </a-entity>
-
-  <!-- Rig del jugador -->
-  <a-entity id="rig" movement-controls="fly:false;speed:0.15" position="0 0 -22">
-    <a-entity camera look-controls="pointerLockEnabled:false" position="0 1.6 0">
-      <a-cursor fuse="true" fuse-timeout="2000" color="#FF5900" raycaster="objects:.clickable" scale="0.5 0.5 0.5"
-        animation__fusing="property:scale;startEvents:fusing;from:0.5 0.5 0.5;to:0.2 0.2 0.2;dur:2000"
-        animation__leave="property:scale;startEvents:mouseleave;to:0.5 0.5 0.5;dur:300">
-      </a-cursor>
-    </a-entity>
-    <a-entity id="lhand" laser-controls="hand:left" raycaster="objects:.clickable;far:10" line="color:#FF5900;opacity:0.7"></a-entity>
-    <a-entity id="rhand" laser-controls="hand:right" raycaster="objects:.clickable;far:10" line="color:#FF5900;opacity:0.7"></a-entity>
-  </a-entity>
-
-  <!-- Iluminacion global -->
-  <a-light type="ambient" color="#FFE0C2" intensity="0.45"></a-light>
-
+<!-- ===== ESCENA A-FRAME ===== -->
+<a-scene vr-mode-ui="enabled:true" loading-screen="enabled:false" renderer="antialias:true">
+<a-entity id="world"></a-entity>
+<a-entity id="rig" movement-controls="fly:false;speed:0.15" position="0 0 -22">
+<a-entity camera look-controls="pointerLockEnabled:false" position="0 1.6 0">
+<a-entity cursor="fuse:true;fuseTimeout:2000" raycaster="objects:.clickable" position="0 0 -1"
+geometry="primitive:ring;radiusInner:0.015;radiusOuter:0.025" material="color:#FF5900;shader:flat"
+animation__fusing="property:geometry.radiusInner;from:0.015;to:0.001;dur:2000;startEvents:fusing"
+animation__leave="property:geometry.radiusInner;from:0.001;to:0.015;dur:400;startEvents:mouseleave">
+</a-entity>
+</a-entity>
+<a-entity id="lhand" laser-controls="hand:left" raycaster="objects:.clickable"></a-entity>
+<a-entity id="rhand" laser-controls="hand:right" raycaster="objects:.clickable"></a-entity>
+</a-entity>
 </a-scene>
 
-<!-- ═══ SCRIPTS DE LOGICA ═══ -->
 <script src="escena.js"></script>
 <script src="app.js"></script>
 </body>
