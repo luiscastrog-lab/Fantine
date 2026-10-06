@@ -2,7 +2,8 @@
 /* =========================================
    APP.JS V2.4 — La Fabrica de Fantine
    LIMPIO: sin duplicados, controles corregidos,
-   emoji sube, panel fijo, video funcional
+   emoji sube, panel fijo, sala cine reflexiva
+   Video se ve en BS antes de entrar a VR
    ========================================= */
 
 /* ═══ VARIABLES GLOBALES ═══ */
@@ -154,7 +155,7 @@ function showVRPanel(id){
   }
 
   var titles={
-    'pantalla':'SALA DE CINE\nAt the End of the Day\nLes Miserables\n\nEnfoca el boton naranja\n2 segundos para VER VIDEO',
+    'pantalla':'SALA DE CINE\nAt the End of the Day\nLes Miserables\n\nQue viste en los rostros\nde las obreras?\nQue escuchaste en sus voces?',
     'porton':'LA PUERTA DE LA NECESIDAD\nFrankl: Al hombre se le puede\narrebatar todo salvo elegir\nsu actitud - Reflexiona',
     'letrero':'FABRIQUE MADELEINE\nBasta la buena intencion\npara hacer justicia?\n- Tomas de Aquino',
     'cartel':'SE BUSCAN OBRERAS\n15 sous x 12 horas\nPascal: La costumbre es\nnuestra naturaleza',
@@ -193,45 +194,17 @@ function showVRPanel(id){
   h+='<a-text value="'+txt+'" color="#C8A951" align="center" width="4" position="0 0.3 0.02" side="double"></a-text>';
   h+='<a-text value="[Mira otro objeto para cerrar]" color="#FF5900" align="center" width="2.5" position="0 -0.9 0.02" side="double"></a-text>';
 
-  if(id==='pantalla'){
-    h+='<a-box class="clickable" width="1.8" height="0.4" depth="0.05" position="0 -0.55 0.03" color="#FF5900" material="emissive:#FF5900;emissiveIntensity:0.4">';
-    h+='<a-text value="VER VIDEO" color="#FFFDF8" align="center" width="3" position="0 0 0.04" side="double"></a-text>';
-    h+='</a-box>';
-  }
-
   panel.innerHTML=h;
   world.appendChild(panel);
   activeVP=panel;
 
-  /* Conectar click al boton VER VIDEO — solo en VR */
-  if(id==='pantalla'){
-    setTimeout(function(){
-      var btns=panel.querySelectorAll('.clickable');
-      for(var b=0;b<btns.length;b++){
-        btns[b].addEventListener('click',function(){
-          window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
-        });
-        btns[b].addEventListener('mouseenter',function(){
-          if(!isVR)return;
-          var self=this;
-          self._fuseTimer=setTimeout(function(){
-            window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
-          },2000);
-        });
-        btns[b].addEventListener('mouseleave',function(){
-          if(this._fuseTimer)clearTimeout(this._fuseTimer);
-        });
-      }
-    },1000);
-  }
-
-  /* Auto-cerrar despues de 25 segundos */
+  /* Auto-cerrar despues de 20 segundos */
   setTimeout(function(){
     if(activeVP===panel){
       try{panel.parentNode.removeChild(panel);}catch(e){}
       activeVP=null;
     }
-  },25000);
+  },20000);
 }
 
 /* ═══ CERRAR PANEL 2D ═══ */
@@ -246,15 +219,11 @@ function cp(){
   }
 }
 
-/* ═══ VIDEO ═══ */
+/* ═══ VIDEO (solo para modo PC/2D) ═══ */
 function ov(){
-  if(isVR){
-    window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
-  } else {
-    var vo=document.getElementById('vo');
-    vo.style.display='flex';
-    document.getElementById('vf').src='https://www.youtube.com/embed/xOyrZSaeZa0?autoplay=1';
-  }
+  var vo=document.getElementById('vo');
+  vo.style.display='flex';
+  document.getElementById('vf').src='https://www.youtube.com/embed/xOyrZSaeZa0?autoplay=1';
 }
 
 function cv(){
