@@ -1,8 +1,8 @@
 
 /* =========================================
-   APP.JS V2.0 — La Fabrica de Fantine
-   Logica: Firebase, login, clics, reacciones,
-   quest-move, audio, paneles 3D
+   APP.JS V2.1 — La Fabrica de Fantine
+   Logica: Firebase, login, clics, reacciones
+   compartidas, quest-move, audio, paneles 3D
    ========================================= */
 
 /* ═══ VARIABLES GLOBALES ═══ */
@@ -132,6 +132,9 @@ function go(){
 
   /* Actualizar zona */
   updateZone('Sala de Cine');
+
+  /* Iniciar listener de reacciones compartidas */
+  startReactionListener();
 }
 
 /* ═══ ABRIR PANEL ═══ */
@@ -166,7 +169,7 @@ function showVRPanel(id){
   if(activeVP){activeVP.parentNode.removeChild(activeVP);activeVP=null;}
 
   var titles={
-    'pantalla':'LA JORNADA QUE CAMBIO TODO\nAt the End of the Day\nQue diferencia hay entre\nvivir y sobrevivir?',
+    'pantalla':'LA JORNADA QUE CAMBIO TODO\nAt the End of the Day\nQue diferencia hay entre\nvivir y sobrevivir?\n\n[ VER VIDEO ]',
     'porton':'LA PUERTA DE LA NECESIDAD\nFrankl: Al hombre se le puede\narrebatar todo salvo elegir\nsu actitud - Reflexiona',
     'letrero':'FABRIQUE MADELEINE\nBasta la buena intencion\npara hacer justicia?\n- Tomas de Aquino',
     'cartel':'SE BUSCAN OBRERAS\n15 sous x 12 horas\nPascal: La costumbre es\nnuestra naturaleza',
@@ -185,24 +188,26 @@ function showVRPanel(id){
   var txt=titles[id]||id;
   var cam=document.querySelector('[camera]');
   var panel=document.createElement('a-entity');
-   panel.setAttribute('position','0 0.1 -2.5');
-  panel.innerHTML='<a-plane width="2" height="1.2" color="#1A1A2E" opacity="0.92" side="double"></a-plane>'+
-    '<a-text value="'+txt+'" color="#C8A951" align="center" width="4" position="0 0.1 0.01" side="double"></a-text>'+
-    '<a-text value="[Mira otro objeto para cerrar]" color="#FF5900" align="center" width="2.5" position="0 -0.45 0.01" side="double"></a-text>';
+  panel.setAttribute('position','0 0.1 -2.5');
+  panel.innerHTML='<a-plane width="2.8" height="1.8" color="#1A1A2E" opacity="0.92" side="double"></a-plane>'+
+    '<a-text value="'+txt+'" color="#C8A951" align="center" width="4" position="0 0.15 0.01" side="double"></a-text>'+
+    '<a-text value="[Mira otro objeto para cerrar]" color="#FF5900" align="center" width="2.5" position="0 -0.7 0.01" side="double"></a-text>';
   cam.appendChild(panel);
   activeVP=panel;
 
+  /* Auto-cerrar despues de 12 segundos */
   setTimeout(function(){
     if(activeVP===panel){
       panel.parentNode.removeChild(panel);
       activeVP=null;
     }
-  },8000);
+  },12000);
 
+  /* Si es pantalla del cine, abrir video despues de 3 seg */
   if(id==='pantalla'){
     setTimeout(function(){
       window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
-    },2000);
+    },3000);
   }
 }
 
@@ -272,7 +277,7 @@ function sendReaction(type){
   }
 }
 
-/* ═══ EMOJI 3D EN VR ═══ */
+/* ═══ EMOJI 3D EN VR (local) ═══ */
 function showVREmoji(type){
   var labels={'wow':'WOW!','triste':'TRISTE','no':'NO!','hmm':'HMM...','idea':'IDEA!'};
   var colors={'wow':'#FF5900','triste':'#3B82F6','no':'#EF4444','hmm':'#7C3AED','idea':'#F59E0B'};
@@ -285,7 +290,78 @@ function showVREmoji(type){
   txt.setAttribute('position','0 -0.3 -1.5');
   txt.setAttribute('side','double');
   cam.appendChild(txt);
-  setTimeout(function(){txt.remove();},3500);
+
+  /* Animacion: sube flotando */
+  var startY=-0.3;
+  var endY=0.5;
+  var duration=2000;
+  var startTime=Date.now();
+  function animate(){
+    var elapsed=Date.now()-startTime;
+    var progress=Math.min(elapsed/duration,1);
+    var currentY=startY+(endY-startY)*progress;
+    txt.setAttribute('position','0 '+currentY+' -1.5');
+    if(progress<1){
+      requestAnimationFrame(animate);
+    } else {
+      txt.remove();
+    }
+  }
+  requestAnimationFrame(animate);
+}
+
+/* ═══ REACCIONES COMPARTIDAS (Firebase listener) ═══ */
+function startReactionListener(){
+  db.ref('reactions').orderByChild('time').limitToLast(1).on('child_added',function(snap){
+    var data=snap.val();
+    if(!data||data.name===mn)return;
+    showSharedReaction(data.reaction,data.name);
+  });
+}
+
+function showSharedReaction(type,name){
+  var labels={'wow':'WOW!','triste':'TRISTE','no':'NO!','hmm':'HMM...','idea':'IDEA!'};
+  var colors={'wow':'#FF5900','triste':'#3B82F6','no':'#EF4444','hmm':'#7C3AED','idea':'#F59E0B'};
+
+  if(isVR){
+    /* En VR: texto 3D flotante en el mundo */
+    var world=document.getElementById('world');
+    var rigPos=cr?cr.object3D.position:{x:0,y:0,z:0};
+    var txt=document.createElement('a-text');
+    txt.setAttribute('value',(labels[type]||type)+' - '+name);
+    txt.setAttribute('color',colors[type]||'#FFF');
+    txt.setAttribute('align','center');
+    txt.setAttribute('width','3');
+    txt.setAttribute('position',(rigPos.x+(Math.random()*4-2))+' 2.5 '+(rigPos.z+(Math.random()*4-2)));
+    txt.setAttribute('side','double');
+    world.appendChild(txt);
+
+    /* Animacion: sube flotando */
+    var startY=2.5;
+    var endY=4.0;
+    var duration=3000;
+    var startTime=Date.now();
+    function animate(){
+      var elapsed=Date.now()-startTime;
+      var progress=Math.min(elapsed/duration,1);
+      var currentY=startY+(endY-startY)*progress;
+      var pos=txt.getAttribute('position');
+      txt.setAttribute('position',pos.x+' '+currentY+' '+pos.z);
+      if(progress<1){
+        requestAnimationFrame(animate);
+      } else {
+        txt.remove();
+      }
+    }
+    requestAnimationFrame(animate);
+  } else {
+    /* En PC: texto flotante 2D */
+    var fb=document.createElement('div');
+    fb.style.cssText='position:fixed;top:20%;left:'+(20+Math.random()*60)+'%;font-size:32px;font-weight:bold;color:'+colors[type]+';z-index:999;text-shadow:2px 2px 4px rgba(0,0,0,0.5);pointer-events:none;opacity:0.8;';
+    fb.textContent=(labels[type]||type)+' - '+name;
+    document.body.appendChild(fb);
+    setTimeout(function(){fb.remove();},3000);
+  }
 }
 
 /* ═══ ACTUALIZAR ZONA ═══ */
@@ -320,5 +396,4 @@ setInterval(function(){
     updateZone(zona);
   }
 },2000);
-
 
