@@ -15,6 +15,8 @@ var activeEmoji=null;
 var ids=['pantalla','cartel','porton','letrero','instrucciones','carta','cuentas','diario','decreto','espejo','reloj','campana','muro','puerta'];
 
 /* ═══ QUEST-MOVE (movimiento con joystick) ═══ */
+
+/* ═══ QUEST-MOVE (movimiento con joystick — direccion corregida) ═══ */
 AFRAME.registerComponent('quest-move',{
   tick:function(){
     var s=this.el.sceneEl;
@@ -29,20 +31,21 @@ AFRAME.registerComponent('quest-move',{
         var ay=src.gamepad.axes[3];
         if(Math.abs(ax)>0.15||Math.abs(ay)>0.15){
           var cam=document.querySelector('[camera]');
-          var rot=cam.object3D.rotation.y;
-          var dx=ax*0.06;
-          var dz=ay*0.06;
-          var mx=dx*Math.cos(rot)-dz*Math.sin(rot);
-          var mz=dx*Math.sin(rot)+dz*Math.cos(rot);
+          var dir=new THREE.Vector3();
+          cam.object3D.getWorldDirection(dir);
+          var right=new THREE.Vector3();
+          right.crossVectors(dir,new THREE.Vector3(0,1,0)).normalize();
+          var speed=0.06;
           var rig=document.getElementById('rig');
           var p=rig.object3D.position;
-          p.x+=mx;
-          p.z+=mz;
+          p.x+=(-dir.x*ay*speed)+(right.x*ax*speed);
+          p.z+=(-dir.z*ay*speed)+(right.z*ax*speed);
         }
       }
     }
   }
 });
+
 
 /* ═══ INICIALIZACION ═══ */
 window.addEventListener('DOMContentLoaded',function(){
