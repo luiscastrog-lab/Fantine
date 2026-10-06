@@ -1,8 +1,8 @@
 
 /* =========================================
-   APP.JS V2.1 — La Fabrica de Fantine
-   Logica: Firebase, login, clics, reacciones
-   compartidas, quest-move, audio, paneles 3D
+   APP.JS V2.2 — La Fabrica de Fantine
+   Corregido: emoji sube, no se encima,
+   cine abre video, reacciones compartidas
    ========================================= */
 
 /* ═══ VARIABLES GLOBALES ═══ */
@@ -11,6 +11,7 @@ var db,mn='',mi='',sr,cr=null,ms=false,dc=0,disc={};
 var ba,ca;
 var isVR=false;
 var activeVP=null;
+var activeEmoji=null;
 var ids=['pantalla','cartel','porton','letrero','instrucciones','carta','cuentas','diario','decreto','espejo','reloj','campana','muro','puerta'];
 
 /* ═══ QUEST-MOVE (movimiento con joystick) ═══ */
@@ -46,46 +47,35 @@ AFRAME.registerComponent('quest-move',{
 /* ═══ INICIALIZACION ═══ */
 window.addEventListener('DOMContentLoaded',function(){
 
-  /* Referencias DOM */
   zi=document.getElementById('zi');
   oi=document.getElementById('oi');
   ci=document.getElementById('fc');
 
-  /* Firebase */
   firebase.initializeApp({databaseURL:'https://fantine-vr-default-rtdb.firebaseio.com/'});
   db=firebase.database();
 
-  /* Audio */
   ba=document.getElementById('bgm');
   ca=document.getElementById('sfx');
   if(ba){ba.loop=true;ba.volume=0.3;}
   if(ca){ca.volume=0.5;}
 
-  /* Boton entrar */
   document.getElementById('eb').addEventListener('click',function(){
     go();
   });
 
-  /* Enter con teclado */
   document.getElementById('ni').addEventListener('keypress',function(e){
     if(e.key==='Enter')go();
   });
 
-  /* Detectar VR */
   var sc=document.querySelector('a-scene');
   sc.addEventListener('enter-vr',function(){isVR=true;});
   sc.addEventListener('exit-vr',function(){isVR=false;});
 
-  /* Construir escena */
   buildScene();
 
-  /* Asignar rig */
   cr=document.getElementById('rig');
-
-  /* Quest-move */
   cr.setAttribute('quest-move','');
 
-  /* Clics en objetos interactivos */
   setTimeout(function(){
     var items=document.querySelectorAll('.clickable');
     for(var i=0;i<items.length;i++){
@@ -110,17 +100,14 @@ function go(){
   mn=n;
   mi=n.replace(/\s/g,'_')+'_'+Date.now();
 
-  /* Ocultar login, mostrar HUD */
   document.getElementById('login').style.display='none';
   document.getElementById('hud').style.display='block';
 
-  /* Registrar en Firebase */
   sr=db.ref('sessions/'+mi);
   sr.set({name:mn,entered:new Date().toISOString(),zone:'Sala de Cine',objects:0});
   db.ref('online/'+mi).set({name:mn,time:new Date().toISOString()});
   db.ref('online/'+mi).onDisconnect().remove();
 
-  /* Iniciar audio */
   if(ba){
     ba.play().then(function(){ms=true;}).catch(function(){
       document.addEventListener('click',function tryAudio(){
@@ -130,10 +117,7 @@ function go(){
     });
   }
 
-  /* Actualizar zona */
   updateZone('Sala de Cine');
-
-  /* Iniciar listener de reacciones compartidas */
   startReactionListener();
 }
 
@@ -145,7 +129,6 @@ function openPanel(id){
   if(ci)ci.textContent=dc;
   if(sr)sr.update({objects:dc});
 
-  /* Registrar actividad */
   db.ref('activity/'+mi).push({
     action:'open',
     object:id,
@@ -160,16 +143,18 @@ function openPanel(id){
     if(p)p.style.display='block';
   }
 
-  /* Sonido campana */
   if(ca){ca.currentTime=0;ca.play().catch(function(){});}
 }
 
-/* ═══ PANEL 3D EN VR — STORYTELLING V2.0 ═══ */
+/* ═══ PANEL 3D EN VR ═══ */
 function showVRPanel(id){
-  if(activeVP){activeVP.parentNode.removeChild(activeVP);activeVP=null;}
+  if(activeVP){
+    try{activeVP.parentNode.removeChild(activeVP);}catch(e){}
+    activeVP=null;
+  }
 
   var titles={
-    'pantalla':'LA JORNADA QUE CAMBIO TODO\nAt the End of the Day\nQue diferencia hay entre\nvivir y sobrevivir?\n\n[ VER VIDEO ]',
+    'pantalla':'SALA DE CINE\nAt the End of the Day\nLes Miserables\n\nMira abajo 2 seg\npara VER VIDEO',
     'porton':'LA PUERTA DE LA NECESIDAD\nFrankl: Al hombre se le puede\narrebatar todo salvo elegir\nsu actitud - Reflexiona',
     'letrero':'FABRIQUE MADELEINE\nBasta la buena intencion\npara hacer justicia?\n- Tomas de Aquino',
     'cartel':'SE BUSCAN OBRERAS\n15 sous x 12 horas\nPascal: La costumbre es\nnuestra naturaleza',
@@ -188,27 +173,40 @@ function showVRPanel(id){
   var txt=titles[id]||id;
   var cam=document.querySelector('[camera]');
   var panel=document.createElement('a-entity');
-  panel.setAttribute('position','0 0.1 -2.5');
-  panel.innerHTML='<a-plane width="2.8" height="1.8" color="#1A1A2E" opacity="0.92" side="double"></a-plane>'+
-    '<a-text value="'+txt+'" color="#C8A951" align="center" width="4" position="0 0.15 0.01" side="double"></a-text>'+
-    '<a-text value="[Mira otro objeto para cerrar]" color="#FF5900" align="center" width="2.5" position="0 -0.7 0.01" side="double"></a-text>';
+  panel.setAttribute('position','0 0 -2.5');
+
+  var h='<a-plane width="3" height="2" color="#1A1A2E" opacity="0.92" side="double"></a-plane>';
+  h+='<a-text value="'+txt+'" color="#C8A951" align="center" width="4" position="0 0.2 0.01" side="double"></a-text>';
+  h+='<a-text value="[Mira otro objeto para cerrar]" color="#FF5900" align="center" width="2.5" position="0 -0.8 0.01" side="double"></a-text>';
+
+  /* Boton VER VIDEO solo para pantalla del cine */
+  if(id==='pantalla'){
+    h+='<a-box class="clickable" data-panel="videoplay" width="1.5" height="0.4" depth="0.05" position="0 -0.5 0.02" color="#FF5900" material="emissive:#FF5900;emissiveIntensity:0.3"></a-box>';
+    h+='<a-text value="VER VIDEO" color="#FFFDF8" align="center" width="3" position="0 -0.5 0.05" side="double"></a-text>';
+  }
+
+  panel.innerHTML=h;
   cam.appendChild(panel);
   activeVP=panel;
 
-  /* Auto-cerrar despues de 12 segundos */
-  setTimeout(function(){
-    if(activeVP===panel){
-      panel.parentNode.removeChild(panel);
-      activeVP=null;
-    }
-  },12000);
-
-  /* Si es pantalla del cine, abrir video despues de 3 seg */
+  /* Si es pantalla, agregar click al boton VER VIDEO */
   if(id==='pantalla'){
     setTimeout(function(){
-      window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
-    },3000);
+      var vb=panel.querySelector('[data-panel="videoplay"]');
+      if(vb){
+        vb.addEventListener('click',function(){
+          window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
+        });
+      }
+    },500);
   }
+
+  setTimeout(function(){
+    if(activeVP===panel){
+      try{panel.parentNode.removeChild(panel);}catch(e){}
+      activeVP=null;
+    }
+  },15000);
 }
 
 /* ═══ CERRAR PANEL 2D ═══ */
@@ -217,7 +215,10 @@ function cp(){
   for(var i=0;i<ps.length;i++){ps[i].style.display='none';}
   var mi2=document.getElementById('mi');
   if(mi2)mi2.style.display='none';
-  if(activeVP){activeVP.parentNode.removeChild(activeVP);activeVP=null;}
+  if(activeVP){
+    try{activeVP.parentNode.removeChild(activeVP);}catch(e){}
+    activeVP=null;
+  }
 }
 
 /* ═══ VIDEO ═══ */
@@ -277,8 +278,14 @@ function sendReaction(type){
   }
 }
 
-/* ═══ EMOJI 3D EN VR (local) ═══ */
+/* ═══ EMOJI 3D EN VR (local — sube flotando) ═══ */
 function showVREmoji(type){
+  /* Remover emoji anterior para que no se encimen */
+  if(activeEmoji){
+    try{activeEmoji.parentNode.removeChild(activeEmoji);}catch(e){}
+    activeEmoji=null;
+  }
+
   var labels={'wow':'WOW!','triste':'TRISTE','no':'NO!','hmm':'HMM...','idea':'IDEA!'};
   var colors={'wow':'#FF5900','triste':'#3B82F6','no':'#EF4444','hmm':'#7C3AED','idea':'#F59E0B'};
   var cam=document.querySelector('[camera]');
@@ -286,31 +293,32 @@ function showVREmoji(type){
   txt.setAttribute('value',labels[type]||type);
   txt.setAttribute('color',colors[type]||'#FFF');
   txt.setAttribute('align','center');
-  txt.setAttribute('width','4');
-  txt.setAttribute('position','0 -0.3 -1.5');
+  txt.setAttribute('width','5');
   txt.setAttribute('side','double');
+  txt.object3D.position.set(0,-0.3,-1.5);
   cam.appendChild(txt);
+  activeEmoji=txt;
 
-  /* Animacion: sube flotando */
+  /* Animacion con object3D (mas rapido que setAttribute) */
   var startY=-0.3;
   var endY=0.5;
-  var duration=2000;
-  var startTime=Date.now();
-  function animate(){
-    var elapsed=Date.now()-startTime;
-    var progress=Math.min(elapsed/duration,1);
-    var currentY=startY+(endY-startY)*progress;
-    txt.setAttribute('position','0 '+currentY+' -1.5');
-    if(progress<1){
-      requestAnimationFrame(animate);
-    } else {
-      txt.remove();
+  var dur=2500;
+  var t0=performance.now();
+  function anim(now){
+    var p=(now-t0)/dur;
+    if(p>=1){
+      try{txt.parentNode.removeChild(txt);}catch(e){}
+      if(activeEmoji===txt)activeEmoji=null;
+      return;
     }
+    var y=startY+(endY-startY)*p;
+    txt.object3D.position.y=y;
+    requestAnimationFrame(anim);
   }
-  requestAnimationFrame(animate);
+  requestAnimationFrame(anim);
 }
 
-/* ═══ REACCIONES COMPARTIDAS (Firebase listener) ═══ */
+/* ═══ REACCIONES COMPARTIDAS (Firebase) ═══ */
 function startReactionListener(){
   db.ref('reactions').orderByChild('time').limitToLast(1).on('child_added',function(snap){
     var data=snap.val();
@@ -324,38 +332,34 @@ function showSharedReaction(type,name){
   var colors={'wow':'#FF5900','triste':'#3B82F6','no':'#EF4444','hmm':'#7C3AED','idea':'#F59E0B'};
 
   if(isVR){
-    /* En VR: texto 3D flotante en el mundo */
     var world=document.getElementById('world');
     var rigPos=cr?cr.object3D.position:{x:0,y:0,z:0};
+    var rx=rigPos.x+(Math.random()*4-2);
+    var rz=rigPos.z+(Math.random()*4-2);
     var txt=document.createElement('a-text');
     txt.setAttribute('value',(labels[type]||type)+' - '+name);
     txt.setAttribute('color',colors[type]||'#FFF');
     txt.setAttribute('align','center');
     txt.setAttribute('width','3');
-    txt.setAttribute('position',(rigPos.x+(Math.random()*4-2))+' 2.5 '+(rigPos.z+(Math.random()*4-2)));
     txt.setAttribute('side','double');
+    txt.object3D.position.set(rx,2.5,rz);
     world.appendChild(txt);
 
-    /* Animacion: sube flotando */
     var startY=2.5;
     var endY=4.0;
-    var duration=3000;
-    var startTime=Date.now();
-    function animate(){
-      var elapsed=Date.now()-startTime;
-      var progress=Math.min(elapsed/duration,1);
-      var currentY=startY+(endY-startY)*progress;
-      var pos=txt.getAttribute('position');
-      txt.setAttribute('position',pos.x+' '+currentY+' '+pos.z);
-      if(progress<1){
-        requestAnimationFrame(animate);
-      } else {
-        txt.remove();
+    var dur=3000;
+    var t0=performance.now();
+    function anim(now){
+      var p=(now-t0)/dur;
+      if(p>=1){
+        try{txt.parentNode.removeChild(txt);}catch(e){}
+        return;
       }
+      txt.object3D.position.y=startY+(endY-startY)*p;
+      requestAnimationFrame(anim);
     }
-    requestAnimationFrame(animate);
+    requestAnimationFrame(anim);
   } else {
-    /* En PC: texto flotante 2D */
     var fb=document.createElement('div');
     fb.style.cssText='position:fixed;top:20%;left:'+(20+Math.random()*60)+'%;font-size:32px;font-weight:bold;color:'+colors[type]+';z-index:999;text-shadow:2px 2px 4px rgba(0,0,0,0.5);pointer-events:none;opacity:0.8;';
     fb.textContent=(labels[type]||type)+' - '+name;
