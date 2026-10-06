@@ -147,6 +147,8 @@ function openPanel(id){
 }
 
 /* ═══ PANEL 3D EN VR ═══ */
+
+/* ═══ PANEL 3D EN VR — FIJO EN EL MUNDO ═══ */
 function showVRPanel(id){
   if(activeVP){
     try{activeVP.parentNode.removeChild(activeVP);}catch(e){}
@@ -154,7 +156,7 @@ function showVRPanel(id){
   }
 
   var titles={
-    'pantalla':'SALA DE CINE\nAt the End of the Day\nLes Miserables\n\nMira abajo 2 seg\npara VER VIDEO',
+    'pantalla':'SALA DE CINE\nAt the End of the Day\nLes Miserables\n\nEnfoca el boton naranja\npara VER VIDEO',
     'porton':'LA PUERTA DE LA NECESIDAD\nFrankl: Al hombre se le puede\narrebatar todo salvo elegir\nsu actitud - Reflexiona',
     'letrero':'FABRIQUE MADELEINE\nBasta la buena intencion\npara hacer justicia?\n- Tomas de Aquino',
     'cartel':'SE BUSCAN OBRERAS\n15 sous x 12 horas\nPascal: La costumbre es\nnuestra naturaleza',
@@ -171,28 +173,45 @@ function showVRPanel(id){
   };
 
   var txt=titles[id]||id;
+
+  /* Calcular posicion FIJA en el mundo frente al usuario */
   var cam=document.querySelector('[camera]');
+  var camPos=new THREE.Vector3();
+  var camDir=new THREE.Vector3();
+  cam.object3D.getWorldPosition(camPos);
+  cam.object3D.getWorldDirection(camDir);
+
+  /* Panel a 2.5m frente a donde mira el usuario */
+  var panelX=camPos.x - camDir.x*2.5;
+  var panelY=camPos.y - camDir.y*2.5;
+  var panelZ=camPos.z - camDir.z*2.5;
+
+  /* Calcular rotacion para que mire al usuario */
+  var rotY=Math.atan2(camDir.x,camDir.z)*(180/Math.PI);
+
+  var world=document.getElementById('world');
   var panel=document.createElement('a-entity');
-  panel.setAttribute('position','0 0 -2.5');
+  panel.setAttribute('position',panelX+' '+panelY+' '+panelZ);
+  panel.setAttribute('rotation','0 '+rotY+' 0');
 
   var h='<a-plane width="3" height="2" color="#1A1A2E" opacity="0.92" side="double"></a-plane>';
-  h+='<a-text value="'+txt+'" color="#C8A951" align="center" width="4" position="0 0.2 0.01" side="double"></a-text>';
-  h+='<a-text value="[Mira otro objeto para cerrar]" color="#FF5900" align="center" width="2.5" position="0 -0.8 0.01" side="double"></a-text>';
+  h+='<a-text value="'+txt+'" color="#C8A951" align="center" width="4" position="0 0.2 0.02" side="double"></a-text>';
+  h+='<a-text value="[Mira otro objeto para cerrar]" color="#FF5900" align="center" width="2.5" position="0 -0.8 0.02" side="double"></a-text>';
 
   /* Boton VER VIDEO solo para pantalla del cine */
   if(id==='pantalla'){
-    h+='<a-box class="clickable" data-panel="videoplay" width="1.5" height="0.4" depth="0.05" position="0 -0.5 0.02" color="#FF5900" material="emissive:#FF5900;emissiveIntensity:0.3"></a-box>';
-    h+='<a-text value="VER VIDEO" color="#FFFDF8" align="center" width="3" position="0 -0.5 0.05" side="double"></a-text>';
+    h+='<a-box class="clickable" id="vr-video-btn" width="1.8" height="0.4" depth="0.05" position="0 -0.5 0.03" color="#FF5900" material="emissive:#FF5900;emissiveIntensity:0.4"></a-box>';
+    h+='<a-text value=">>> VER VIDEO <<<" color="#FFFDF8" align="center" width="3" position="0 -0.5 0.06" side="double"></a-text>';
   }
 
   panel.innerHTML=h;
-  cam.appendChild(panel);
+  world.appendChild(panel);
   activeVP=panel;
 
-  /* Si es pantalla, agregar click al boton VER VIDEO */
+  /* Conectar click al boton VER VIDEO */
   if(id==='pantalla'){
     setTimeout(function(){
-      var vb=panel.querySelector('[data-panel="videoplay"]');
+      var vb=document.getElementById('vr-video-btn');
       if(vb){
         vb.addEventListener('click',function(){
           window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
@@ -201,12 +220,13 @@ function showVRPanel(id){
     },500);
   }
 
+  /* Auto-cerrar despues de 20 segundos */
   setTimeout(function(){
     if(activeVP===panel){
       try{panel.parentNode.removeChild(panel);}catch(e){}
       activeVP=null;
     }
-  },15000);
+  },20000);
 }
 
 /* ═══ CERRAR PANEL 2D ═══ */
