@@ -167,6 +167,27 @@ if(id==='puerta'){
       var cam=document.querySelector('[camera]');
       var btn=document.createElement('a-text');
       btn.setAttribute('value','HAS COMPLETADO EL RECORRIDO
+      Gracias por tu reflexion
+Quitate el visor y
+completa el Post-test
+en Brightspace');
+      btn.setAttribute('color','#C8A951');
+      btn.setAttribute('align','center');
+      btn.setAttribute('width','4');
+      btn.setAttribute('side','double');
+      btn.setAttribute('position','0 0 -2');
+      cam.appendChild(btn);
+    } else {
+      var end=document.createElement('div');
+      end.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(26,26,46,0.95);display:flex;align-items:center;justify-content:center;z-index:300;';
+      end.innerHTML='<div style="text-align:center;color:#C8A951;font-family:Georgia,serif;"><h1>Has completado el recorrido</h1><p style="color:#FFE0C2;font-size:1.2em;">Gracias por tu reflexion.<br>Ahora completa el <strong>Post-test</strong> en Brightspace.</p><button onclick="this.parentNode.parentNode.remove();" style="margin-top:20px;padding:12px 32px;background:#FF5900;color:#FFFDF8;border:none;border-radius:12px;font-size:16px;cursor:pointer;font-weight:bold;">Cerrar</button></div>';
+      document.body.appendChild(end);
+    }
+    if(ba){ba.pause();}
+    db.ref('sessions/'+mi).update({completed:new Date().toISOString()});
+  },2000);
+}
+}
 
 /* ═══ PANEL 3D EN VR — FIJO EN EL MUNDO ═══ */
 function showVRPanel(id){
