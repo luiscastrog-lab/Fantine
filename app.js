@@ -40,8 +40,8 @@ AFRAME.registerComponent('quest-move',{
           var speed=0.06;
           var rig=document.getElementById('rig');
           var p=rig.object3D.position;
-          p.x+=(-dir.x*ay*speed)+(right.x*ax*speed);
-          p.z+=(-dir.z*ay*speed)+(right.z*ax*speed);
+         p.x+=(dir.x*ay*speed)+(right.x*ax*speed);
+         p.z+=(dir.z*ay*speed)+(right.z*ax*speed);
         }
       }
     }
