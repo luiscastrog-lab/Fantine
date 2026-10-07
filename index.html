@@ -5,189 +5,100 @@
 <meta charset="utf-8">
 <title>UV1: La Fabrica de Fantine</title>
 <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 <style>
 body{margin:0;overflow:hidden;font-family:'Segoe UI',sans-serif;background:#1A1A2E;}
-#login{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#1A1A2E,#2D1B4E);display:flex;align-items:center;justify-content:center;z-index:999;flex-direction:column;}
-#login h1{color:#C8A951;font-size:2.2em;margin-bottom:8px;text-shadow:0 2px 8px rgba(0,0,0,0.5);}
-#login p{color:#FFE0C2;font-size:1em;margin-bottom:20px;}
-#login input{padding:14px 24px;font-size:18px;border-radius:12px;border:2px solid #C8A951;background:rgba(255,255,255,0.1);color:#FFFDF8;text-align:center;width:280px;margin-bottom:16px;}
-#login input::placeholder{color:rgba(255,253,248,0.5);}
-#login button{padding:14px 48px;font-size:18px;background:#FF5900;color:#FFFDF8;border:none;border-radius:12px;cursor:pointer;font-weight:bold;box-shadow:0 4px 12px rgba(255,89,0,0.3);}
-#hud{position:fixed;top:10px;left:10px;background:rgba(26,26,46,0.85);color:#C8A951;padding:12px 18px;border-radius:12px;font-size:14px;z-index:99;display:none;border:1px solid rgba(200,169,81,0.3);}
-.ip{display:none;position:fixed;bottom:0;left:0;width:100%;background:rgba(26,26,46,0.95);color:#FFFDF8;padding:20px;z-index:98;border-top:3px solid #C8A951;max-height:40vh;overflow-y:auto;}
-.ip h3{color:#C8A951;margin:0 0 8px 0;font-size:1.2em;}
-.ip p{margin:4px 0;line-height:1.5;font-size:0.95em;}
-.ip .q{color:#FF5900;font-style:italic;margin-top:8px;font-weight:bold;}
-.ip button{margin-top:10px;padding:8px 20px;background:#FF5900;color:#FFFDF8;border:none;border-radius:8px;cursor:pointer;font-weight:bold;}
-.cb{position:fixed;top:10px;right:10px;background:rgba(26,26,46,0.85);padding:8px;border-radius:12px;z-index:98;display:none;border:1px solid rgba(200,169,81,0.3);}
-.cb button{display:block;margin:4px;padding:10px;border:none;border-radius:8px;cursor:pointer;font-size:20px;width:44px;height:44px;text-align:center;}
-#vo{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:200;align-items:center;justify-content:center;flex-direction:column;}
-#vo iframe{width:90%;max-width:800px;height:50vh;border:none;border-radius:12px;}
-#vo button{margin-top:16px;padding:12px 32px;background:#FF5900;color:#FFFDF8;border:none;border-radius:12px;cursor:pointer;font-size:16px;font-weight:bold;}
-#mi{display:none;position:fixed;bottom:60px;left:50%;transform:translateX(-50%);background:rgba(26,26,46,0.95);padding:20px;border-radius:12px;z-index:100;border:2px solid #C8A951;text-align:center;}
-#mi textarea{width:280px;height:80px;padding:10px;border-radius:8px;border:1px solid #C8A951;background:rgba(255,255,255,0.1);color:#FFFDF8;font-size:14px;resize:none;}
-#mi button{margin-top:10px;padding:10px 24px;background:#FF5900;color:#FFFDF8;border:none;border-radius:8px;cursor:pointer;font-weight:bold;}
+#login{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#1A1A2E,#2D1B4E);display:flex;align-items:center;justify-content:center;z-index:200;flex-direction:column;}
+#login h1{color:#C8A951;font-family:Georgia,serif;font-size:2.2em;margin-bottom:10px;}
+#login p{color:#FFE0C2;font-size:1em;margin-bottom:20px;text-align:center;max-width:400px;}
+#login input{padding:14px 20px;font-size:18px;border:2px solid #C8A951;border-radius:12px;background:#FFFDF8;color:#1A1A2E;width:280px;text-align:center;margin-bottom:12px;}
+#login button{padding:14px 40px;font-size:18px;background:#FF5900;color:#FFFDF8;border:none;border-radius:12px;cursor:pointer;font-weight:bold;}
+#hud{display:none;position:fixed;top:8px;left:8px;background:rgba(26,26,46,0.85);color:#C8A951;padding:8px 14px;border-radius:10px;font-size:13px;z-index:100;font-family:Georgia,serif;border:1px solid #C8A951;}
+#rbar{display:none;position:fixed;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(26,26,46,0.9);padding:8px 16px;border-radius:14px;z-index:100;display:none;gap:10px;border:1px solid #C8A951;}
+.rbtn{background:none;border:2px solid #C8A951;color:#FFE0C2;padding:6px 14px;border-radius:10px;cursor:pointer;font-size:14px;font-family:Georgia,serif;}
+.rbtn:hover{background:#FF5900;border-color:#FF5900;color:#FFFDF8;}
+.ip{display:none;position:fixed;bottom:0;left:0;width:100%;background:rgba(26,26,46,0.95);color:#FFE0C2;padding:18px;text-align:center;z-index:150;font-family:Georgia,serif;border-top:3px solid #C8A951;}
+.ip h3{color:#C8A951;margin:0 0 8px 0;font-size:1.3em;}
+.ip p{margin:4px 0;font-size:0.95em;line-height:1.5;}
+.ip button{margin-top:10px;padding:8px 24px;background:#FF5900;color:#FFFDF8;border:none;border-radius:10px;cursor:pointer;font-weight:bold;}
+.cbtn{position:absolute;top:8px;right:12px;background:#dc2626;color:#FFF;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:16px;font-weight:bold;}
+#vo{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:250;align-items:center;justify-content:center;flex-direction:column;}
+#vo iframe{width:90%;max-width:800px;height:450px;border:3px solid #C8A951;border-radius:12px;}
+#vo button{margin-top:16px;padding:10px 30px;background:#FF5900;color:#FFFDF8;border:none;border-radius:10px;cursor:pointer;font-size:16px;font-weight:bold;}
+#mi{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1A1A2E;border:2px solid #C8A951;border-radius:14px;padding:24px;z-index:200;text-align:center;width:320px;}
+#mi h3{color:#C8A951;font-family:Georgia,serif;}
+#mi textarea{width:90%;height:80px;border:1px solid #C8A951;border-radius:8px;padding:8px;font-size:14px;background:#FFFDF8;color:#1A1A2E;resize:none;}
+#mi button{margin-top:10px;padding:8px 24px;background:#FF5900;color:#FFFDF8;border:none;border-radius:10px;cursor:pointer;font-weight:bold;}
 </style>
 </head>
 <body>
 
-<!-- ===== LOGIN ===== -->
+<!-- ========== LOGIN ========== -->
 <div id="login">
-<h1>🏭 La Fabrica de Fantine</h1>
-<p>Persona y Trascendencia · Miseria y Grandeza del Hombre</p>
-<input type="text" id="ni" placeholder="Escribe tu nombre" autocomplete="off">
+<h1>La Fabrica de Fantine</h1>
+<p>Bienvenido a la experiencia inmersiva.<br>Escribe tu nombre para comenzar.</p>
+<input type="text" id="ni" placeholder="Tu nombre completo" autocomplete="off">
 <button id="eb">Entrar a la Fabrica</button>
 </div>
 
-<!-- ===== HUD ===== -->
+<!-- ========== HUD ========== -->
 <div id="hud">
-📍 Zona: <span id="zi">—</span><br>
-🔍 Objetos: <span id="oi">0</span> | 🧩 Puzzle: <span id="pc">0</span>/16
+<span>Zona: <strong id="zi">---</strong></span><br>
+<span>Objetos: <strong id="oi">0</strong></span> |
+<span>Puzzle: <strong id="pc">0</strong>/16</span> |
+<span>Galeria: <strong id="gc">0</strong>/6</span>
 </div>
 
-<!-- ===== BOTONES REACCION 2D ===== -->
-<div class="cb" id="rbar">
-<button onclick="sendReaction('wow')" style="background:#FF5900;color:#FFF;">!</button>
-<button onclick="sendReaction('triste')" style="background:#3B82F6;color:#FFF;">T</button>
-<button onclick="sendReaction('no')" style="background:#EF4444;color:#FFF;">✕</button>
-<button onclick="sendReaction('hmm')" style="background:#7C3AED;color:#FFF;">?</button>
-<button onclick="sendReaction('idea')" style="background:#F59E0B;color:#FFF;">💡</button>
-<button id="resetBtn" onclick="resetSession()" style="display:none;position:fixed;top:10px;right:10px;background:#dc2626;color:#FFF;border:none;border-radius:8px;padding:8px 16px;font-size:14px;cursor:pointer;z-index:200;">🔄 Reset Grupo</button>
+<!-- ========== BOTON RESET PROFESOR ========== -->
+<button id="resetBtn" onclick="resetSession()" style="display:none;position:fixed;top:10px;right:10px;background:#dc2626;color:#FFF;border:none;border-radius:8px;padding:8px 16px;font-size:14px;cursor:pointer;z-index:200;">Reset Grupo</button>
 
+<!-- ========== BARRA REACCIONES 2D ========== -->
+<div id="rbar">
+<button class="rbtn" onclick="sendReaction('wow')">WOW</button>
+<button class="rbtn" onclick="sendReaction('triste')">TRISTE</button>
+<button class="rbtn" onclick="sendReaction('no')">NO!</button>
+<button class="rbtn" onclick="sendReaction('hmm')">HMM</button>
+<button class="rbtn" onclick="sendReaction('idea')">IDEA</button>
 </div>
 
-<!-- ===== PANELES 2D ===== -->
-<div class="ip" id="p-pantalla">
-<h3>🎬 Sala de Cine — At the End of the Day</h3>
-<p>Acabas de ver el video en Brightspace. Ahora estas en el lugar donde todo comenzo.</p>
-<p class="q">¿Que viste en los rostros de las obreras? ¿Que escuchaste en sus voces?</p>
-<button onclick="cp()">✕ Cerrar</button>
-</div>
+<!-- ========== PANELES 2D ========== -->
+<div id="p-pantalla" class="ip"><button class="cbtn" onclick="cp()">X</button><h3>Sala de Cine</h3><p>At the End of the Day — Les Miserables (2012)</p><p>Observa los rostros, escucha las voces. Que revela esta escena?</p><button onclick="ov()">Ver Video</button></div>
+<div id="p-porton" class="ip"><button class="cbtn" onclick="cp()">X</button><h3>La Puerta de la Necesidad</h3><p>Frankl: Al hombre se le puede arrebatar todo salvo la libertad de elegir su actitud.</p><p>Fantine cruzo esta puerta por necesidad. Tu por que cruzas las tuyas?</p></div>
+<div id="p-letrero" class="ip"><button class="cbtn" onclick="cp()">X</button><h3>Fabrique Madeleine</h3><p>Basta la buena intencion para hacer justicia?</p><p>Tomas de Aquino: La justicia es dar a cada uno lo que le corresponde.</p></div>
+<div id="p-cartel" class="ip"><button class="cbtn" onclick="cp()">X</button><h3>Se Buscan Obreras</h3><p>15 sous por 12 horas de trabajo.</p><p>Pascal: La costumbre es nuestra naturaleza. Que costumbres aceptamos sin cuestionar?</p></div>
+<div id="p-instrucciones" class="ip"><button class="cbtn" onclick="cp()">X</button><h3>Como Navegar</h3><p>Joystick izquierdo: caminar | Mira un objeto 2 seg: activar | Flechas amarillas: ruta</p></div>
+<div id="p-carta" class="ip"><button class="cbtn" onclick="cp()">X</button><h3>Querida Cosette</h3><p>Marcel: Ser es mas importante que tener.</p><p>Fantine no tenia nada, pero ERA madre. Que define tu ser mas alla de lo que tienes?</p></div>
+<div id="p-cuentas" class="ip"><button class="cbtn" onclick="cp()">X</button><h3>Los Numeros de la Miseria</h3><p>Ingresos: 360 sous | Gastos: 420 sous | Deficit: -60</p><p>Es justo pedir sentido a quien no puede comer?</p></div>
+<div id="p-diario" class="ip"><button class="cbtn" onclick="cp()">X</button><h3>Jornada de una Obrera</h3><p>5:45 AM a 8:00 PM sin descanso.</p><p>Agustin: Nuestro corazon esta inquieto hasta que descansa en Ti.</p></div>
+<div id="p-decreto" class="ip"><button class="cbtn" onclick="cp()">X</button><h3>Decreto del Alcalde</h3><p>Ningun obrero sera despedido sin causa justa.</p><p>Pero el capataz despidio a Fantine. Quien falla: la ley o quien la aplica?</p></div>
+<div id="p-espejo" class="ip"><button class="cbtn" onclick="cp()">X</button><h3>Quien Eres Realmente?</h3><p>Pascal: El hombre supera infinitamente al hombre.</p><p>Valjean eligio la verdad. Tu que eliges cuando nadie te ve?</p></div>
+<div id="p-reloj" class="ip"><button class="cbtn" onclick="cp()">X</button><h3>5:45 AM — Tu Tiempo No Te Pertenece</h3><p>Agustin: En ti, alma mia, mido los tiempos.</p><p>Cuando fue la ultima vez que tu tiempo fue realmente tuyo?</p></div>
+<div id="p-campana" class="ip"><button class="cbtn" onclick="cp()">X</button><h3>La Campana del Capataz</h3><p>Frankl: Sufrimiento con sentido vs. sufrimiento absurdo.</p><p>Cuando el trabajo destruye en lugar de construir?</p></div>
+<div id="p-muro" class="ip"><button class="cbtn" onclick="cp()">X</button><h3>Muro Colaborativo</h3><p>Escribe tu reflexion. Que te movio? Que pregunta te llevas?</p><button onclick="sm()">Escribir en el Muro</button></div>
+<div id="p-puerta" class="ip"><button class="cbtn" onclick="cp()">X</button><h3>La Pregunta que te Llevas</h3><p>Hugo: El espectaculo mas grande es el interior del alma.</p><p>Que descubriste sobre la miseria y la grandeza del hombre?</p></div>
 
-<div class="ip" id="p-porton">
-<h3>🚪 La Puerta de la Necesidad</h3>
-<p>Fantine cruzo esta puerta buscando trabajo. No tenia opciones. Viktor Frankl escribio: "Al hombre se le puede arrebatar todo salvo una cosa: elegir su actitud ante cualquier circunstancia."</p>
-<p class="q">¿Fantine elegia entrar, o la empujaba la necesidad?</p>
-<button onclick="cp()">✕ Cerrar</button>
-</div>
+<!-- ========== VIDEO OVERLAY ========== -->
+<div id="vo"><iframe id="vf" src="" allow="autoplay;encrypted-media" allowfullscreen></iframe><button onclick="cv()">Cerrar Video</button></div>
 
-<div class="ip" id="p-letrero">
-<h3>🏭 Fabrique Madeleine</h3>
-<p>El alcalde Madeleine (Valjean) creo esta fabrica para dar trabajo digno. Tomas de Aquino enseno que la justicia es "dar a cada uno lo que le corresponde."</p>
-<p class="q">¿Basta la buena intencion para hacer justicia?</p>
-<button onclick="cp()">✕ Cerrar</button>
-</div>
+<!-- ========== MURO INPUT ========== -->
+<div id="mi"><h3>Tu Reflexion</h3><textarea id="mt" placeholder="Escribe aqui tu reflexion..."></textarea><br><button onclick="wm()">Enviar</button><button onclick="document.getElementById('mi').style.display='none';" style="margin-left:8px;background:#666;">Cancelar</button></div>
 
-<div class="ip" id="p-cartel">
-<h3>📋 Se Buscan Obreras — 15 sous por 12 horas</h3>
-<p>Este era el salario de una obrera en 1823. Pascal escribio: "La costumbre es nuestra naturaleza." Lo que hoy nos parece injusto, entonces era "normal."</p>
-<p class="q">¿Que injusticias de hoy aceptamos como normales?</p>
-<button onclick="cp()">✕ Cerrar</button>
-</div>
-
-<div class="ip" id="p-instrucciones">
-<h3>📖 Como Navegar</h3>
-<p>🕹️ Joystick izquierdo: caminar | 👀 Mira un objeto 2 seg: activar panel | 🟡 Flechas amarillas: seguir la ruta | 🔴🔵🟢🟡🟣 Esferas: reaccionar</p>
-<button onclick="cp()">✕ Cerrar</button>
-</div>
-
-<div class="ip" id="p-carta">
-<h3>💌 Querida Cosette</h3>
-<p>Fantine escribia cartas a su hija que nunca llegaban. Gabriel Marcel distinguio entre TENER y SER: Fantine no TENIA nada, pero ERA madre.</p>
-<p class="q">¿Que define mas a una persona: lo que tiene o lo que es?</p>
-<button onclick="cp()">✕ Cerrar</button>
-</div>
-
-<div class="ip" id="p-cuentas">
-<h3>📊 Los Numeros de la Miseria</h3>
-<p>Ingresos: 360 sous/mes | Gastos: 420 sous/mes | Deficit: -60 sous. Frankl preguntaba por el sentido del sufrimiento.</p>
-<p class="q">¿Es justo pedir sentido a quien no puede comer?</p>
-<button onclick="cp()">✕ Cerrar</button>
-</div>
-
-<div class="ip" id="p-diario">
-<h3>📔 Jornada de una Obrera</h3>
-<p>5:45 AM a 8:00 PM sin descanso. San Agustin escribio: "Nuestro corazon esta inquieto hasta que descansa en Ti."</p>
-<p class="q">¿Donde encontraba Fantine descanso para su corazon?</p>
-<button onclick="cp()">✕ Cerrar</button>
-</div>
-
-<div class="ip" id="p-decreto">
-<h3>📜 Decreto del Alcalde</h3>
-<p>"Ningun obrero sera despedido sin causa justa." Pero el capataz despidio a Fantine por ser madre soltera.</p>
-<p class="q">¿Quien falla: la ley, quien la aplica, o la sociedad que juzga?</p>
-<button onclick="cp()">✕ Cerrar</button>
-</div>
-
-<div class="ip" id="p-espejo">
-<h3>🪞 ¿Quien Eres Realmente?</h3>
-<p>Pascal escribio: "El hombre supera infinitamente al hombre." Valjean se miro al espejo y eligio la verdad.</p>
-<p class="q">¿Que ves cuando te miras sin mascara?</p>
-<button onclick="cp()">✕ Cerrar</button>
-</div>
-
-<div class="ip" id="p-reloj">
-<h3>⏰ 5:45 AM — Tu Tiempo No Te Pertenece</h3>
-<p>San Agustin reflexiono: "En ti, alma mia, mido los tiempos." El tiempo de Fantine pertenecia a otros.</p>
-<p class="q">¿A quien le pertenece tu tiempo?</p>
-<button onclick="cp()">✕ Cerrar</button>
-</div>
-
-<div class="ip" id="p-campana">
-<h3>🔔 La Campana del Capataz</h3>
-<p>Frankl distinguio entre sufrimiento con sentido y sufrimiento absurdo.</p>
-<p class="q">¿Cuando el trabajo dignifica y cuando destruye?</p>
-<button onclick="cp()">✕ Cerrar</button>
-</div>
-
-<div class="ip" id="p-muro">
-<h3>🧱 Muro Colaborativo</h3>
-<p>Escribe tu reflexion. ¿Que te movio? ¿Que pregunta te llevas?</p>
-<button onclick="sm()">✏️ Escribir en el muro</button>
-<button onclick="cp()">✕ Cerrar</button>
-</div>
-
-<div class="ip" id="p-puerta">
-<h3>🚪 La Pregunta que Te Llevas</h3>
-<p>Victor Hugo escribio: "El espectaculo mas grande es el interior del alma."</p>
-<p class="q">¿Que descubriste de ti mismo en este recorrido?</p>
-<button onclick="cp()">✕ Cerrar</button>
-</div>
-
-<!-- ===== VIDEO OVERLAY (solo PC) ===== -->
-<div id="vo">
-<iframe id="vf" src="" allowfullscreen></iframe>
-<button onclick="cv()">✕ Cerrar Video</button>
-</div>
-
-<!-- ===== MURO INPUT ===== -->
-<div id="mi">
-<p style="color:#C8A951;font-weight:bold;">Tu reflexion:</p>
-<textarea id="mt" placeholder="Escribe aqui..."></textarea><br>
-<button onclick="wm()">Enviar al Muro</button>
-</div>
-
-<!-- ===== AUDIO ===== -->
+<!-- ========== AUDIO ========== -->
 <audio id="bgm" src="musica.mp3" preload="auto"></audio>
 <audio id="sfx" src="campana.mp3" preload="auto"></audio>
 <audio id="bingo" src="Bingo.mp3" preload="auto"></audio>
 
-<!-- ===== ESCENA A-FRAME ===== -->
-<a-scene vr-mode-ui="enabled:true" loading-screen="enabled:false" renderer="antialias:true">
+<!-- ========== ESCENA A-FRAME ========== -->
+<a-scene vr-mode-ui="enabled:true" embedded style="position:fixed;top:0;left:0;width:100%;height:100%;">
 <a-entity id="world"></a-entity>
 <a-entity id="rig" movement-controls="fly:false;speed:0.15" position="0 0 -22">
 <a-entity camera look-controls="pointerLockEnabled:false" position="0 1.6 0">
-<a-entity cursor="fuse:true;fuseTimeout:2000" raycaster="objects:.clickable" position="0 0 -1"
-geometry="primitive:ring;radiusInner:0.015;radiusOuter:0.025" material="color:#FF5900;shader:flat"
-animation__fusing="property:geometry.radiusInner;from:0.015;to:0.001;dur:2000;startEvents:fusing"
-animation__leave="property:geometry.radiusInner;from:0.001;to:0.015;dur:400;startEvents:mouseleave">
+<a-entity cursor="fuse:true;fuseTimeout:2000" position="0 0 -1" geometry="primitive:ring;radiusInner:0.015;radiusOuter:0.025" material="color:#FF5900;shader:flat" raycaster="objects:.clickable;far:15" animation__fuse="property:geometry.radiusInner;from:0.015;to:0.001;dur:2000;startEvents:fusing;pauseEvents:mouseleave"></a-entity>
 </a-entity>
-</a-entity>
-<a-entity id="lhand" laser-controls="hand:left" raycaster="objects:.clickable"></a-entity>
-<a-entity id="rhand" laser-controls="hand:right" raycaster="objects:.clickable"></a-entity>
+<a-entity id="lhand" laser-controls="hand:left" raycaster="objects:.clickable;far:15"></a-entity>
+<a-entity id="rhand" laser-controls="hand:right" raycaster="objects:.clickable;far:15"></a-entity>
 </a-entity>
 </a-scene>
 
