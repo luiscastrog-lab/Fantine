@@ -1,9 +1,9 @@
 
 /* =========================================
-   APP.JS V2.5 — La Fabrica de Fantine
-   INCLUYE: Rompecabezas colaborativo,
-   audio Bingo, Firebase sync puzzle,
-   controles corregidos, emoji sube
+   APP.JS V2.6 — La Fabrica de Fantine
+   Corregido: controles sin espejo,
+   Bingo limitado 10s, boton terminar,
+   emoji sube, rompecabezas colaborativo
    ========================================= */
 
 /* ═══ VARIABLES GLOBALES ═══ */
@@ -40,8 +40,8 @@ AFRAME.registerComponent('quest-move',{
           var speed=0.06;
           var rig=document.getElementById('rig');
           var p=rig.object3D.position;
-         p.x+=(dir.x*ay*speed)+(right.x*ax*speed);
-         p.z+=(dir.z*ay*speed)+(right.z*ax*speed);
+          p.x+=(dir.x*ay*speed)+(right.x*ax*speed);
+          p.z+=(dir.z*ay*speed)+(right.z*ax*speed);
         }
       }
     }
@@ -84,7 +84,6 @@ window.addEventListener('DOMContentLoaded',function(){
   cr.setAttribute('quest-move','');
 
   setTimeout(function(){
-    /* Clickables normales (paneles y reacciones) */
     var items=document.querySelectorAll('.clickable');
     for(var i=0;i<items.length;i++){
       items[i].addEventListener('click',function(){
@@ -161,58 +160,28 @@ function openPanel(id){
 
   if(ca){ca.currentTime=0;ca.play().catch(function(){});}
 
-if(id==='puerta'){
-  setTimeout(function(){
-    if(isVR){
-      var cam=document.querySelector('[camera]');
-      var btn=document.createElement('a-text');
-      btn.setAttribute('value','HAS COMPLETADO EL RECORRIDO
-      Gracias por tu reflexion
-      Quitate el visor y
-      completa el Post-test
-      en Brightspace');
-✅ Todo lo demás está correcto
-Table
-
-
-
-Cambio
-
-
-Estado
-
-
-Quest-move (controles sin invertir)	✅ dir.x*ay y dir.z*ay (sin negativo)
-Bingo (pausa música + límite 10s)	✅ ba.pause() + setTimeout 10s
-Panel "Terminar" (puerta de salida)	⚠️ Solo falta corregir el salto de línea
-Funciones (17 funciones)	✅ Sin duplicados
-Firebase (6 nodos)	✅ Correcto
-Click handlers (panel, re, piece, slot)	✅ Correcto
-Ver más
-Haz solo ese cambio, sube a GitHub, espera 2-3 minutos, y prueba en incógnito. Los controles deberían ir en la dirección correcta, el Bingo no se empalma, y al llegar a la puerta de salida aparecerá el mensaje de cierre. 🏭🚀
-
-
-
-
-7:17
-
-
-      btn.setAttribute('color','#C8A951');
-      btn.setAttribute('align','center');
-      btn.setAttribute('width','4');
-      btn.setAttribute('side','double');
-      btn.setAttribute('position','0 0 -2');
-      cam.appendChild(btn);
-    } else {
-      var end=document.createElement('div');
-      end.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(26,26,46,0.95);display:flex;align-items:center;justify-content:center;z-index:300;';
-      end.innerHTML='<div style="text-align:center;color:#C8A951;font-family:Georgia,serif;"><h1>Has completado el recorrido</h1><p style="color:#FFE0C2;font-size:1.2em;">Gracias por tu reflexion.<br>Ahora completa el <strong>Post-test</strong> en Brightspace.</p><button onclick="this.parentNode.parentNode.remove();" style="margin-top:20px;padding:12px 32px;background:#FF5900;color:#FFFDF8;border:none;border-radius:12px;font-size:16px;cursor:pointer;font-weight:bold;">Cerrar</button></div>';
-      document.body.appendChild(end);
-    }
-    if(ba){ba.pause();}
-    db.ref('sessions/'+mi).update({completed:new Date().toISOString()});
-  },2000);
-}
+  if(id==='puerta'){
+    setTimeout(function(){
+      if(isVR){
+        var cam=document.querySelector('[camera]');
+        var btn=document.createElement('a-text');
+        btn.setAttribute('value','HAS COMPLETADO EL RECORRIDO\nGracias por tu reflexion\nQuitate el visor y\ncompleta el Post-test\nen Brightspace');
+        btn.setAttribute('color','#C8A951');
+        btn.setAttribute('align','center');
+        btn.setAttribute('width','4');
+        btn.setAttribute('side','double');
+        btn.setAttribute('position','0 0 -2');
+        cam.appendChild(btn);
+      } else {
+        var end=document.createElement('div');
+        end.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(26,26,46,0.95);display:flex;align-items:center;justify-content:center;z-index:300;';
+        end.innerHTML='<div style="text-align:center;color:#C8A951;font-family:Georgia,serif;"><h1>Has completado el recorrido</h1><p style="color:#FFE0C2;font-size:1.2em;">Gracias por tu reflexion.<br>Ahora completa el <strong>Post-test</strong> en Brightspace.</p><button onclick="this.parentNode.parentNode.remove();" style="margin-top:20px;padding:12px 32px;background:#FF5900;color:#FFFDF8;border:none;border-radius:12px;font-size:16px;cursor:pointer;font-weight:bold;">Cerrar</button></div>';
+        document.body.appendChild(end);
+      }
+      if(ba){ba.pause();}
+      db.ref('sessions/'+mi).update({completed:new Date().toISOString()});
+    },2000);
+  }
 }
 
 /* ═══ PANEL 3D EN VR — FIJO EN EL MUNDO ═══ */
@@ -254,7 +223,7 @@ function showVRPanel(id){
   var rotY=Math.atan2(camDir.x,camDir.z)*(180/Math.PI);
 
   var world=document.getElementById('world');
-   
+
   var panel=document.createElement('a-entity');
   panel.setAttribute('position',panelX+' '+panelY+' '+panelZ);
   panel.setAttribute('rotation','0 '+rotY+' 0');
@@ -323,7 +292,6 @@ function selectPiece(num){
   if(puzzleComplete)return;
   if(placedPieces[num])return;
 
-  /* Deseleccionar pieza anterior */
   if(selectedPiece!==null){
     var prev=document.getElementById('piece-'+selectedPiece);
     if(prev)prev.setAttribute('material','emissive','#FFF');
@@ -339,7 +307,6 @@ function selectPiece(num){
 
   if(ca){ca.currentTime=0;ca.play().catch(function(){});}
 
-  /* Feedback visual */
   if(isVR){
     var cam=document.querySelector('[camera]');
     var fb=document.createElement('a-text');
@@ -359,9 +326,7 @@ function placePiece(slotNum){
   if(selectedPiece===null)return;
   if(placedPieces[slotNum])return;
 
-  /* Solo se puede colocar en el slot correcto */
   if(selectedPiece!==slotNum){
-    /* Feedback: slot incorrecto */
     if(isVR){
       var cam=document.querySelector('[camera]');
       var fb=document.createElement('a-text');
@@ -377,15 +342,11 @@ function placePiece(slotNum){
     return;
   }
 
-  /* Colocar pieza correctamente */
   var piece=document.getElementById('piece-'+selectedPiece);
   var slot=document.getElementById('slot-'+slotNum);
 
   if(piece&&slot){
-    /* Obtener posicion del slot */
     var slotPos=slot.getAttribute('position');
-
-    /* Mover pieza al slot */
     piece.removeAttribute('animation');
     piece.setAttribute('position',slotPos.x+' '+slotPos.y+' '+(slotPos.z-0.02));
     piece.setAttribute('rotation','0 90 0');
@@ -393,13 +354,10 @@ function placePiece(slotNum){
     piece.setAttribute('height','0.75');
     piece.classList.remove('clickable');
     piece.removeAttribute('data-piece');
-
-    /* Ocultar numero del slot */
     slot.setAttribute('material','opacity','0');
     slot.classList.remove('clickable');
   }
 
-  /* Registrar en Firebase */
   placedPieces[slotNum]=true;
   var totalPlaced=Object.keys(placedPieces).length;
 
@@ -409,11 +367,9 @@ function placePiece(slotNum){
     numero:slotNum
   });
 
-  /* Actualizar HUD */
   if(pcEl)pcEl.textContent=totalPlaced;
   if(sr)sr.update({piecesPlaced:totalPlaced});
 
-  /* Feedback: pieza colocada */
   if(ca){ca.currentTime=0;ca.play().catch(function(){});}
 
   if(isVR){
@@ -431,7 +387,6 @@ function placePiece(slotNum){
 
   selectedPiece=null;
 
-  /* Verificar si el puzzle esta completo */
   if(totalPlaced>=16){
     puzzleComplete=true;
     celebratePuzzle();
@@ -439,17 +394,15 @@ function placePiece(slotNum){
 }
 
 function celebratePuzzle(){
-  /* Reproducir Bingo.mp3 */
   if(ba){ba.pause();}
-   if(bingo){bingo.currentTime=0;bingo.play().catch(function(){});}
-setTimeout(function(){if(bingo){bingo.pause();bingo.currentTime=0;}if(ba){ba.play().catch(function(){});}},10000);
-  /* Registrar en Firebase */
+  if(bingo){bingo.currentTime=0;bingo.play().catch(function(){});}
+  setTimeout(function(){if(bingo){bingo.pause();bingo.currentTime=0;}if(ba){ba.play().catch(function(){});}},10000);
+
   db.ref('puzzle/completado').set({
     tiempo:new Date().toISOString(),
     totalParticipantes:Object.keys(placedPieces).length
   });
 
-  /* Mensaje de celebracion */
   if(isVR){
     var world=document.getElementById('world');
     var msg=document.createElement('a-entity');
@@ -462,7 +415,7 @@ setTimeout(function(){if(bingo){bingo.pause();bingo.currentTime=0;}if(ba){ba.pla
   } else {
     var fb=document.createElement('div');
     fb.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(26,26,46,0.9);display:flex;align-items:center;justify-content:center;z-index:300;flex-direction:column;';
-    fb.innerHTML='<div style="text-align:center;color:#C8A951;font-family:Georgia,serif;"><h1 style="font-size:2.5em;">🧩 ¡ROMPECABEZAS COMPLETO!</h1><p style="font-size:1.3em;color:#FFE0C2;max-width:500px;">Juntos reconstruimos la imagen de Fantine.<br>Así como cada pieza fue necesaria,<br>cada persona importa.<br><em>— Victor Hugo</em></p><button onclick="this.parentNode.parentNode.remove();" style="margin-top:20px;padding:12px 32px;background:#FF5900;color:#FFFDF8;border:none;border-radius:12px;font-size:16px;cursor:pointer;font-weight:bold;">Continuar</button></div>';
+    fb.innerHTML='<div style="text-align:center;color:#C8A951;font-family:Georgia,serif;"><h1 style="font-size:2.5em;">ROMPECABEZAS COMPLETO!</h1><p style="font-size:1.3em;color:#FFE0C2;max-width:500px;">Juntos reconstruimos la imagen de Fantine.<br>Asi como cada pieza fue necesaria,<br>cada persona importa.<br><em>- Victor Hugo</em></p><button onclick="this.parentNode.parentNode.remove();" style="margin-top:20px;padding:12px 32px;background:#FF5900;color:#FFFDF8;border:none;border-radius:12px;font-size:16px;cursor:pointer;font-weight:bold;">Continuar</button></div>';
     document.body.appendChild(fb);
   }
 }
@@ -478,10 +431,8 @@ function startPuzzleListener(){
     var num=parseInt(key.replace('pieza_',''));
     if(isNaN(num))return;
 
-    /* Si ya esta colocada localmente, ignorar */
     if(placedPieces[num])return;
 
-    /* Colocar pieza visualmente */
     placedPieces[num]=true;
     var piece=document.getElementById('piece-'+num);
     var slot=document.getElementById('slot-'+num);
@@ -499,11 +450,9 @@ function startPuzzleListener(){
       slot.classList.remove('clickable');
     }
 
-    /* Actualizar HUD */
     var totalPlaced=Object.keys(placedPieces).length;
     if(pcEl)pcEl.textContent=totalPlaced;
 
-    /* Mostrar quien coloco la pieza */
     if(data.colocadaPor!==mn){
       if(isVR){
         var cam=document.querySelector('[camera]');
@@ -519,7 +468,6 @@ function startPuzzleListener(){
       }
     }
 
-    /* Verificar si completo */
     if(totalPlaced>=16&&!puzzleComplete){
       puzzleComplete=true;
       celebratePuzzle();
@@ -676,5 +624,4 @@ setInterval(function(){
     updateZone(zona);
   }
 },2000);
-
 
