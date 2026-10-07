@@ -1,9 +1,10 @@
 
 /* =========================================
-   APP.JS V2.6 — La Fabrica de Fantine
-   Corregido: controles sin espejo,
-   Bingo limitado 10s, boton terminar,
-   emoji sube, rompecabezas colaborativo
+   APP.JS V2.7 — La Fabrica de Fantine
+   NUEVO: Reset automatico por sesion,
+   boton reset profesor (PROF-nombre),
+   controles corregidos, Bingo 10s,
+   boton terminar, emoji sube
    ========================================= */
 
 /* ═══ VARIABLES GLOBALES ═══ */
@@ -16,6 +17,8 @@ var activeEmoji=null;
 var selectedPiece=null;
 var placedPieces={};
 var puzzleComplete=false;
+var sessionId='';
+var isProf=false;
 var ids=['pantalla','cartel','porton','letrero','instrucciones','carta','cuentas','diario','decreto','espejo','reloj','campana','muro','puerta'];
 
 /* ═══ QUEST-MOVE (movimiento con joystick — direccion corregida) ═══ */
@@ -53,7 +56,6 @@ window.addEventListener('DOMContentLoaded',function(){
 
   zi=document.getElementById('zi');
   oi=document.getElementById('oi');
-  ci=document.getElementById('fc');
   pcEl=document.getElementById('pc');
 
   firebase.initializeApp({databaseURL:'https://fantine-vr-default-rtdb.firebaseio.com/'});
@@ -111,30 +113,141 @@ window.addEventListener('DOMContentLoaded',function(){
 function go(){
   var n=document.getElementById('ni').value.trim();
   if(!n){alert('Escribe tu nombre');return;}
-  mn=n;
-  mi=n.replace(/\s/g,'_')+'_'+Date.now();
 
-  document.getElementById('login').style.display='none';
-  document.getElementById('hud').style.display='block';
-  document.getElementById('rbar').style.display='block';
-
-  sr=db.ref('sessions/'+mi);
-  sr.set({name:mn,entered:new Date().toISOString(),zone:'Sala de Cine',objects:0,piecesPlaced:0});
-  db.ref('online/'+mi).set({name:mn,time:new Date().toISOString()});
-  db.ref('online/'+mi).onDisconnect().remove();
-
-  if(ba){
-    ba.play().then(function(){ms=true;}).catch(function(){
-      document.addEventListener('click',function tryAudio(){
-        ba.play().then(function(){ms=true;});
-        document.removeEventListener('click',tryAudio);
-      });
-    });
+  /* Detectar si es profesor */
+  if(n.toUpperCase().indexOf('PROF-')===0){
+    isProf=true;
+    mn=n.substring(5);
+  } else {
+    isProf=false;
+    mn=n;
   }
 
-  updateZone('Sala de Cine');
-  startReactionListener();
+  mi=mn.replace(/\s/g,'_')+'_'+Date.now();
+
+  /* Obtener o crear sessionId del grupo actual */
+  db.ref('currentSession').once('value',function(snap){
+    var val=snap.val();
+    if(val){
+      sessionId=val;
+    } else {
+      sessionId='sesion_'+Date.now();
+      db.ref('currentSession').set(sessionId);
+    }
+
+    document.getElementById('login').style.display='none';
+    document.getElementById('hud').style.display='block';
+    document.getElementById('rbar').style.display='block';
+
+    /* Mostrar boton reset si es profesor */
+    if(isProf){
+      var resetBtn=document.getElementById('resetBtn');
+      if(resetBtn)resetBtn.style.display='inline-block';
+    }
+
+    sr=db.ref('data/'+sessionId+'/sessions/'+mi);
+    sr.set({name:mn,entered:new Date().toISOString(),zone:'Sala de Cine',objects:0,piecesPlaced:0,isProf:isProf});
+    db.ref('data/'+sessionId+'/online/'+mi).set({name:mn,time:new Date().toISOString()});
+    db.ref('data/'+sessionId+'/online/'+mi).onDisconnect().remove();
+
+    if(ba){
+      ba.play().then(function(){ms=true;}).catch(function(){
+        document.addEventListener('click',function tryAudio(){
+          ba.play().then(function(){ms=true;});
+          document.removeEventListener('click',tryAudio);
+        });
+      });
+    }
+
+    updateZone('Sala de Cine');
+    startReactionListener();
+    startPuzzleListener();
+
+    /* Cargar piezas ya colocadas en esta sesion */
+    db.ref('data/'+sessionId+'/puzzle').once('value',function(psnap){
+      var pdata=psnap.val();
+      if(!pdata)return;
+      for(var key in pdata){
+        if(key==='completado')continue;
+        var num=parseInt(key.replace('pieza_',''));
+        if(isNaN(num))continue;
+        if(placedPieces[num])continue;
+        placedPieces[num]=true;
+        var piece=document.getElementById('piece-'+num);
+        var slot=document.getElementById('slot-'+num);
+        if(piece&&slot){
+          var slotPos=slot.getAttribute('position');
+          piece.removeAttribute('animation');
+          piece.setAttribute('position',slotPos.x+' '+slotPos.y+' '+(slotPos.z-0.02));
+          piece.setAttribute('rotation','0 90 0');
+          piece.setAttribute('width','0.75');
+          piece.setAttribute('height','0.75');
+          piece.classList.remove('clickable');
+          piece.removeAttribute('data-piece');
+          slot.setAttribute('material','opacity','0');
+          slot.classList.remove('clickable');
+        }
+      }
+      var totalPlaced=Object.keys(placedPieces).length;
+      if(pcEl)pcEl.textContent=totalPlaced;
+      if(totalPlaced>=16){
+        puzzleComplete=true;
+      }
+    });
+  });
+}
+
+/* ═══ RESET (solo profesor) ═══ */
+function resetSession(){
+  if(!isProf){return;}
+  if(!confirm('Reiniciar TODO para el siguiente grupo?\nSe borraran: puzzle, reacciones y muro.')){return;}
+
+  /* Crear nueva sesion */
+  sessionId='sesion_'+Date.now();
+  db.ref('currentSession').set(sessionId);
+
+  /* Resetear variables locales */
+  placedPieces={};
+  puzzleComplete=false;
+  selectedPiece=null;
+  dc=0;
+  if(oi)oi.textContent='0';
+  if(pcEl)pcEl.textContent='0';
+
+  /* Resetear piezas visuales */
+  for(var i=0;i<16;i++){
+    var piece=document.getElementById('piece-'+i);
+    var slot=document.getElementById('slot-'+i);
+    if(piece){
+      var col=i%4;
+      var row=Math.floor(i/4);
+      var px=-4.5;
+      var py=1.0+(row*0.9);
+      var pz=20.5+(col*1.8);
+      piece.setAttribute('position',px+' '+py+' '+pz);
+      piece.setAttribute('rotation','0 90 0');
+      piece.setAttribute('width','0.7');
+      piece.setAttribute('height','0.7');
+      piece.setAttribute('data-piece',i.toString());
+      piece.classList.add('clickable');
+      piece.setAttribute('material','emissive','#FFF');
+      piece.setAttribute('material','emissiveIntensity','0.15');
+    }
+    if(slot){
+      slot.setAttribute('material','opacity','0.3');
+      slot.classList.add('clickable');
+    }
+  }
+
+  /* Registrar nueva sesion del profesor */
+  sr=db.ref('data/'+sessionId+'/sessions/'+mi);
+  sr.set({name:mn,entered:new Date().toISOString(),zone:zi?zi.textContent:'',objects:0,piecesPlaced:0,isProf:true,resetAt:new Date().toISOString()});
+
+  /* Reiniciar listeners */
   startPuzzleListener();
+  startReactionListener();
+
+  alert('Sesion reiniciada. El siguiente grupo puede entrar.');
 }
 
 /* ═══ ABRIR PANEL ═══ */
@@ -144,7 +257,7 @@ function openPanel(id){
   if(oi)oi.textContent=dc;
   if(sr)sr.update({objects:dc});
 
-  db.ref('activity/'+mi).push({
+  db.ref('data/'+sessionId+'/activity/'+mi).push({
     action:'open',
     object:id,
     zone:zi?zi.textContent:'',
@@ -179,7 +292,7 @@ function openPanel(id){
         document.body.appendChild(end);
       }
       if(ba){ba.pause();}
-      db.ref('sessions/'+mi).update({completed:new Date().toISOString()});
+      db.ref('data/'+sessionId+'/sessions/'+mi).update({completed:new Date().toISOString()});
     },2000);
   }
 }
@@ -276,7 +389,7 @@ function sm(){
 function wm(){
   var t=document.getElementById('mt').value.trim();
   if(!t)return;
-  db.ref('muro').push({
+  db.ref('data/'+sessionId+'/muro').push({
     name:mn,
     text:t,
     zone:zi?zi.textContent:'',
@@ -361,7 +474,7 @@ function placePiece(slotNum){
   placedPieces[slotNum]=true;
   var totalPlaced=Object.keys(placedPieces).length;
 
-  db.ref('puzzle/pieza_'+slotNum).set({
+  db.ref('data/'+sessionId+'/puzzle/pieza_'+slotNum).set({
     colocadaPor:mn,
     tiempo:new Date().toISOString(),
     numero:slotNum
@@ -398,7 +511,7 @@ function celebratePuzzle(){
   if(bingo){bingo.currentTime=0;bingo.play().catch(function(){});}
   setTimeout(function(){if(bingo){bingo.pause();bingo.currentTime=0;}if(ba){ba.play().catch(function(){});}},10000);
 
-  db.ref('puzzle/completado').set({
+  db.ref('data/'+sessionId+'/puzzle/completado').set({
     tiempo:new Date().toISOString(),
     totalParticipantes:Object.keys(placedPieces).length
   });
@@ -422,7 +535,7 @@ function celebratePuzzle(){
 
 /* ═══ PUZZLE LISTENER (Firebase — ver piezas de otros) ═══ */
 function startPuzzleListener(){
-  db.ref('puzzle').on('child_added',function(snap){
+  db.ref('data/'+sessionId+'/puzzle').on('child_added',function(snap){
     var key=snap.key;
     if(key==='completado')return;
     var data=snap.val();
@@ -477,7 +590,7 @@ function startPuzzleListener(){
 
 /* ═══ REACCIONES ═══ */
 function sendReaction(type){
-  db.ref('reactions').push({
+  db.ref('data/'+sessionId+'/reactions').push({
     name:mn,
     reaction:type,
     zone:zi?zi.textContent:'',
@@ -540,7 +653,7 @@ function showVREmoji(type){
 
 /* ═══ REACCIONES COMPARTIDAS (Firebase) ═══ */
 function startReactionListener(){
-  db.ref('reactions').orderByChild('time').limitToLast(1).on('child_added',function(snap){
+  db.ref('data/'+sessionId+'/reactions').orderByChild('time').limitToLast(1).on('child_added',function(snap){
     var data=snap.val();
     if(!data||data.name===mn)return;
     showSharedReaction(data.reaction,data.name);
@@ -596,7 +709,7 @@ function showSharedReaction(type,name){
 function updateZone(name){
   if(zi)zi.textContent=name;
   if(sr)sr.update({zone:name});
-  db.ref('activity/'+mi).push({
+  db.ref('data/'+sessionId+'/activity/'+mi).push({
     action:'zone',
     zone:name,
     time:new Date().toISOString()
