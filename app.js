@@ -329,11 +329,11 @@ function showVRPanel(id){
   cam.object3D.getWorldPosition(camPos);
   cam.object3D.getWorldDirection(camDir);
 
-  var panelX=camPos.x - camDir.x*2.5;
+  var panelX=camPos.x + camDir.x*2.5;
   var panelY=camPos.y;
-  var panelZ=camPos.z - camDir.z*2.5;
+  var panelZ=camPos.z + camDir.z*2.5;
 
-  var rotY=Math.atan2(camDir.x,camDir.z)*(180/Math.PI);
+  var rotY=Math.atan2(-camDir.x,-camDir.z)*(180/Math.PI);
 
   var world=document.getElementById('world');
 
