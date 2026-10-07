@@ -387,8 +387,9 @@ function placePiece(slotNum){
 
 function celebratePuzzle(){
   /* Reproducir Bingo.mp3 */
-  if(bingo){bingo.currentTime=0;bingo.play().catch(function(){});}
-
+  if(ba){ba.pause();}
+   if(bingo){bingo.currentTime=0;bingo.play().catch(function(){});}
+setTimeout(function(){if(bingo){bingo.pause();bingo.currentTime=0;}if(ba){ba.play().catch(function(){});}},10000);
   /* Registrar en Firebase */
   db.ref('puzzle/completado').set({
     tiempo:new Date().toISOString(),
