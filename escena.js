@@ -240,7 +240,7 @@ for(var pr=0;pr<4;pr++){
     var pz=20.5+(pc2*1.8);
     var offX=(pi%4)*0.25;
     var offY=Math.floor(pi/4)*0.25;
-    s+='<a-plane id="piece-'+pi+'" position="'+px+' '+py+' '+pz+'" rotation="0 90 0" width="0.7" height="0.7" src="Fantine.jpg#offset='+offX+' '+offY+'" material="emissive:#FFF;emissiveIntensity:0.15;repeat:0.25 0.25;offset:'+offX+' '+offY+'" class="clickable" data-piece="'+pi+'" animation="property:position;to:'+px+' '+(py+0.1)+' '+pz+';dir:alternate;dur:2000;loop:true"></a-plane>';
+    s+='<a-plane id="piece-'+pi+'" position="'+px+' '+py+' '+pz+'" rotation="0 90 0" width="0.7" height="0.7" src="Fabrica.jpg#offset='+offX+' '+offY+'" material="emissive:#FFF;emissiveIntensity:0.15;repeat:0.25 0.25;offset:'+offX+' '+offY+'" class="clickable" data-piece="'+pi+'" animation="property:position;to:'+px+' '+(py+0.1)+' '+pz+';dir:alternate;dur:2000;loop:true"></a-plane>';
   }
 }
 
