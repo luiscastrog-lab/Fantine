@@ -160,7 +160,13 @@ function openPanel(id){
   }
 
   if(ca){ca.currentTime=0;ca.play().catch(function(){});}
-}
+
+if(id==='puerta'){
+  setTimeout(function(){
+    if(isVR){
+      var cam=document.querySelector('[camera]');
+      var btn=document.createElement('a-text');
+      btn.setAttribute('value','HAS COMPLETADO EL RECORRIDO
 
 /* ═══ PANEL 3D EN VR — FIJO EN EL MUNDO ═══ */
 function showVRPanel(id){
