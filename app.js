@@ -1,14 +1,14 @@
 
 /* =========================================
-   APP.JS V2.7 — La Fabrica de Fantine
-   NUEVO: Reset automatico por sesion,
-   boton reset profesor (PROF-nombre),
-   controles corregidos, Bingo 10s,
-   boton terminar, emoji sube
+   APP.JS V2.8 — La Fabrica de Fantine
+   INCLUYE: Galeria interactiva Zona 2,
+   Rompecabezas Zona 4, Reset sesion,
+   Bingo al completar galeria y puzzle,
+   controles corregidos, emoji sube
    ========================================= */
 
 /* ═══ VARIABLES GLOBALES ═══ */
-var zi,oi,ci,pcEl;
+var zi,oi,ci,pcEl,gcEl;
 var db,mn='',mi='',sr,cr=null,ms=false,dc=0,disc={};
 var ba,ca,bingo;
 var isVR=false;
@@ -19,9 +19,14 @@ var placedPieces={};
 var puzzleComplete=false;
 var sessionId='';
 var isProf=false;
+/* Galeria */
+var selectedLabel=null;
+var placedLabels={};
+var galeriaComplete=false;
+var galeriaCount=0;
 var ids=['pantalla','cartel','porton','letrero','instrucciones','carta','cuentas','diario','decreto','espejo','reloj','campana','muro','puerta'];
 
-/* ═══ QUEST-MOVE (movimiento con joystick — direccion corregida) ═══ */
+/* ═══ QUEST-MOVE ═══ */
 AFRAME.registerComponent('quest-move',{
   tick:function(){
     var s=this.el.sceneEl;
@@ -57,6 +62,7 @@ window.addEventListener('DOMContentLoaded',function(){
   zi=document.getElementById('zi');
   oi=document.getElementById('oi');
   pcEl=document.getElementById('pc');
+  gcEl=document.getElementById('gc');
 
   firebase.initializeApp({databaseURL:'https://fantine-vr-default-rtdb.firebaseio.com/'});
   db=firebase.database();
@@ -93,6 +99,8 @@ window.addEventListener('DOMContentLoaded',function(){
         var re=this.getAttribute('data-re');
         var piece=this.getAttribute('data-piece');
         var slot=this.getAttribute('data-slot');
+        var pieceG=this.getAttribute('data-piece-g');
+        var slotG=this.getAttribute('data-slot-g');
 
         if(re){
           sendReaction(re);
@@ -102,6 +110,10 @@ window.addEventListener('DOMContentLoaded',function(){
           selectPiece(parseInt(piece));
         } else if(slot!==null && slot!==undefined){
           placePiece(parseInt(slot));
+        } else if(pieceG!==null && pieceG!==undefined){
+          selectGaleriaLabel(parseInt(pieceG));
+        } else if(slotG!==null && slotG!==undefined){
+          placeGaleriaLabel(parseInt(slotG));
         }
       });
     }
@@ -114,7 +126,6 @@ function go(){
   var n=document.getElementById('ni').value.trim();
   if(!n){alert('Escribe tu nombre');return;}
 
-  /* Detectar si es profesor */
   if(n.toUpperCase().indexOf('PROF-')===0){
     isProf=true;
     mn=n.substring(5);
@@ -125,7 +136,6 @@ function go(){
 
   mi=mn.replace(/\s/g,'_')+'_'+Date.now();
 
-  /* Obtener o crear sessionId del grupo actual */
   db.ref('currentSession').once('value',function(snap){
     var val=snap.val();
     if(val){
@@ -137,16 +147,15 @@ function go(){
 
     document.getElementById('login').style.display='none';
     document.getElementById('hud').style.display='block';
-    document.getElementById('rbar').style.display='block';
+    document.getElementById('rbar').style.display='flex';
 
-    /* Mostrar boton reset si es profesor */
     if(isProf){
       var resetBtn=document.getElementById('resetBtn');
       if(resetBtn)resetBtn.style.display='inline-block';
     }
 
     sr=db.ref('data/'+sessionId+'/sessions/'+mi);
-    sr.set({name:mn,entered:new Date().toISOString(),zone:'Sala de Cine',objects:0,piecesPlaced:0,isProf:isProf});
+    sr.set({name:mn,entered:new Date().toISOString(),zone:'Sala de Cine',objects:0,piecesPlaced:0,galeriaPlaced:0,isProf:isProf});
     db.ref('data/'+sessionId+'/online/'+mi).set({name:mn,time:new Date().toISOString()});
     db.ref('data/'+sessionId+'/online/'+mi).onDisconnect().remove();
 
@@ -162,8 +171,9 @@ function go(){
     updateZone('Sala de Cine');
     startReactionListener();
     startPuzzleListener();
+    startGaleriaListener();
 
-    /* Cargar piezas ya colocadas en esta sesion */
+    /* Cargar piezas puzzle ya colocadas */
     db.ref('data/'+sessionId+'/puzzle').once('value',function(psnap){
       var pdata=psnap.val();
       if(!pdata)return;
@@ -174,9 +184,9 @@ function go(){
         if(placedPieces[num])continue;
         placedPieces[num]=true;
         var piece=document.getElementById('piece-'+num);
-        var slot=document.getElementById('slot-'+num);
-        if(piece&&slot){
-          var slotPos=slot.getAttribute('position');
+        var slotEl=document.getElementById('slot-'+num);
+        if(piece&&slotEl){
+          var slotPos=slotEl.getAttribute('position');
           piece.removeAttribute('animation');
           piece.setAttribute('position',slotPos.x+' '+slotPos.y+' '+(slotPos.z-0.02));
           piece.setAttribute('rotation','0 90 0');
@@ -184,44 +194,74 @@ function go(){
           piece.setAttribute('height','0.75');
           piece.classList.remove('clickable');
           piece.removeAttribute('data-piece');
-          slot.setAttribute('material','opacity','0');
-          slot.classList.remove('clickable');
+          slotEl.setAttribute('material','opacity','0');
+          slotEl.classList.remove('clickable');
         }
       }
       var totalPlaced=Object.keys(placedPieces).length;
       if(pcEl)pcEl.textContent=totalPlaced;
-      if(totalPlaced>=16){
-        puzzleComplete=true;
+      if(totalPlaced>=16)puzzleComplete=true;
+    });
+
+    /* Cargar galeria ya colocada */
+    db.ref('data/'+sessionId+'/galeria').once('value',function(gsnap){
+      var gdata=gsnap.val();
+      if(!gdata)return;
+      for(var key in gdata){
+        if(key==='completado')continue;
+        var num=parseInt(key.replace('concepto_',''));
+        if(isNaN(num))continue;
+        if(placedLabels[num])continue;
+        placedLabels[num]=true;
+        galeriaCount++;
+        var letrero=document.getElementById('glet-'+num);
+        var slotEl2=document.getElementById('gslot-'+num);
+        if(letrero){
+          letrero.removeAttribute('animation');
+          letrero.classList.remove('clickable');
+          letrero.removeAttribute('data-piece-g');
+          letrero.setAttribute('material','emissiveIntensity','0.1');
+        }
+        if(slotEl2){
+          slotEl2.setAttribute('material','color','#22C55E');
+          slotEl2.setAttribute('material','opacity','0.8');
+          slotEl2.classList.remove('clickable');
+        }
       }
+      if(gcEl)gcEl.textContent=galeriaCount;
+      if(galeriaCount>=6)galeriaComplete=true;
     });
   });
 }
 
 /* ═══ RESET (solo profesor) ═══ */
 function resetSession(){
-  if(!isProf){return;}
-  if(!confirm('Reiniciar TODO para el siguiente grupo?\nSe borraran: puzzle, reacciones y muro.')){return;}
+  if(!isProf)return;
+  if(!confirm('Reiniciar TODO para el siguiente grupo?\nSe borraran: puzzle, galeria, reacciones y muro.'))return;
 
-  /* Crear nueva sesion */
   sessionId='sesion_'+Date.now();
   db.ref('currentSession').set(sessionId);
 
-  /* Resetear variables locales */
   placedPieces={};
   puzzleComplete=false;
   selectedPiece=null;
+  placedLabels={};
+  galeriaComplete=false;
+  galeriaCount=0;
+  selectedLabel=null;
   dc=0;
   if(oi)oi.textContent='0';
   if(pcEl)pcEl.textContent='0';
+  if(gcEl)gcEl.textContent='0';
 
-  /* Resetear piezas visuales */
+  /* Resetear piezas puzzle */
   for(var i=0;i<16;i++){
     var piece=document.getElementById('piece-'+i);
-    var slot=document.getElementById('slot-'+i);
+    var slotEl=document.getElementById('slot-'+i);
     if(piece){
       var col=i%4;
       var row=Math.floor(i/4);
-      var px=-4.5;
+      var px=4.5;
       var py=1.0+(row*0.9);
       var pz=20.5+(col*1.8);
       piece.setAttribute('position',px+' '+py+' '+pz);
@@ -233,19 +273,40 @@ function resetSession(){
       piece.setAttribute('material','emissive','#FFF');
       piece.setAttribute('material','emissiveIntensity','0.15');
     }
-    if(slot){
-      slot.setAttribute('material','opacity','0.3');
-      slot.classList.add('clickable');
+    if(slotEl){
+      slotEl.setAttribute('material','opacity','0.3');
+      slotEl.classList.add('clickable');
     }
   }
 
-  /* Registrar nueva sesion del profesor */
-  sr=db.ref('data/'+sessionId+'/sessions/'+mi);
-  sr.set({name:mn,entered:new Date().toISOString(),zone:zi?zi.textContent:'',objects:0,piecesPlaced:0,isProf:true,resetAt:new Date().toISOString()});
+  /* Resetear galeria */
+  var conceptColors=['#EF4444','#7C3AED','#3B82F6','#F59E0B','#22C55E','#C8A951'];
+  var shuffled=[3,5,1,0,4,2];
+  for(var g=0;g<6;g++){
+    var realIdx=shuffled[g];
+    var letrero=document.getElementById('glet-'+realIdx);
+    var slotEl2=document.getElementById('gslot-'+realIdx);
+    if(letrero){
+      var cz=-3+(g*1.3);
+      letrero.setAttribute('position','4.8 2 '+cz);
+      letrero.setAttribute('data-piece-g',realIdx.toString());
+      letrero.classList.add('clickable');
+      letrero.setAttribute('material','emissive',conceptColors[realIdx]);
+      letrero.setAttribute('material','emissiveIntensity','0.4');
+    }
+    if(slotEl2){
+      slotEl2.setAttribute('material','color','#1A1A2E');
+      slotEl2.setAttribute('material','opacity','0.5');
+      slotEl2.classList.add('clickable');
+    }
+  }
 
-  /* Reiniciar listeners */
+  sr=db.ref('data/'+sessionId+'/sessions/'+mi);
+  sr.set({name:mn,entered:new Date().toISOString(),zone:zi?zi.textContent:'',objects:0,piecesPlaced:0,galeriaPlaced:0,isProf:true,resetAt:new Date().toISOString()});
+
   startPuzzleListener();
   startReactionListener();
+  startGaleriaListener();
 
   alert('Sesion reiniciada. El siguiente grupo puede entrar.');
 }
@@ -291,13 +352,13 @@ function openPanel(id){
         end.innerHTML='<div style="text-align:center;color:#C8A951;font-family:Georgia,serif;"><h1>Has completado el recorrido</h1><p style="color:#FFE0C2;font-size:1.2em;">Gracias por tu reflexion.<br>Ahora completa el <strong>Post-test</strong> en Brightspace.</p><button onclick="this.parentNode.parentNode.remove();" style="margin-top:20px;padding:12px 32px;background:#FF5900;color:#FFFDF8;border:none;border-radius:12px;font-size:16px;cursor:pointer;font-weight:bold;">Cerrar</button></div>';
         document.body.appendChild(end);
       }
-      if(ba){ba.pause();}
+      if(ba)ba.pause();
       db.ref('data/'+sessionId+'/sessions/'+mi).update({completed:new Date().toISOString()});
     },2000);
   }
 }
 
-/* ═══ PANEL 3D EN VR — FIJO EN EL MUNDO ═══ */
+/* ═══ PANEL 3D EN VR ═══ */
 function showVRPanel(id){
   if(activeVP){
     try{activeVP.parentNode.removeChild(activeVP);}catch(e){}
@@ -369,7 +430,7 @@ function cp(){
   }
 }
 
-/* ═══ VIDEO (solo para modo PC/2D) ═══ */
+/* ═══ VIDEO ═══ */
 function ov(){
   var vo=document.getElementById('vo');
   vo.style.display='flex';
@@ -400,7 +461,219 @@ function wm(){
   alert('Tu reflexion fue enviada al muro.');
 }
 
-/* ═══ ROMPECABEZAS COLABORATIVO ═══ */
+/* ═══ GALERIA INTERACTIVA — ZONA 2 ═══ */
+function selectGaleriaLabel(num){
+  if(galeriaComplete)return;
+  if(placedLabels[num])return;
+
+  /* Deseleccionar anterior */
+  if(selectedLabel!==null){
+    var prev=document.getElementById('glet-'+selectedLabel);
+    var conceptColors=['#EF4444','#7C3AED','#3B82F6','#F59E0B','#22C55E','#C8A951'];
+    if(prev)prev.setAttribute('material','emissiveIntensity','0.4');
+  }
+
+  selectedLabel=num;
+  var letrero=document.getElementById('glet-'+num);
+  if(letrero){
+    letrero.setAttribute('material','emissive','#FF5900');
+    letrero.setAttribute('material','emissiveIntensity','0.9');
+  }
+
+  if(ca){ca.currentTime=0;ca.play().catch(function(){});}
+
+  var conceptNames=['ABUSO DE PODER','JUICIO SIN COMPASION','INJUSTICIA SOCIAL','DESESPERACION','DIGNIDAD EN EL SACRIFICIO','GRANDEZA DEL ALMA'];
+
+  if(isVR){
+    var cam=document.querySelector('[camera]');
+    var fb=document.createElement('a-text');
+    fb.setAttribute('value',conceptNames[num]+' SELECCIONADO\nMira la imagen correcta');
+    fb.setAttribute('color','#FF5900');
+    fb.setAttribute('align','center');
+    fb.setAttribute('width','4');
+    fb.setAttribute('side','double');
+    fb.setAttribute('position','0 -0.5 -1.5');
+    cam.appendChild(fb);
+    setTimeout(function(){try{fb.parentNode.removeChild(fb);}catch(e){}},3000);
+  }
+}
+
+function placeGaleriaLabel(slotNum){
+  if(galeriaComplete)return;
+  if(selectedLabel===null)return;
+  if(placedLabels[slotNum])return;
+
+  /* Verificar si es correcto */
+  if(selectedLabel!==slotNum){
+    if(isVR){
+      var cam=document.querySelector('[camera]');
+      var fb=document.createElement('a-text');
+      fb.setAttribute('value','NO CORRESPONDE\nIntenta otra imagen');
+      fb.setAttribute('color','#EF4444');
+      fb.setAttribute('align','center');
+      fb.setAttribute('width','4');
+      fb.setAttribute('side','double');
+      fb.setAttribute('position','0 -0.5 -1.5');
+      cam.appendChild(fb);
+      setTimeout(function(){try{fb.parentNode.removeChild(fb);}catch(e){}},2000);
+    } else {
+      alert('No corresponde. Intenta otra imagen.');
+    }
+
+    db.ref('data/'+sessionId+'/galeria_intentos').push({
+      name:mn,
+      concepto:selectedLabel,
+      imagen:slotNum,
+      correcto:false,
+      time:new Date().toISOString()
+    });
+
+    return;
+  }
+
+  /* CORRECTO */
+  placedLabels[slotNum]=true;
+  galeriaCount++;
+
+  var letrero=document.getElementById('glet-'+selectedLabel);
+  var slotEl=document.getElementById('gslot-'+slotNum);
+
+  if(letrero){
+    letrero.removeAttribute('animation');
+    letrero.classList.remove('clickable');
+    letrero.removeAttribute('data-piece-g');
+    letrero.setAttribute('material','emissiveIntensity','0.1');
+  }
+
+  if(slotEl){
+    slotEl.setAttribute('material','color','#22C55E');
+    slotEl.setAttribute('material','opacity','0.8');
+    slotEl.classList.remove('clickable');
+  }
+
+  db.ref('data/'+sessionId+'/galeria/concepto_'+slotNum).set({
+    colocadoPor:mn,
+    concepto:slotNum,
+    tiempo:new Date().toISOString()
+  });
+
+  db.ref('data/'+sessionId+'/galeria_intentos').push({
+    name:mn,
+    concepto:selectedLabel,
+    imagen:slotNum,
+    correcto:true,
+    time:new Date().toISOString()
+  });
+
+  if(gcEl)gcEl.textContent=galeriaCount;
+  if(sr)sr.update({galeriaPlaced:galeriaCount});
+
+  if(ca){ca.currentTime=0;ca.play().catch(function(){});}
+
+  if(isVR){
+    var cam2=document.querySelector('[camera]');
+    var fb2=document.createElement('a-text');
+    fb2.setAttribute('value','CORRECTO!\n'+galeriaCount+'/6');
+    fb2.setAttribute('color','#22C55E');
+    fb2.setAttribute('align','center');
+    fb2.setAttribute('width','4');
+    fb2.setAttribute('side','double');
+    fb2.setAttribute('position','0 -0.3 -1.5');
+    cam2.appendChild(fb2);
+    setTimeout(function(){try{fb2.parentNode.removeChild(fb2);}catch(e){}},2500);
+  }
+
+  selectedLabel=null;
+
+  if(galeriaCount>=6){
+    galeriaComplete=true;
+    celebrateGaleria();
+  }
+}
+
+function celebrateGaleria(){
+  if(ba)ba.pause();
+  if(bingo){bingo.currentTime=0;bingo.play().catch(function(){});}
+  setTimeout(function(){if(bingo){bingo.pause();bingo.currentTime=0;}if(ba){ba.play().catch(function(){});}},10000);
+
+  db.ref('data/'+sessionId+'/galeria/completado').set({
+    tiempo:new Date().toISOString(),
+    completadoPor:mn
+  });
+
+  if(isVR){
+    var world=document.getElementById('world');
+    var msg=document.createElement('a-entity');
+    msg.setAttribute('position','-4.5 2.8 0');
+    msg.setAttribute('rotation','0 90 0');
+    var h='<a-plane width="3.2" height="1.5" color="#1A1A2E" opacity="0.95" side="double"></a-plane>';
+    h+='<a-text value="GALERIA COMPLETA!\n\nCada concepto revela\nuna dimension de la\nmiseria y la grandeza\ndel ser humano" color="#C8A951" align="center" width="3.5" position="0 0 0.02" side="double"></a-text>';
+    msg.innerHTML=h;
+    world.appendChild(msg);
+  } else {
+    var fb=document.createElement('div');
+    fb.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(26,26,46,0.9);display:flex;align-items:center;justify-content:center;z-index:300;flex-direction:column;';
+    fb.innerHTML='<div style="text-align:center;color:#C8A951;font-family:Georgia,serif;"><h1 style="font-size:2.5em;">GALERIA COMPLETA!</h1><p style="font-size:1.3em;color:#FFE0C2;max-width:500px;">Cada concepto revela una dimension de la miseria y la grandeza del ser humano.<br><em>La verdadera comprension nace de mirar con el corazon.</em></p><button onclick="this.parentNode.parentNode.remove();" style="margin-top:20px;padding:12px 32px;background:#FF5900;color:#FFFDF8;border:none;border-radius:12px;font-size:16px;cursor:pointer;font-weight:bold;">Continuar</button></div>';
+    document.body.appendChild(fb);
+  }
+}
+
+/* ═══ GALERIA LISTENER (Firebase) ═══ */
+function startGaleriaListener(){
+  db.ref('data/'+sessionId+'/galeria').on('child_added',function(snap){
+    var key=snap.key;
+    if(key==='completado')return;
+    var data=snap.val();
+    if(!data)return;
+
+    var num=parseInt(key.replace('concepto_',''));
+    if(isNaN(num))return;
+    if(placedLabels[num])return;
+
+    placedLabels[num]=true;
+    galeriaCount++;
+
+    var letrero=document.getElementById('glet-'+num);
+    var slotEl=document.getElementById('gslot-'+num);
+
+    if(letrero){
+      letrero.removeAttribute('animation');
+      letrero.classList.remove('clickable');
+      letrero.removeAttribute('data-piece-g');
+      letrero.setAttribute('material','emissiveIntensity','0.1');
+    }
+
+    if(slotEl){
+      slotEl.setAttribute('material','color','#22C55E');
+      slotEl.setAttribute('material','opacity','0.8');
+      slotEl.classList.remove('clickable');
+    }
+
+    if(gcEl)gcEl.textContent=galeriaCount;
+
+    if(data.colocadoPor!==mn){
+      if(isVR){
+        var cam=document.querySelector('[camera]');
+        var fb=document.createElement('a-text');
+        fb.setAttribute('value',data.colocadoPor+' emparejo un concepto!');
+        fb.setAttribute('color','#22C55E');
+        fb.setAttribute('align','center');
+        fb.setAttribute('width','3');
+        fb.setAttribute('side','double');
+        fb.setAttribute('position','0 0.5 -2');
+        cam.appendChild(fb);
+        setTimeout(function(){try{fb.parentNode.removeChild(fb);}catch(e){}},3000);
+      }
+    }
+
+    if(galeriaCount>=6&&!galeriaComplete){
+      galeriaComplete=true;
+      celebrateGaleria();
+    }
+  });
+}
+
+/* ═══ ROMPECABEZAS COLABORATIVO — ZONA 4 ═══ */
 function selectPiece(num){
   if(puzzleComplete)return;
   if(placedPieces[num])return;
@@ -456,10 +729,10 @@ function placePiece(slotNum){
   }
 
   var piece=document.getElementById('piece-'+selectedPiece);
-  var slot=document.getElementById('slot-'+slotNum);
+  var slotEl=document.getElementById('slot-'+slotNum);
 
-  if(piece&&slot){
-    var slotPos=slot.getAttribute('position');
+  if(piece&&slotEl){
+    var slotPos=slotEl.getAttribute('position');
     piece.removeAttribute('animation');
     piece.setAttribute('position',slotPos.x+' '+slotPos.y+' '+(slotPos.z-0.02));
     piece.setAttribute('rotation','0 90 0');
@@ -467,8 +740,8 @@ function placePiece(slotNum){
     piece.setAttribute('height','0.75');
     piece.classList.remove('clickable');
     piece.removeAttribute('data-piece');
-    slot.setAttribute('material','opacity','0');
-    slot.classList.remove('clickable');
+    slotEl.setAttribute('material','opacity','0');
+    slotEl.classList.remove('clickable');
   }
 
   placedPieces[slotNum]=true;
@@ -507,7 +780,7 @@ function placePiece(slotNum){
 }
 
 function celebratePuzzle(){
-  if(ba){ba.pause();}
+  if(ba)ba.pause();
   if(bingo){bingo.currentTime=0;bingo.play().catch(function(){});}
   setTimeout(function(){if(bingo){bingo.pause();bingo.currentTime=0;}if(ba){ba.play().catch(function(){});}},10000);
 
@@ -533,7 +806,7 @@ function celebratePuzzle(){
   }
 }
 
-/* ═══ PUZZLE LISTENER (Firebase — ver piezas de otros) ═══ */
+/* ═══ PUZZLE LISTENER (Firebase) ═══ */
 function startPuzzleListener(){
   db.ref('data/'+sessionId+'/puzzle').on('child_added',function(snap){
     var key=snap.key;
@@ -543,15 +816,14 @@ function startPuzzleListener(){
 
     var num=parseInt(key.replace('pieza_',''));
     if(isNaN(num))return;
-
     if(placedPieces[num])return;
 
     placedPieces[num]=true;
     var piece=document.getElementById('piece-'+num);
-    var slot=document.getElementById('slot-'+num);
+    var slotEl=document.getElementById('slot-'+num);
 
-    if(piece&&slot){
-      var slotPos=slot.getAttribute('position');
+    if(piece&&slotEl){
+      var slotPos=slotEl.getAttribute('position');
       piece.removeAttribute('animation');
       piece.setAttribute('position',slotPos.x+' '+slotPos.y+' '+(slotPos.z-0.02));
       piece.setAttribute('rotation','0 90 0');
@@ -559,8 +831,8 @@ function startPuzzleListener(){
       piece.setAttribute('height','0.75');
       piece.classList.remove('clickable');
       piece.removeAttribute('data-piece');
-      slot.setAttribute('material','opacity','0');
-      slot.classList.remove('clickable');
+      slotEl.setAttribute('material','opacity','0');
+      slotEl.classList.remove('clickable');
     }
 
     var totalPlaced=Object.keys(placedPieces).length;
@@ -610,7 +882,7 @@ function sendReaction(type){
   }
 }
 
-/* ═══ EMOJI 3D EN VR (local — sube flotando) ═══ */
+/* ═══ EMOJI 3D EN VR ═══ */
 function showVREmoji(type){
   if(activeEmoji){
     try{activeEmoji.parentNode.removeChild(activeEmoji);}catch(e){}
@@ -636,7 +908,7 @@ function showVREmoji(type){
     var dur=2500;
     var t0=performance.now();
     function anim(now){
-      if(!txt.parentNode){return;}
+      if(!txt.parentNode)return;
       var p=(now-t0)/dur;
       if(p>=1){
         try{txt.parentNode.removeChild(txt);}catch(e){}
@@ -684,7 +956,7 @@ function showSharedReaction(type,name){
       var dur=3000;
       var t0=performance.now();
       function anim(now){
-        if(!txt.parentNode){return;}
+        if(!txt.parentNode)return;
         var p=(now-t0)/dur;
         if(p>=1){
           try{txt.parentNode.removeChild(txt);}catch(e){}
