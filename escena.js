@@ -291,4 +291,18 @@ s+='<a-text value="IDEA" position="3.5 0.9 31" align="center" color="#F59E0B" wi
 s+='<a-plane position="3.8 2.5 35" rotation="0 -90 0" width="1.2" height="0.8" color="#1A1A2E" material="opacity:0.9"></a-plane>';
 s+='<a-text value="[ ]>[ ]>[ ]>[ ]>[AQUI]" position="3.7 2.5 35" rotation="0 -90 0" align="center" color="#FF5900" width="2.5" side="double"></a-text>';
 
-/* ═══ TECHO
+
+/* ═══ TECHO GLOBAL ═══ */
+s+='<a-plane position="0 3.2 5" rotation="90 0 0" width="12" height="65" color="#1A1A2E"></a-plane>';
+
+/* ═══ ILUMINACION GLOBAL ═══ */
+s+='<a-light type="ambient" color="#FFE0C2" intensity="0.35"></a-light>';
+s+='<a-light type="directional" color="#FFF" intensity="0.3" position="0 4 0"></a-light>';
+
+/* ═══ CIELO ═══ */
+s+='<a-sky color="#0D0D1A"></a-sky>';
+
+w.innerHTML=s;
+}
+
+
