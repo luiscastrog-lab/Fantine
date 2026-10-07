@@ -168,9 +168,35 @@ if(id==='puerta'){
       var btn=document.createElement('a-text');
       btn.setAttribute('value','HAS COMPLETADO EL RECORRIDO
       Gracias por tu reflexion
-Quitate el visor y
-completa el Post-test
-en Brightspace');
+      Quitate el visor y
+      completa el Post-test
+      en Brightspace');
+✅ Todo lo demás está correcto
+Table
+
+
+
+Cambio
+
+
+Estado
+
+
+Quest-move (controles sin invertir)	✅ dir.x*ay y dir.z*ay (sin negativo)
+Bingo (pausa música + límite 10s)	✅ ba.pause() + setTimeout 10s
+Panel "Terminar" (puerta de salida)	⚠️ Solo falta corregir el salto de línea
+Funciones (17 funciones)	✅ Sin duplicados
+Firebase (6 nodos)	✅ Correcto
+Click handlers (panel, re, piece, slot)	✅ Correcto
+Ver más
+Haz solo ese cambio, sube a GitHub, espera 2-3 minutos, y prueba en incógnito. Los controles deberían ir en la dirección correcta, el Bingo no se empalma, y al llegar a la puerta de salida aparecerá el mensaje de cierre. 🏭🚀
+
+
+
+
+7:17
+
+
       btn.setAttribute('color','#C8A951');
       btn.setAttribute('align','center');
       btn.setAttribute('width','4');
