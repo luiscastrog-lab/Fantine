@@ -244,7 +244,7 @@ var pzData=[
 for(var pi=0;pi<pzData.length;pi++){
   var p=pzData[pi];
   var animY=p.y+0.1;
-  s+='<a-plane id="piece-'+p.id+'" position="4.5 '+p.y+' '+p.z+'" rotation="0 -90 0" width="0.7" height="0.7" src="Fabrica.jpg" material="shader:flat;repeat:0.25 0.25;offset:'+p.ox+' '+p.oy+'" class="clickable" data-piece="'+p.id+'" animation="property:position;to:4.5 '+animY+' '+p.z+';dir:alternate;dur:2000;loop:true"></a-plane>';
+  s+='<a-plane id="piece-'+p.id+'" position="4.5 '+p.y+' '+p.z+'" rotation="0 -90 0" width="0.7" height="0.7" src="Fabrica.jpg" material="repeat:0.25 0.25;offset:'+p.ox+' '+p.oy+'" class="clickable" data-piece="'+p.id+'" animation="property:position;to:4.5 '+animY+' '+p.z+';dir:alternate;dur:2000;loop:true"></a-plane>';
 }
 
 s+='<a-light type="point" color="#C8A951" intensity="0.6" distance="12" position="0 2.8 24"></a-light>';
