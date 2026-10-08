@@ -295,11 +295,12 @@ s+='<a-plane width="10" height="4" position="5 2 18" rotation="0 -90 0" material
 s+='<a-text value="→ PATIO" color="#FFD700" align="center" width="3" position="4.9 2 18" rotation="0 -90 0"></a-text>';
 s+='<a-text value="← OFICINA" color="#FFD700" align="center" width="3" position="-4.9 2 18" rotation="0 90 0"></a-text>';
 
+
 /* ═══════════════════════════════════════════
    ZONA 4: EL PATIO — ROMPECABEZAS COLABORATIVO
    (z = 20 a 28)
-   OFFSETS CORREGIDOS V3.0:
-   Col1→0.75, Col2→0.00, Col3→0.50, Col4→0.25
+   OFFSETS DEFINITIVOS — INVERSION COMPLETA:
+   Col0→0.75, Col1→0.50, Col2→0.25, Col3→0.00
    ═══════════════════════════════════════════ */
 
 /* --- Piso zona 4 --- */
@@ -323,28 +324,28 @@ s+='<a-plane width="3.4" height="3.4" position="-4.95 2 23.7" rotation="0 90 0" 
 s+='<a-plane width="3.2" height="3.2" position="-4.9 2 23.7" rotation="0 90 0" material="color:#1A1A2E"></a-plane>';
 
 /* --- 16 SLOTS del rompecabezas (pared izquierda, 4x4) ---
-     OFFSETS CORREGIDOS V3.0 --- */
+     OFFSETS DEFINITIVOS: Col0=0.75, Col1=0.50, Col2=0.25, Col3=0.00 --- */
 var slotOffsets=[
-  /* Fila 0 (arriba): pieces 0,1,2,3 */
+  /* Fila 0 (arriba): slots 0,1,2,3 */
   {id:0,  x:0.75, y:0.75},
-  {id:1,  x:0.00, y:0.75},
-  {id:2,  x:0.50, y:0.75},
-  {id:3,  x:0.25, y:0.75},
-  /* Fila 1: pieces 4,5,6,7 */
+  {id:1,  x:0.50, y:0.75},
+  {id:2,  x:0.25, y:0.75},
+  {id:3,  x:0.00, y:0.75},
+  /* Fila 1: slots 4,5,6,7 */
   {id:4,  x:0.75, y:0.50},
-  {id:5,  x:0.00, y:0.50},
-  {id:6,  x:0.50, y:0.50},
-  {id:7,  x:0.25, y:0.50},
-  /* Fila 2: pieces 8,9,10,11 */
+  {id:5,  x:0.50, y:0.50},
+  {id:6,  x:0.25, y:0.50},
+  {id:7,  x:0.00, y:0.50},
+  /* Fila 2: slots 8,9,10,11 */
   {id:8,  x:0.75, y:0.25},
-  {id:9,  x:0.00, y:0.25},
-  {id:10, x:0.50, y:0.25},
-  {id:11, x:0.25, y:0.25},
-  /* Fila 3 (abajo): pieces 12,13,14,15 */
+  {id:9,  x:0.50, y:0.25},
+  {id:10, x:0.25, y:0.25},
+  {id:11, x:0.00, y:0.25},
+  /* Fila 3 (abajo): slots 12,13,14,15 */
   {id:12, x:0.75, y:0.00},
-  {id:13, x:0.00, y:0.00},
-  {id:14, x:0.50, y:0.00},
-  {id:15, x:0.25, y:0.00}
+  {id:13, x:0.50, y:0.00},
+  {id:14, x:0.25, y:0.00},
+  {id:15, x:0.00, y:0.00}
 ];
 
 for(var si=0;si<16;si++){
@@ -357,24 +358,24 @@ for(var si=0;si<16;si++){
 }
 
 /* --- 16 PIEZAS del rompecabezas (pared derecha, desordenadas) ---
-     OFFSETS CORREGIDOS V3.0 --- */
+     OFFSETS DEFINITIVOS: mismos que los slots correspondientes --- */
 var pzData=[
-  {id:2,  ox:0.50, oy:0.75, y:0.91, z:21.22},
-  {id:10, ox:0.50, oy:0.25, y:0.76, z:22.57},
-  {id:7,  ox:0.25, oy:0.50, y:0.90, z:24.00},
+  {id:2,  ox:0.25, oy:0.75, y:0.91, z:21.22},
+  {id:10, ox:0.25, oy:0.25, y:0.76, z:22.57},
+  {id:7,  ox:0.00, oy:0.50, y:0.90, z:24.00},
   {id:12, ox:0.75, oy:0.00, y:0.76, z:25.90},
-  {id:13, ox:0.00, oy:0.00, y:1.66, z:21.11},
+  {id:13, ox:0.50, oy:0.00, y:1.66, z:21.11},
   {id:0,  ox:0.75, oy:0.75, y:1.47, z:22.68},
-  {id:11, ox:0.25, oy:0.25, y:1.61, z:24.05},
-  {id:15, ox:0.25, oy:0.00, y:1.59, z:25.66},
-  {id:5,  ox:0.00, oy:0.50, y:2.53, z:21.11},
-  {id:9,  ox:0.00, oy:0.25, y:2.32, z:22.49},
+  {id:11, ox:0.00, oy:0.25, y:1.61, z:24.05},
+  {id:15, ox:0.00, oy:0.00, y:1.59, z:25.66},
+  {id:5,  ox:0.50, oy:0.50, y:2.53, z:21.11},
+  {id:9,  ox:0.50, oy:0.25, y:2.32, z:22.49},
   {id:4,  ox:0.75, oy:0.50, y:2.48, z:23.93},
   {id:8,  ox:0.75, oy:0.25, y:2.50, z:25.98},
-  {id:1,  ox:0.00, oy:0.75, y:3.17, z:20.74},
-  {id:6,  ox:0.50, oy:0.50, y:3.32, z:22.64},
-  {id:14, ox:0.50, oy:0.00, y:3.27, z:24.03},
-  {id:3,  ox:0.25, oy:0.75, y:3.20, z:26.03}
+  {id:1,  ox:0.50, oy:0.75, y:3.17, z:20.74},
+  {id:6,  ox:0.25, oy:0.50, y:3.32, z:22.64},
+  {id:14, ox:0.25, oy:0.00, y:3.27, z:24.03},
+  {id:3,  ox:0.00, oy:0.75, y:3.20, z:26.03}
 ];
 
 for(var pi=0;pi<pzData.length;pi++){
@@ -401,17 +402,6 @@ s+='<a-text value="MAPA DE RUTA\\n[CINE]→[1.ENTRADA]→[2.TALLER]\\n→[3.OFIC
 /* --- Luz zona 4 --- */
 s+='<a-light type="point" intensity="0.7" distance="12" position="0 4 24" color="#FFE0C2"></a-light>';
 
-/* ═══════════════════════════════════════════
-   PASILLO ZONA 4 → ZONA 5 (z = 28 a 32)
-   ═══════════════════════════════════════════ */
-
-s+='<a-plane rotation="-90 0 0" width="10" height="4" position="0 0 30" material="color:#2C1A1A"></a-plane>';
-s+='<a-plane rotation="90 0 0" width="10" height="4" position="0 4 30" material="color:#1A1A2E"></a-plane>';
-s+='<a-plane width="10" height="4" position="-5 2 30" rotation="0 90 0" material="color:#3D2B1F"></a-plane>';
-s+='<a-plane width="10" height="4" position="5 2 30" rotation="0 -90 0" material="color:#3D2B1F"></a-plane>';
-
-s+='<a-text value="→ SALIDA" color="#FFD700" align="center" width="3" position="4.9 2 30" rotation="0 -90 0"></a-text>';
-s+='<a-text value="← PATIO" color="#FFD700" align="center" width="3" position="-4.9 2 30" rotation="0 90 0"></a-text>';
 
 /* ═══════════════════════════════════════════
    ZONA 5: LA PUERTA DE SALIDA (z = 32 a 38)
