@@ -1,10 +1,8 @@
 
 /* =========================================
-   APP.JS V2.8 — La Fabrica de Fantine
-   INCLUYE: Galeria interactiva Zona 2,
-   Rompecabezas Zona 4, Reset sesion,
-   Bingo al completar galeria y puzzle,
-   controles corregidos, emoji sube
+   APP.JS V3.0 — La Fabrica de Fantine
+   CORREGIDO: Reset PROF, puzzle offsets,
+   Bingo texto temporal, emoji animacion
    ========================================= */
 
 /* ═══ VARIABLES GLOBALES ═══ */
@@ -19,12 +17,21 @@ var placedPieces={};
 var puzzleComplete=false;
 var sessionId='';
 var isProf=false;
-/* Galeria */
 var selectedLabel=null;
 var placedLabels={};
 var galeriaComplete=false;
 var galeriaCount=0;
 var ids=['pantalla','cartel','porton','letrero','instrucciones','carta','cuentas','diario','decreto','espejo','reloj','campana','muro','puerta'];
+
+/* Posiciones aleatorias originales de las piezas (deben coincidir con escena.js V3.0) */
+var pzOrigPos=[
+{id:2, y:0.91,z:21.22},{id:10,y:0.76,z:22.57},{id:7, y:0.90,z:24.00},
+{id:12,y:0.76,z:25.90},{id:13,y:1.66,z:21.11},{id:0, y:1.47,z:22.68},
+{id:11,y:1.61,z:24.05},{id:15,y:1.59,z:25.66},{id:5, y:2.53,z:21.11},
+{id:9, y:2.32,z:22.49},{id:4, y:2.48,z:23.93},{id:8, y:2.50,z:25.98},
+{id:1, y:3.17,z:20.74},{id:6, y:3.32,z:22.64},{id:14,y:3.27,z:24.03},
+{id:3, y:3.20,z:26.03}
+];
 
 /* ═══ QUEST-MOVE ═══ */
 AFRAME.registerComponent('quest-move',{
@@ -254,24 +261,18 @@ function resetSession(){
   if(pcEl)pcEl.textContent='0';
   if(gcEl)gcEl.textContent='0';
 
-  /* Resetear piezas puzzle */
-  for(var i=0;i<16;i++){
-    var piece=document.getElementById('piece-'+i);
-    var slotEl=document.getElementById('slot-'+i);
+  /* Resetear piezas puzzle a posiciones ALEATORIAS originales */
+  for(var i=0;i<pzOrigPos.length;i++){
+    var pd=pzOrigPos[i];
+    var piece=document.getElementById('piece-'+pd.id);
+    var slotEl=document.getElementById('slot-'+pd.id);
     if(piece){
-      var col=i%4;
-      var row=Math.floor(i/4);
-      var px=4.5;
-      var py=1.0+(row*0.9);
-      var pz=20.5+(col*1.8);
-      piece.setAttribute('position',px+' '+py+' '+pz);
-      piece.setAttribute('rotation','0 90 0');
+      piece.setAttribute('position','4.5 '+pd.y+' '+pd.z);
+      piece.setAttribute('rotation','0 -90 0');
       piece.setAttribute('width','0.7');
       piece.setAttribute('height','0.7');
-      piece.setAttribute('data-piece',i.toString());
+      piece.setAttribute('data-piece',pd.id.toString());
       piece.classList.add('clickable');
-      piece.setAttribute('material','emissive','#FFF');
-      piece.setAttribute('material','emissiveIntensity','0.15');
     }
     if(slotEl){
       slotEl.setAttribute('material','opacity','0.3');
@@ -299,6 +300,12 @@ function resetSession(){
       slotEl2.setAttribute('material','opacity','0.5');
       slotEl2.classList.add('clickable');
     }
+  }
+
+  /* Remover mensajes de celebracion VR que quedaron fijos */
+  var oldMsgs=document.querySelectorAll('[data-celebrate]');
+  for(var m=0;m<oldMsgs.length;m++){
+    try{oldMsgs[m].parentNode.removeChild(oldMsgs[m]);}catch(e){}
   }
 
   sr=db.ref('data/'+sessionId+'/sessions/'+mi);
@@ -346,6 +353,7 @@ function openPanel(id){
         btn.setAttribute('side','double');
         btn.setAttribute('position','0 0 -2');
         cam.appendChild(btn);
+        setTimeout(function(){try{btn.parentNode.removeChild(btn);}catch(e){}},15000);
       } else {
         var end=document.createElement('div');
         end.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(26,26,46,0.95);display:flex;align-items:center;justify-content:center;z-index:300;';
@@ -432,9 +440,7 @@ function cp(){
 
 /* ═══ VIDEO ═══ */
 function ov(){
-  var vo=document.getElementById('vo');
-  vo.style.display='flex';
-  document.getElementById('vf').src='https://www.youtube.com/embed/xOyrZSaeZa0?autoplay=1';
+  window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
 }
 
 function cv(){
@@ -466,7 +472,6 @@ function selectGaleriaLabel(num){
   if(galeriaComplete)return;
   if(placedLabels[num])return;
 
-  /* Deseleccionar anterior */
   if(selectedLabel!==null){
     var prev=document.getElementById('glet-'+selectedLabel);
     var conceptColors=['#EF4444','#7C3AED','#3B82F6','#F59E0B','#22C55E','#C8A951'];
@@ -503,7 +508,6 @@ function placeGaleriaLabel(slotNum){
   if(selectedLabel===null)return;
   if(placedLabels[slotNum])return;
 
-  /* Verificar si es correcto */
   if(selectedLabel!==slotNum){
     if(isVR){
       var cam=document.querySelector('[camera]');
@@ -531,7 +535,6 @@ function placeGaleriaLabel(slotNum){
     return;
   }
 
-  /* CORRECTO */
   placedLabels[slotNum]=true;
   galeriaCount++;
 
@@ -606,10 +609,13 @@ function celebrateGaleria(){
     var msg=document.createElement('a-entity');
     msg.setAttribute('position','-4.5 2.8 0');
     msg.setAttribute('rotation','0 90 0');
+    msg.setAttribute('data-celebrate','galeria');
     var h='<a-plane width="3.2" height="1.5" color="#1A1A2E" opacity="0.95" side="double"></a-plane>';
     h+='<a-text value="GALERIA COMPLETA!\n\nCada concepto revela\nuna dimension de la\nmiseria y la grandeza\ndel ser humano" color="#C8A951" align="center" width="3.5" position="0 0 0.02" side="double"></a-text>';
     msg.innerHTML=h;
     world.appendChild(msg);
+    /* Remover despues de 15 segundos */
+    setTimeout(function(){try{msg.parentNode.removeChild(msg);}catch(e){}},15000);
   } else {
     var fb=document.createElement('div');
     fb.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(26,26,46,0.9);display:flex;align-items:center;justify-content:center;z-index:300;flex-direction:column;';
@@ -794,10 +800,13 @@ function celebratePuzzle(){
     var msg=document.createElement('a-entity');
     msg.setAttribute('position','-4.5 2.4 24');
     msg.setAttribute('rotation','0 90 0');
+    msg.setAttribute('data-celebrate','puzzle');
     var h='<a-plane width="3.2" height="2" color="#1A1A2E" opacity="0.95" side="double"></a-plane>';
     h+='<a-text value="JUNTOS RECONSTRUIMOS\nA FANTINE!\n\nAsi como cada pieza\nfue necesaria\ncada persona importa\n- Victor Hugo" color="#C8A951" align="center" width="3.5" position="0 0 0.02" side="double"></a-text>';
     msg.innerHTML=h;
     world.appendChild(msg);
+    /* Remover despues de 15 segundos */
+    setTimeout(function(){try{msg.parentNode.removeChild(msg);}catch(e){}},15000);
   } else {
     var fb=document.createElement('div');
     fb.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(26,26,46,0.9);display:flex;align-items:center;justify-content:center;z-index:300;flex-direction:column;';
@@ -882,8 +891,9 @@ function sendReaction(type){
   }
 }
 
-/* ═══ EMOJI 3D EN VR ═══ */
+/* ═══ EMOJI 3D EN VR — CORREGIDO: sube y desaparece ═══ */
 function showVREmoji(type){
+  /* Limpiar emoji anterior si existe */
   if(activeEmoji){
     try{activeEmoji.parentNode.removeChild(activeEmoji);}catch(e){}
     activeEmoji=null;
@@ -902,25 +912,26 @@ function showVREmoji(type){
   cam.appendChild(txt);
   activeEmoji=txt;
 
-  requestAnimationFrame(function(){
-    var startY=-0.3;
-    var endY=0.5;
-    var dur=2500;
-    var t0=performance.now();
-    function anim(now){
-      if(!txt.parentNode)return;
-      var p=(now-t0)/dur;
-      if(p>=1){
-        try{txt.parentNode.removeChild(txt);}catch(e){}
-        if(activeEmoji===txt)activeEmoji=null;
-        return;
-      }
-      var y=startY+(endY-startY)*p;
-      txt.setAttribute('position','0 '+y+' -1.5');
-      requestAnimationFrame(anim);
+  /* Animacion: sube de -0.3 a 0.5 en 2.5s y luego se elimina */
+  var startY=-0.3;
+  var endY=0.5;
+  var dur=2500;
+  var t0=performance.now();
+  var currentTxt=txt;
+
+  function anim(now){
+    if(!currentTxt.parentNode)return;
+    var p=(now-t0)/dur;
+    if(p>=1){
+      try{currentTxt.parentNode.removeChild(currentTxt);}catch(e){}
+      if(activeEmoji===currentTxt)activeEmoji=null;
+      return;
     }
+    var y=startY+(endY-startY)*p;
+    currentTxt.setAttribute('position','0 '+y+' -1.5');
     requestAnimationFrame(anim);
-  });
+  }
+  requestAnimationFrame(anim);
 }
 
 /* ═══ REACCIONES COMPARTIDAS (Firebase) ═══ */
@@ -950,24 +961,24 @@ function showSharedReaction(type,name){
     txt.setAttribute('position',rx+' 2.5 '+rz);
     world.appendChild(txt);
 
-    requestAnimationFrame(function(){
-      var startY=2.5;
-      var endY=4.0;
-      var dur=3000;
-      var t0=performance.now();
-      function anim(now){
-        if(!txt.parentNode)return;
-        var p=(now-t0)/dur;
-        if(p>=1){
-          try{txt.parentNode.removeChild(txt);}catch(e){}
-          return;
-        }
-        var y=startY+(endY-startY)*p;
-        txt.setAttribute('position',rx+' '+y+' '+rz);
-        requestAnimationFrame(anim);
+    var startY=2.5;
+    var endY=4.0;
+    var dur=3000;
+    var t0=performance.now();
+    var currentTxt=txt;
+
+    function anim(now){
+      if(!currentTxt.parentNode)return;
+      var p=(now-t0)/dur;
+      if(p>=1){
+        try{currentTxt.parentNode.removeChild(currentTxt);}catch(e){}
+        return;
       }
+      var y=startY+(endY-startY)*p;
+      currentTxt.setAttribute('position',rx+' '+y+' '+rz);
       requestAnimationFrame(anim);
-    });
+    }
+    requestAnimationFrame(anim);
   } else {
     var fb=document.createElement('div');
     fb.style.cssText='position:fixed;top:20%;left:'+(20+Math.random()*60)+'%;font-size:32px;font-weight:bold;color:'+colors[type]+';z-index:999;text-shadow:2px 2px 4px rgba(0,0,0,0.5);pointer-events:none;opacity:0.8;';
