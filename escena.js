@@ -1,8 +1,9 @@
 
 /* =========================================
-   ESCENA.JS V3.0 — La Fabrica de Fantine
-   CORREGIDO: Offsets de textura del puzzle
-   Col1→0.75, Col2→0.00, Col3→0.50, Col4→0.25
+   ESCENA.JS V3.1 — La Fabrica de Fantine
+   CORREGIDO DEFINITIVO: Offsets del puzzle
+   Col0=0.75, Col1=0.50, Col2=0.25, Col3=0.00
+   (inversion completa por rotacion de pared)
    ========================================= */
 
 function buildScene(){
@@ -74,7 +75,6 @@ s+='<a-plane rotation="90 0 0" width="10" height="4" position="0 4 -16" material
 s+='<a-plane width="10" height="4" position="-5 2 -16" rotation="0 90 0" material="color:#3D2B1F"></a-plane>';
 s+='<a-plane width="10" height="4" position="5 2 -16" rotation="0 -90 0" material="color:#3D2B1F"></a-plane>';
 
-/* --- Flecha amarilla pasillo cine→zona1 --- */
 s+='<a-text value="→ ENTRADA" color="#FFD700" align="center" width="3" position="4.9 2 -16" rotation="0 -90 0"></a-text>';
 s+='<a-text value="← CINE" color="#FFD700" align="center" width="3" position="-4.9 2 -16" rotation="0 90 0"></a-text>';
 
@@ -82,13 +82,8 @@ s+='<a-text value="← CINE" color="#FFD700" align="center" width="3" position="
    ZONA 1: ENTRADA DE LA FABRICA (z = -14 a -8)
    ═══════════════════════════════════════════ */
 
-/* --- Piso zona 1 --- */
 s+='<a-plane rotation="-90 0 0" width="10" height="6" position="0 0 -11" material="color:#3D2B1F"></a-plane>';
-
-/* --- Techo zona 1 --- */
 s+='<a-plane rotation="90 0 0" width="10" height="6" position="0 4 -11" material="color:#1A1A2E"></a-plane>';
-
-/* --- Paredes zona 1 --- */
 s+='<a-plane width="10" height="4" position="0 2 -14" material="color:#4A3728"></a-plane>';
 s+='<a-plane width="10" height="4" position="0 2 -8" rotation="0 180 0" material="color:#4A3728"></a-plane>';
 s+='<a-plane width="6" height="4" position="-5 2 -11" rotation="0 90 0" material="color:#4A3728"></a-plane>';
@@ -129,10 +124,8 @@ s+='<a-text value="IDEA" color="#F59E0B" align="center" width="2" position="-4.5
 s+='<a-plane width="1.5" height="1" position="4.9 2.5 -11" rotation="0 -90 0" material="color:#1A1A2E;opacity:0.9"></a-plane>';
 s+='<a-text value="MAPA DE RUTA\\n[CINE]→[1.ENTRADA]→[2.TALLER]\\n→[3.OFICINA]→[4.PATIO]→[5.SALIDA]\\n\\n★ ESTAS AQUI: ENTRADA" color="#C8A951" align="center" width="2" position="4.85 2.5 -11" rotation="0 -90 0"></a-text>';
 
-/* --- Flecha zona 1→zona 2 --- */
 s+='<a-text value="→ TALLER" color="#FFD700" align="center" width="3" position="4.9 1.5 -11" rotation="0 -90 0"></a-text>';
 
-/* --- Luz zona 1 --- */
 s+='<a-light type="point" intensity="0.6" distance="10" position="0 3.5 -11" color="#FFE0C2"></a-light>';
 
 /* ═══════════════════════════════════════════
@@ -152,13 +145,8 @@ s+='<a-text value="← ENTRADA" color="#FFD700" align="center" width="3" positio
    GALERIA INTERACTIVA
    ═══════════════════════════════════════════ */
 
-/* --- Piso zona 2 --- */
 s+='<a-plane rotation="-90 0 0" width="10" height="8" position="0 0 0" material="color:#3D2B1F"></a-plane>';
-
-/* --- Techo zona 2 --- */
 s+='<a-plane rotation="90 0 0" width="10" height="8" position="0 4 0" material="color:#1A1A2E"></a-plane>';
-
-/* --- Paredes zona 2 --- */
 s+='<a-plane width="10" height="4" position="0 2 -4" material="color:#4A3728"></a-plane>';
 s+='<a-plane width="10" height="4" position="0 2 4" rotation="0 180 0" material="color:#4A3728"></a-plane>';
 s+='<a-plane width="8" height="4" position="-5 2 0" rotation="0 90 0" material="color:#4A3728"></a-plane>';
@@ -175,9 +163,7 @@ var galeriaColors=['#EF4444','#7C3AED','#3B82F6','#F59E0B','#22C55E','#C8A951'];
 
 for(var gi=0;gi<6;gi++){
   var gz=-3+(gi*1.3);
-  /* Marco dorado */
   s+='<a-plane width="1.15" height="0.95" position="-4.95 2 '+gz+'" rotation="0 90 0" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.2"></a-plane>';
-  /* Imagen */
   s+='<a-plane id="gslot-'+gi+'" width="1" height="0.8" position="-4.9 2 '+gz+'" rotation="0 90 0" material="src:'+img+galeriaFiles[gi]+';color:#1A1A2E;opacity:0.5" class="clickable" data-slot-g="'+gi+'"></a-plane>';
 }
 
@@ -206,7 +192,6 @@ s+='<a-text value="IDEA" color="#F59E0B" align="center" width="2" position="-4.5
 s+='<a-plane width="1.5" height="1" position="4.9 3.2 0" rotation="0 -90 0" material="color:#1A1A2E;opacity:0.9"></a-plane>';
 s+='<a-text value="MAPA DE RUTA\\n[CINE]→[1.ENTRADA]→[2.TALLER]\\n→[3.OFICINA]→[4.PATIO]→[5.SALIDA]\\n\\n★ ESTAS AQUI: TALLER" color="#C8A951" align="center" width="2" position="4.85 3.2 0" rotation="0 -90 0"></a-text>';
 
-/* --- Luz zona 2 --- */
 s+='<a-light type="point" intensity="0.6" distance="12" position="0 3.5 0" color="#FFE0C2"></a-light>';
 
 /* ═══════════════════════════════════════════
@@ -225,13 +210,8 @@ s+='<a-text value="← TALLER" color="#FFD700" align="center" width="3" position
    ZONA 3: OFICINA DEL PADRE MADELEINE (z = 8 a 16)
    ═══════════════════════════════════════════ */
 
-/* --- Piso zona 3 --- */
 s+='<a-plane rotation="-90 0 0" width="10" height="8" position="0 0 12" material="color:#4A3728"></a-plane>';
-
-/* --- Techo zona 3 --- */
 s+='<a-plane rotation="90 0 0" width="10" height="8" position="0 4 12" material="color:#1A1A2E"></a-plane>';
-
-/* --- Paredes zona 3 --- */
 s+='<a-plane width="10" height="4" position="0 2 8" material="color:#5C4033"></a-plane>';
 s+='<a-plane width="10" height="4" position="0 2 16" rotation="0 180 0" material="color:#5C4033"></a-plane>';
 s+='<a-plane width="8" height="4" position="-5 2 12" rotation="0 90 0" material="color:#5C4033"></a-plane>';
@@ -280,7 +260,6 @@ s+='<a-text value="IDEA" color="#F59E0B" align="center" width="2" position="-4.5
 s+='<a-plane width="1.5" height="1" position="4.9 1.5 12" rotation="0 -90 0" material="color:#1A1A2E;opacity:0.9"></a-plane>';
 s+='<a-text value="MAPA DE RUTA\\n[CINE]→[1.ENTRADA]→[2.TALLER]\\n→[3.OFICINA]→[4.PATIO]→[5.SALIDA]\\n\\n★ ESTAS AQUI: OFICINA" color="#C8A951" align="center" width="2" position="4.85 1.5 12" rotation="0 -90 0"></a-text>';
 
-/* --- Luz zona 3 --- */
 s+='<a-light type="point" intensity="0.6" distance="12" position="0 3.5 12" color="#FFE0C2"></a-light>';
 
 /* ═══════════════════════════════════════════
@@ -295,21 +274,15 @@ s+='<a-plane width="10" height="4" position="5 2 18" rotation="0 -90 0" material
 s+='<a-text value="→ PATIO" color="#FFD700" align="center" width="3" position="4.9 2 18" rotation="0 -90 0"></a-text>';
 s+='<a-text value="← OFICINA" color="#FFD700" align="center" width="3" position="-4.9 2 18" rotation="0 90 0"></a-text>';
 
-
 /* ═══════════════════════════════════════════
    ZONA 4: EL PATIO — ROMPECABEZAS COLABORATIVO
    (z = 20 a 28)
    OFFSETS DEFINITIVOS — INVERSION COMPLETA:
-   Col0→0.75, Col1→0.50, Col2→0.25, Col3→0.00
+   Col0=0.75, Col1=0.50, Col2=0.25, Col3=0.00
    ═══════════════════════════════════════════ */
 
-/* --- Piso zona 4 --- */
 s+='<a-plane rotation="-90 0 0" width="10" height="8" position="0 0 24" material="color:#4A6741"></a-plane>';
-
-/* --- Techo zona 4 (abierto/cielo) --- */
 s+='<a-plane rotation="90 0 0" width="10" height="8" position="0 5 24" material="color:#1A1A2E;opacity:0.3"></a-plane>';
-
-/* --- Paredes zona 4 --- */
 s+='<a-plane width="10" height="4" position="0 2 20" material="color:#5C4033"></a-plane>';
 s+='<a-plane width="10" height="4" position="0 2 28" rotation="0 180 0" material="color:#5C4033"></a-plane>';
 s+='<a-plane width="8" height="4" position="-5 2 24" rotation="0 90 0" material="color:#5C4033"></a-plane>';
@@ -323,25 +296,21 @@ s+='<a-text value="ZONA 4: EL PATIO — ROMPECABEZAS" color="#C8A951" align="cen
 s+='<a-plane width="3.4" height="3.4" position="-4.95 2 23.7" rotation="0 90 0" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.3"></a-plane>';
 s+='<a-plane width="3.2" height="3.2" position="-4.9 2 23.7" rotation="0 90 0" material="color:#1A1A2E"></a-plane>';
 
-/* --- 16 SLOTS del rompecabezas (pared izquierda, 4x4) ---
+/* --- 16 SLOTS (pared izquierda, 4x4) ---
      OFFSETS DEFINITIVOS: Col0=0.75, Col1=0.50, Col2=0.25, Col3=0.00 --- */
 var slotOffsets=[
-  /* Fila 0 (arriba): slots 0,1,2,3 */
   {id:0,  x:0.75, y:0.75},
   {id:1,  x:0.50, y:0.75},
   {id:2,  x:0.25, y:0.75},
   {id:3,  x:0.00, y:0.75},
-  /* Fila 1: slots 4,5,6,7 */
   {id:4,  x:0.75, y:0.50},
   {id:5,  x:0.50, y:0.50},
   {id:6,  x:0.25, y:0.50},
   {id:7,  x:0.00, y:0.50},
-  /* Fila 2: slots 8,9,10,11 */
   {id:8,  x:0.75, y:0.25},
   {id:9,  x:0.50, y:0.25},
   {id:10, x:0.25, y:0.25},
   {id:11, x:0.00, y:0.25},
-  /* Fila 3 (abajo): slots 12,13,14,15 */
   {id:12, x:0.75, y:0.00},
   {id:13, x:0.50, y:0.00},
   {id:14, x:0.25, y:0.00},
@@ -357,8 +326,8 @@ for(var si=0;si<16;si++){
   s+='<a-plane id="slot-'+si+'" width="0.75" height="0.75" position="-4.85 '+sy+' '+sz+'" rotation="0 90 0" material="src:'+img+'Fabrica.jpg;repeat:0.25 0.25;offset:'+so.x+' '+so.y+';opacity:0.3;transparent:true" class="clickable" data-slot="'+si+'"></a-plane>';
 }
 
-/* --- 16 PIEZAS del rompecabezas (pared derecha, desordenadas) ---
-     OFFSETS DEFINITIVOS: mismos que los slots correspondientes --- */
+/* --- 16 PIEZAS (pared derecha, desordenadas) ---
+     OFFSETS DEFINITIVOS: mismos que slots correspondientes --- */
 var pzData=[
   {id:2,  ox:0.25, oy:0.75, y:0.91, z:21.22},
   {id:10, ox:0.25, oy:0.25, y:0.76, z:22.57},
@@ -399,21 +368,26 @@ s+='<a-text value="IDEA" color="#F59E0B" align="center" width="2" position="-4.5
 s+='<a-plane width="1.5" height="1" position="4.9 3.5 24" rotation="0 -90 0" material="color:#1A1A2E;opacity:0.9"></a-plane>';
 s+='<a-text value="MAPA DE RUTA\\n[CINE]→[1.ENTRADA]→[2.TALLER]\\n→[3.OFICINA]→[4.PATIO]→[5.SALIDA]\\n\\n★ ESTAS AQUI: PATIO" color="#C8A951" align="center" width="2" position="4.85 3.5 24" rotation="0 -90 0"></a-text>';
 
-/* --- Luz zona 4 --- */
 s+='<a-light type="point" intensity="0.7" distance="12" position="0 4 24" color="#FFE0C2"></a-light>';
 
+/* ═══════════════════════════════════════════
+   PASILLO ZONA 4 → ZONA 5 (z = 28 a 32)
+   ═══════════════════════════════════════════ */
+
+s+='<a-plane rotation="-90 0 0" width="10" height="4" position="0 0 30" material="color:#2C1A1A"></a-plane>';
+s+='<a-plane rotation="90 0 0" width="10" height="4" position="0 4 30" material="color:#1A1A2E"></a-plane>';
+s+='<a-plane width="10" height="4" position="-5 2 30" rotation="0 90 0" material="color:#3D2B1F"></a-plane>';
+s+='<a-plane width="10" height="4" position="5 2 30" rotation="0 -90 0" material="color:#3D2B1F"></a-plane>';
+
+s+='<a-text value="→ SALIDA" color="#FFD700" align="center" width="3" position="4.9 2 30" rotation="0 -90 0"></a-text>';
+s+='<a-text value="← PATIO" color="#FFD700" align="center" width="3" position="-4.9 2 30" rotation="0 90 0"></a-text>';
 
 /* ═══════════════════════════════════════════
    ZONA 5: LA PUERTA DE SALIDA (z = 32 a 38)
    ═══════════════════════════════════════════ */
 
-/* --- Piso zona 5 --- */
 s+='<a-plane rotation="-90 0 0" width="10" height="6" position="0 0 35" material="color:#3D2B1F"></a-plane>';
-
-/* --- Techo zona 5 --- */
 s+='<a-plane rotation="90 0 0" width="10" height="6" position="0 4 35" material="color:#1A1A2E"></a-plane>';
-
-/* --- Paredes zona 5 --- */
 s+='<a-plane width="10" height="4" position="0 2 32" material="color:#4A3728"></a-plane>';
 s+='<a-plane width="10" height="4" position="0 2 38" rotation="0 180 0" material="color:#4A3728"></a-plane>';
 s+='<a-plane width="6" height="4" position="-5 2 35" rotation="0 90 0" material="color:#4A3728"></a-plane>';
@@ -455,11 +429,18 @@ s+='<a-text value="IDEA" color="#F59E0B" align="center" width="2" position="-4.5
 s+='<a-plane width="1.5" height="1" position="4.9 2.5 35" rotation="0 -90 0" material="color:#1A1A2E;opacity:0.9"></a-plane>';
 s+='<a-text value="MAPA DE RUTA\\n[CINE]→[1.ENTRADA]→[2.TALLER]\\n→[3.OFICINA]→[4.PATIO]→[5.SALIDA]\\n\\n★ ESTAS AQUI: SALIDA" color="#C8A951" align="center" width="2" position="4.85 2.5 35" rotation="0 -90 0"></a-text>';
 
-/* --- Luz zona 5 --- */
 s+='<a-light type="point" intensity="0.6" distance="10" position="0 3.5 35" color="#FFE0C2"></a-light>';
 
 /* ═══════════════════════════════════════════
    ILUMINACION GLOBAL
    ═══════════════════════════════════════════ */
 
-s+='<a-light type="ambient" intensity="0.4" color="#FFE0C2"></a-
+s+='<a-light type="ambient" intensity="0.4" color="#FFE0C2"></a-light>';
+s+='<a-light type="directional" intensity="0.3" position="0 4 0" color="#FFE0C2"></a-light>';
+
+/* --- Cielo --- */
+s+='<a-sky color="#0D0D1A"></a-sky>';
+
+w.innerHTML=s;
+}
+
