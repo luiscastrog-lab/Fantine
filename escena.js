@@ -1,9 +1,9 @@
 
 /* =========================================
-   ESCENA.JS V2.8 — La Fabrica de Fantine
-   CORREGIDO: side="double" eliminado de
-   textos en paredes/objetos. Solo flechas
-   del piso conservan side="double".
+   ESCENA.JS V2.9 — La Fabrica de Fantine
+   CORREGIDO: Imagen rompecabezas usa
+   Fabrica.jpg sin #offset en src.
+   side="double" solo en flechas del piso.
    INCLUYE: Sala de Cine, Zonas 1-5,
    Rompecabezas Zona 4, GALERIA Zona 2,
    Esferas reaccion, Senaletica, Mapas
@@ -46,7 +46,6 @@ s+='<a-text value="IDEA" position="3.5 0.9 -20" align="center" color="#F59E0B" w
 s+='<a-plane position="0 0 -16" rotation="-90 0 0" width="4" height="8" color="#2C1A1A"></a-plane>';
 s+='<a-box position="-2 1.5 -16" width="0.2" height="3" depth="8" color="#3D2B2B"></a-box>';
 s+='<a-box position="2 1.5 -16" width="0.2" height="3" depth="8" color="#3D2B2B"></a-box>';
-/* Flecha piso — conserva side="double" */
 s+='<a-text value=">>> ENTRADA >>>" position="0 0.1 -16" rotation="-90 0 0" color="#FFD700" align="center" width="4" side="double"></a-text>';
 s+='<a-light type="point" color="#FF5900" intensity="0.5" distance="8" position="0 2.5 -16"></a-light>';
 
@@ -84,14 +83,12 @@ s+='<a-text value="IDEA" position="3.5 0.9 -9" align="center" color="#F59E0B" wi
 s+='<a-plane position="3.8 2.5 -13" rotation="0 -90 0" width="1.2" height="0.8" color="#1A1A2E" material="opacity:0.9"></a-plane>';
 s+='<a-text value="[CINE]>[AQUI]>[ ]>[ ]>[ ]>[ ]" position="3.7 2.5 -13" rotation="0 -90 0" align="center" color="#FF5900" width="2.5"></a-text>';
 
-/* Flecha piso Zona 1 → Zona 2 — conserva side="double" */
 s+='<a-text value=">>> TALLER >>>" position="0 0.1 -8.5" rotation="-90 0 0" color="#FFD700" align="center" width="4" side="double"></a-text>';
 
 /* ═══ PASILLO ENTRADA → TALLER (z=-8 a z=-4) ═══ */
 s+='<a-plane position="0 0 -6" rotation="-90 0 0" width="4" height="8" color="#2C1A1A"></a-plane>';
 s+='<a-box position="-2 1.5 -6" width="0.2" height="3" depth="8" color="#3D2B2B"></a-box>';
 s+='<a-box position="2 1.5 -6" width="0.2" height="3" depth="8" color="#3D2B2B"></a-box>';
-/* Flecha piso — conserva side="double" */
 s+='<a-text value=">>> TALLER >>>" position="0 0.1 -6" rotation="-90 0 0" color="#FFD700" align="center" width="4" side="double"></a-text>';
 s+='<a-light type="point" color="#FF5900" intensity="0.5" distance="8" position="0 2.5 -6"></a-light>';
 
@@ -105,14 +102,14 @@ var galeriaImgs=['Galeria1.png','Galeria2.jpg','Galeria3.jpg','Galeria4.png','Ga
 var galeriaNames=['ABUSO DE PODER','JUICIO SIN\\nCOMPASION','INJUSTICIA\\nSOCIAL','DESESPERACION','DIGNIDAD EN\\nEL SACRIFICIO','GRANDEZA\\nDEL ALMA'];
 for(var gi=0;gi<6;gi++){
   var gz=-3+(gi*1.3);
-  /* Marco con luz LED */
-  s+='<a-box position="-4.85 2 '+gz+'" rotation="0 90 0" width="1.1" height="0.85" depth="0.06" color="#C8A951" material="emissive:#C8A951;emissiveIntensity:0.6"></a-box>';
-  /* Imagen */
-  s+='<a-plane id="gimg-'+gi+'" position="-4.8 2 '+gz+'" rotation="0 90 0" width="0.95" height="0.7" src="'+galeriaImgs[gi]+'" class="clickable" data-slot-g="'+gi+'"></a-plane>';
+  /* Marco con luz LED — MAS GRANDE */
+  s+='<a-box position="-4.85 2 '+gz+'" rotation="0 90 0" width="1.4" height="1.1" depth="0.06" color="#C8A951" material="emissive:#C8A951;emissiveIntensity:0.6"></a-box>';
+  /* Imagen — MAS GRANDE */
+  s+='<a-plane id="gimg-'+gi+'" position="-4.8 2 '+gz+'" rotation="0 90 0" width="1.25" height="0.95" src="'+galeriaImgs[gi]+'" class="clickable" data-slot-g="'+gi+'"></a-plane>';
   /* Numero del cuadro */
-  s+='<a-text value="'+(gi+1)+'" position="-4.7 1.45 '+gz+'" rotation="0 90 0" align="center" color="#C8A951" width="2"></a-text>';
-  /* Espacio para letrero debajo */
-  s+='<a-plane id="gslot-'+gi+'" position="-4.8 1.15 '+gz+'" rotation="0 90 0" width="0.95" height="0.3" color="#1A1A2E" material="opacity:0.5;emissive:#C8A951;emissiveIntensity:0.1"></a-plane>';
+  s+='<a-text value="'+(gi+1)+'" position="-4.7 1.35 '+gz+'" rotation="0 90 0" align="center" color="#C8A951" width="2"></a-text>';
+  /* Espacio para letrero debajo — MAS ANCHO */
+  s+='<a-plane id="gslot-'+gi+'" position="-4.8 1.15 '+gz+'" rotation="0 90 0" width="1.25" height="0.3" color="#1A1A2E" material="opacity:0.5;emissive:#C8A951;emissiveIntensity:0.1"></a-plane>';
   /* Luz LED por cuadro */
   s+='<a-light type="point" color="#C8A951" intensity="0.3" distance="3" position="-4.5 2.6 '+gz+'"></a-light>';
 }
@@ -120,7 +117,6 @@ for(var gi=0;gi<6;gi++){
 /* --- GALERIA: 6 letreros en pared derecha --- */
 var conceptos=['ABUSO DE\\nPODER','JUICIO SIN\\nCOMPASION','INJUSTICIA\\nSOCIAL','DESESPERACION','DIGNIDAD EN\\nEL SACRIFICIO','GRANDEZA\\nDEL ALMA'];
 var conceptColors=['#EF4444','#7C3AED','#3B82F6','#F59E0B','#22C55E','#C8A951'];
-/* Orden mezclado para que no coincidan posicion con cuadro */
 var shuffled=[3,5,1,0,4,2];
 for(var ci2=0;ci2<6;ci2++){
   var cz=-3+(ci2*1.3);
@@ -159,14 +155,12 @@ s+='<a-text value="IDEA" position="4.5 0.9 -1" align="center" color="#F59E0B" wi
 s+='<a-plane position="4.8 2.8 3.5" rotation="0 -90 0" width="1.2" height="0.8" color="#1A1A2E" material="opacity:0.9"></a-plane>';
 s+='<a-text value="[ ]>[AQUI]>[ ]>[ ]>[ ]" position="4.7 2.8 3.5" rotation="0 -90 0" align="center" color="#FF5900" width="2.5"></a-text>';
 
-/* Flecha piso Zona 2 → Zona 3 — conserva side="double" */
 s+='<a-text value=">>> OFICINA >>>" position="0 0.1 3.5" rotation="-90 0 0" color="#FFD700" align="center" width="4" side="double"></a-text>';
 
 /* ═══ PASILLO TALLER → OFICINA (z=4 a z=8) ═══ */
 s+='<a-plane position="0 0 6" rotation="-90 0 0" width="4" height="8" color="#2C1A1A"></a-plane>';
 s+='<a-box position="-2 1.5 6" width="0.2" height="3" depth="8" color="#3D2B2B"></a-box>';
 s+='<a-box position="2 1.5 6" width="0.2" height="3" depth="8" color="#3D2B2B"></a-box>';
-/* Flecha piso — conserva side="double" */
 s+='<a-text value=">>> OFICINA >>>" position="0 0.1 6" rotation="-90 0 0" color="#FFD700" align="center" width="4" side="double"></a-text>';
 s+='<a-light type="point" color="#FF5900" intensity="0.5" distance="8" position="0 2.5 6"></a-light>';
 
@@ -198,14 +192,12 @@ s+='<a-text value="IDEA" position="3.5 0.9 10" align="center" color="#F59E0B" wi
 s+='<a-plane position="3.8 2.5 14.5" rotation="0 -90 0" width="1.2" height="0.8" color="#1A1A2E" material="opacity:0.9"></a-plane>';
 s+='<a-text value="[ ]>[ ]>[AQUI]>[ ]>[ ]" position="3.7 2.5 14.5" rotation="0 -90 0" align="center" color="#FF5900" width="2.5"></a-text>';
 
-/* Flecha piso Zona 3 → Zona 4 — conserva side="double" */
 s+='<a-text value=">>> PATIO >>>" position="0 0.1 15.5" rotation="-90 0 0" color="#FFD700" align="center" width="4" side="double"></a-text>';
 
 /* ═══ PASILLO OFICINA → PATIO (z=16 a z=20) ═══ */
 s+='<a-plane position="0 0 18" rotation="-90 0 0" width="4" height="8" color="#2C1A1A"></a-plane>';
 s+='<a-box position="-2 1.5 18" width="0.2" height="3" depth="8" color="#3D2B2B"></a-box>';
 s+='<a-box position="2 1.5 18" width="0.2" height="3" depth="8" color="#3D2B2B"></a-box>';
-/* Flecha piso — conserva side="double" */
 s+='<a-text value=">>> PATIO >>>" position="0 0.1 18" rotation="-90 0 0" color="#FFD700" align="center" width="4" side="double"></a-text>';
 s+='<a-light type="point" color="#FF5900" intensity="0.5" distance="8" position="0 2.5 18"></a-light>';
 
@@ -231,7 +223,7 @@ for(var sr2=0;sr2<4;sr2++){
   }
 }
 
-/* 16 piezas flotantes */
+/* 16 piezas flotantes — CORREGIDO: src sin #offset */
 for(var pr=0;pr<4;pr++){
   for(var pc2=0;pc2<4;pc2++){
     var pi=pr*4+pc2;
@@ -240,7 +232,7 @@ for(var pr=0;pr<4;pr++){
     var pz=20.5+(pc2*1.8);
     var offX=(pi%4)*0.25;
     var offY=Math.floor(pi/4)*0.25;
-    s+='<a-plane id="piece-'+pi+'" position="'+px+' '+py+' '+pz+'" rotation="0 90 0" width="0.7" height="0.7" src="Fabrica.jpg" material="emissive:#FFF;emissiveIntensity:0.15;repeat:0.25 0.25;offset:'+offX+' '+offY+'" class="clickable" data-piece="'+pi+'" animation="property:position;to:'+px+' '+(py+0.1)+' '+pz+';dir:alternate;dur:2000;loop:true"></a-plane>';
+    s+='<a-plane id="piece-'+pi+'" position="'+px+' '+py+' '+pz+'" rotation="0 -90 0" width="0.7" height="0.7" src="Fabrica.jpg" material="emissive:#FFF;emissiveIntensity:0.15;repeat:0.25 0.25;offset:'+offX+' '+offY+'" class="clickable" data-piece="'+pi+'" animation="property:position;to:'+px+' '+(py+0.1)+' '+pz+';dir:alternate;dur:2000;loop:true"></a-plane>';
   }
 }
 
@@ -262,14 +254,12 @@ s+='<a-text value="IDEA" position="4.5 0.9 23" align="center" color="#F59E0B" wi
 s+='<a-plane position="4.8 2.5 27.5" rotation="0 -90 0" width="1.2" height="0.8" color="#1A1A2E" material="opacity:0.9"></a-plane>';
 s+='<a-text value="[ ]>[ ]>[ ]>[AQUI]>[ ]" position="4.7 2.5 27.5" rotation="0 -90 0" align="center" color="#FF5900" width="2.5"></a-text>';
 
-/* Flecha piso Zona 4 → Zona 5 — conserva side="double" */
 s+='<a-text value=">>> SALIDA >>>" position="0 0.1 27.5" rotation="-90 0 0" color="#FFD700" align="center" width="4" side="double"></a-text>';
 
 /* ═══ PASILLO PATIO → SALIDA (z=28 a z=32) ═══ */
 s+='<a-plane position="0 0 30" rotation="-90 0 0" width="4" height="8" color="#2C1A1A"></a-plane>';
 s+='<a-box position="-2 1.5 30" width="0.2" height="3" depth="8" color="#3D2B2B"></a-box>';
 s+='<a-box position="2 1.5 30" width="0.2" height="3" depth="8" color="#3D2B2B"></a-box>';
-/* Flecha piso — conserva side="double" */
 s+='<a-text value=">>> SALIDA >>>" position="0 0.1 30" rotation="-90 0 0" color="#FFD700" align="center" width="4" side="double"></a-text>';
 s+='<a-light type="point" color="#FF5900" intensity="0.5" distance="8" position="0 2.5 30"></a-light>';
 
