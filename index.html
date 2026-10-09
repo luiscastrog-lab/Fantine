@@ -83,10 +83,6 @@ body{margin:0;overflow:hidden;font-family:'Segoe UI',sans-serif;background:#1A1A
 <!-- ========== MURO INPUT ========== -->
 <div id="mi"><h3>Tu Reflexion</h3><textarea id="mt" placeholder="Escribe aqui tu reflexion..."></textarea><br><button onclick="wm()">Enviar</button><button onclick="document.getElementById('mi').style.display='none';" style="margin-left:8px;background:#666;">Cancelar</button></div>
 
-<!-- ========== AUDIO ========== -->
-<audio id="bgm" src="musica.mp3" preload="auto"></audio>
-<audio id="sfx" src="campana.mp3" preload="auto"></audio>
-<audio id="bingo" src="Bingo.mp3" preload="auto"></audio>
 
 <!-- ========== ESCENA A-FRAME ========== -->
 <a-scene vr-mode-ui="enabled:true" embedded style="position:fixed;top:0;left:0;width:100%;height:100%;">
@@ -100,12 +96,13 @@ body{margin:0;overflow:hidden;font-family:'Segoe UI',sans-serif;background:#1A1A
 </a-entity>
 </a-scene>
 
+<audio id="bgm" src="musica.mp3" loop preload="auto"></audio>
+<audio id="sfx" src="campana.mp3" preload="auto"></audio>
+<audio id="bingo" src="Bingo.mp3" preload="auto"></audio>
+
 <script src="escena.js"></script>
 <script>buildScene();</script>
 <script src="app.js"></script>
-</body>
-</html>
-
 </body>
 </html>
 
