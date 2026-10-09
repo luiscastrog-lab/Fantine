@@ -1,15 +1,20 @@
 
 /* =========================================
    APP.JS V3.1 — La Fabrica de Fantine
-   CORREGIDO: Emoticones desaparecen (3s),
-   Paneles 3D auto-cierre (6s),
-   No se enciman
+   COMPLETO DEFINITIVO:
+   - Campana al entrar
+   - Emoticones desaparecen (3.5s)
+   - Paneles 3D auto-cierre (6s)
+   - No se enciman
+   - Reset profesor + puzzle + galeria
+   - Quest-move joystick
+   - Firebase reacciones en tiempo real
    ========================================= */
 
 /* ═══ VARIABLES GLOBALES ═══ */
 var zi,oi,ci;
 var db,mn='',mi='',sr,cr=null,ms=false,dc=0,disc={};
-var ba,ca;
+var ba,ca,bi;
 var ids=['pantalla','cartel','porton','letrero','instrucciones',
          'carta','cuentas','diario','decreto','espejo',
          'reloj','campana','muro','puerta'];
@@ -88,6 +93,7 @@ window.addEventListener('DOMContentLoaded',function(){
   ci=document.getElementById('ci');
   ba=document.getElementById('bgm');
   ca=document.getElementById('sfx');
+  bi=document.getElementById('bingo');
 
   /* ═══ BOTON ENTRAR ═══ */
   document.getElementById('eb').addEventListener('click',function(){
@@ -99,7 +105,14 @@ window.addEventListener('DOMContentLoaded',function(){
     db.ref('online/'+mi).set({name:mn,t:Date.now()});
     db.ref('online/'+mi).onDisconnect().remove();
     document.getElementById('login').style.display='none';
+
+    /* Sonido campana al entrar */
+    if(ca){ca.currentTime=0;ca.play().catch(function(){});}
+
+    /* Musica de fondo */
     if(ba){ba.play().catch(function(){});}
+
+    /* Asignar rig */
     cr=document.getElementById('rig');
   });
 
@@ -116,7 +129,19 @@ window.addEventListener('DOMContentLoaded',function(){
       slots.forEach(function(sl){
         sl.setAttribute('material','opacity',0.3);
       });
-      alert('Grupo reseteado');
+      var pieces=document.querySelectorAll('[data-piece]');
+      pieces.forEach(function(pc){
+        pc.setAttribute('visible','true');
+      });
+      var gslots=document.querySelectorAll('[data-slot-g]');
+      gslots.forEach(function(sl){
+        sl.setAttribute('material','opacity',0.5);
+      });
+      var gpieces=document.querySelectorAll('[data-piece-g]');
+      gpieces.forEach(function(pc){
+        pc.setAttribute('visible','true');
+      });
+      alert('Grupo reseteado — puzzle y galeria reiniciados');
     });
   }
 
@@ -163,9 +188,7 @@ window.addEventListener('DOMContentLoaded',function(){
   db.ref('puzzle').on('child_added',function(snap){
     var d=snap.val();
     var sl=document.getElementById('slot-'+d.slot);
-    if(sl){
-      sl.setAttribute('material','opacity',1.0);
-    }
+    if(sl){sl.setAttribute('material','opacity',1.0);}
     var pc=document.getElementById('piece-'+d.piece);
     if(pc){pc.setAttribute('visible','false');}
   });
@@ -174,9 +197,7 @@ window.addEventListener('DOMContentLoaded',function(){
   db.ref('galeria').on('child_added',function(snap){
     var d=snap.val();
     var sl=document.getElementById('gslot-'+d.slot);
-    if(sl){
-      sl.setAttribute('material','opacity',1.0);
-    }
+    if(sl){sl.setAttribute('material','opacity',1.0);}
     var pc=document.getElementById('glet-'+d.piece);
     if(pc){pc.setAttribute('visible','false');}
   });
@@ -207,9 +228,8 @@ function updateZone(zona){
 
 /* ═══ REACCIONES ═══ */
 function startReaction(type){
-  /* Limpiar emoji anterior */
   if(activeEmoji){
-    activeEmoji.parentNode.removeChild(activeEmoji);
+    try{activeEmoji.parentNode.removeChild(activeEmoji);}catch(e){}
     activeEmoji=null;
   }
   if(activeEmojiTimer){
@@ -217,22 +237,16 @@ function startReaction(type){
     activeEmojiTimer=null;
   }
 
-  var labels={wow:'¡WOW!',triste:'TRISTE',no:'¡NO!',hmm:'HMM...',idea:'¡IDEA!'};
-  var colors={wow:'#FF5900',triste:'#3B82F6',no:'#EF4444',hmm:'#7C3AED',idea:'#F59E0B'};
-
-  /* Guardar en Firebase */
   db.ref('reactions').push({type:type,name:mn,mi:mi,t:Date.now(),session:sessionId});
   if(sr)sr.update({lastReaction:type,t:Date.now()});
 
-  /* Sonido */
   if(ca){ca.currentTime=0;ca.play().catch(function(){});}
 
-  /* Mostrar emoji flotante */
   showVREmoji(type);
 }
 
+/* ═══ EMOJI FLOTANTE (desaparece en 3.5s) ═══ */
 function showVREmoji(type){
-  /* Limpiar anterior */
   if(activeEmoji){
     try{activeEmoji.parentNode.removeChild(activeEmoji);}catch(e){}
     activeEmoji=null;
@@ -270,7 +284,6 @@ function openPanel(id){
   if(isVR){
     showVRPanel(id);
   }else{
-    /* Modo PC — paneles HTML */
     ids.forEach(function(pid){
       var el=document.getElementById('p-'+pid);
       if(el)el.style.display='none';
@@ -280,8 +293,8 @@ function openPanel(id){
   }
 }
 
+/* ═══ PANEL 3D VR (auto-cierre 6s) ═══ */
 function showVRPanel(id){
-  /* Limpiar panel anterior */
   if(activeVP){
     try{activeVP.parentNode.removeChild(activeVP);}catch(e){}
     activeVP=null;
@@ -297,7 +310,6 @@ function showVRPanel(id){
   var panel=document.createElement('a-entity');
   panel.setAttribute('position','0 0.3 -2');
 
-  /* Fondo oscuro */
   var bg=document.createElement('a-plane');
   bg.setAttribute('width','2.5');
   bg.setAttribute('height','1.5');
@@ -305,7 +317,6 @@ function showVRPanel(id){
   bg.setAttribute('opacity','0.95');
   panel.appendChild(bg);
 
-  /* Titulo */
   var t=document.createElement('a-text');
   t.setAttribute('value',title);
   t.setAttribute('color','#C8A951');
@@ -314,7 +325,6 @@ function showVRPanel(id){
   t.setAttribute('position','0 0.5 0.01');
   panel.appendChild(t);
 
-  /* Contenido */
   var c=document.createElement('a-text');
   c.setAttribute('value',content);
   c.setAttribute('color','#FFFDF8');
@@ -324,9 +334,8 @@ function showVRPanel(id){
   c.setAttribute('baseline','center');
   panel.appendChild(c);
 
-  /* Instruccion de cierre */
   var x=document.createElement('a-text');
-  x.setAttribute('value','[ Se cierra automaticamente ]');
+  x.setAttribute('value','[ Se cierra en 6 segundos ]');
   x.setAttribute('color','#FF5900');
   x.setAttribute('align','center');
   x.setAttribute('width','2');
@@ -337,8 +346,6 @@ function showVRPanel(id){
   if(cam){
     cam.appendChild(panel);
     activeVP=panel;
-
-    /* Auto-cierre despues de 6 segundos */
     activeVPTimer=setTimeout(function(){
       try{panel.parentNode.removeChild(panel);}catch(e){}
       if(activeVP===panel)activeVP=null;
@@ -350,7 +357,6 @@ function showVRPanel(id){
 function placePiece(slotId){
   if(selectedPiece===null)return;
   if(selectedPiece===slotId){
-    /* Correcto */
     var sl=document.getElementById('slot-'+slotId);
     if(sl)sl.setAttribute('material','opacity',1.0);
     var pc=document.getElementById('piece-'+selectedPiece);
@@ -359,16 +365,13 @@ function placePiece(slotId){
     puzzleComplete++;
     if(ca){ca.currentTime=0;ca.play().catch(function(){});}
     if(puzzleComplete>=16){
-      /* Puzzle completo — Bingo! */
-      var bingo=document.getElementById('bingo');
-      if(bingo){bingo.play().catch(function(){});}
+      if(bi){bi.play().catch(function(){});}
       if(ba){ba.pause();}
       showVREmoji('wow');
       db.ref('log').push({event:'puzzle_complete',by:mn,t:Date.now(),session:sessionId});
     }
     selectedPiece=null;
   }else{
-    /* Incorrecto */
     selectedPiece=null;
   }
 }
@@ -377,7 +380,6 @@ function placePiece(slotId){
 function placeGPiece(slotId){
   if(selectedGPiece===null)return;
   if(selectedGPiece===slotId){
-    /* Correcto */
     var sl=document.getElementById('gslot-'+slotId);
     if(sl)sl.setAttribute('material','opacity',1.0);
     var pc=document.getElementById('glet-'+selectedGPiece);
@@ -386,16 +388,13 @@ function placeGPiece(slotId){
     galeriaComplete++;
     if(ca){ca.currentTime=0;ca.play().catch(function(){});}
     if(galeriaComplete>=6){
-      /* Galeria completa — Bingo! */
-      var bingo=document.getElementById('bingo');
-      if(bingo){bingo.play().catch(function(){});}
+      if(bi){bi.play().catch(function(){});}
       if(ba){ba.pause();}
       showVREmoji('wow');
       db.ref('log').push({event:'galeria_complete',by:mn,t:Date.now(),session:sessionId});
     }
     selectedGPiece=null;
   }else{
-    /* Incorrecto */
     selectedGPiece=null;
   }
 }
