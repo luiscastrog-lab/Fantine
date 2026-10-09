@@ -480,4 +480,29 @@ s+='<a-text value="WOW" color="#FF5900" align="center" width="2" position="-4.5 
 s+='<a-sphere radius="0.12" position="-4.5 1.8 33.8" material="color:#3B82F6;emissive:#3B82F6;emissiveIntensity:0.5" class="clickable" data-re="triste" animation="property:position;dir:alternate;dur:2000;easing:easeInOutSine;loop:true;to:-4.5 1.95 33.8"></a-sphere>';
 s+='<a-text value="TRISTE" color="#3B82F6" align="center" width="2" position="-4.5 1.55 33.8"></a-text>';
 s+='<a-sphere radius="0.12" position="-4.5 1.8 34.6" material="color:#EF4444;emissive:#EF4444;emissiveIntensity:0.5" class="clickable" data-re="no" animation="property:position;dir:alternate;dur:2000;easing:easeInOutSine;loop:true;to:-4.5 1.95 34.6"></a-sphere>';
-s+='<a-text value="NO!" color="#EF4444" align="center" width="2
+
+/* --- (continuación esferas Zona 5) --- */
+s+='<a-text value="NO!" color="#EF4444" align="center" width="2" position="-4.5 1.55 34.6"></a-text>';
+s+='<a-sphere radius="0.12" position="-4.5 1.8 35.4" material="color:#7C3AED;emissive:#7C3AED;emissiveIntensity:0.5" class="clickable" data-re="hmm" animation="property:position;dir:alternate;dur:2000;easing:easeInOutSine;loop:true;to:-4.5 1.95 35.4"></a-sphere>';
+s+='<a-text value="HMM" color="#7C3AED" align="center" width="2" position="-4.5 1.55 35.4"></a-text>';
+s+='<a-sphere radius="0.12" position="-4.5 1.8 36.2" material="color:#F59E0B;emissive:#F59E0B;emissiveIntensity:0.5" class="clickable" data-re="idea" animation="property:position;dir:alternate;dur:2000;easing:easeInOutSine;loop:true;to:-4.5 1.95 36.2"></a-sphere>';
+s+='<a-text value="IDEA" color="#F59E0B" align="center" width="2" position="-4.5 1.55 36.2"></a-text>';
+
+/* --- Mapa zona 5 --- */
+s+='<a-plane width="1.5" height="1" position="4.9 2.5 35" rotation="0 -90 0" material="color:#1A1A2E;opacity:0.9"></a-plane>';
+s+='<a-text value="MAPA DE RUTA\\n[CINE]>[1.ENTRADA]>[2.TALLER]\\n>[3.OFICINA]>[4.PATIO]>[5.SALIDA]\\n\\n* ESTAS AQUI: SALIDA" color="#C8A951" align="center" width="2" position="4.85 2.5 35" rotation="0 -90 0"></a-text>';
+
+/* --- Luz zona 5 --- */
+s+='<a-light type="point" intensity="0.6" distance="10" position="0 3.5 35" color="#FFE0C2"></a-light>';
+
+/* ═══════════════════════════════════════════
+   ILUMINACION GLOBAL
+   ═══════════════════════════════════════════ */
+
+s+='<a-light type="ambient" intensity="0.4" color="#FFE0C2"></a-light>';
+s+='<a-light type="directional" intensity="0.3" position="0 4 0" color="#FFE0C2"></a-light>';
+
+w.innerHTML=s;
+}
+
+
