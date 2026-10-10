@@ -105,6 +105,10 @@ window.addEventListener('DOMContentLoaded',function(){
     db.ref('online/'+mi).set({name:mn,t:Date.now()});
     db.ref('online/'+mi).onDisconnect().remove();
     document.getElementById('login').style.display='none';
+    var sc=document.querySelector('a-scene');
+    sc.setAttribute('raycaster','enabled',false);
+    setTimeout(function(){sc.setAttribute('raycaster','enabled',true);},5000);
+   
 
     /* Sonido campana al entrar */
     if(ca){ca.currentTime=0;ca.play().catch(function(){});}
