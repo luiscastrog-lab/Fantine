@@ -48,8 +48,8 @@ s+='<a-plane rotation="-90 0 0" width="10" height="4" position="0 0 -16" materia
 s+='<a-plane rotation="90 0 0" width="10" height="4" position="0 4 -16" material="color:#1A1A2E"></a-plane>';
 s+='<a-plane width="10" height="4" position="-5 2 -16" rotation="0 90 0" material="color:#3D2B1F"></a-plane>';
 s+='<a-plane width="10" height="4" position="5 2 -16" rotation="0 -90 0" material="color:#3D2B1F"></a-plane>';
-s+='<a-text value="→ ENTRADA" color="#FFD700" align="center" width="3" position="3.8 2 -16" rotation="0 -90 0"></a-text>';
-s+='<a-text value="← CINE" color="#FFD700" align="center" width="3" position="-3.8 2 -16" rotation="0 90 0"></a-text>';
+s+='<a-text value="→ ENTRADA" color="#FFD700" align="center" width="3" position="4.5 2 -16" rotation="0 -90 0"></a-text>';
+s+='<a-text value="← CINE" color="#FFD700" align="center" width="3" position="-4.8 2 -16" rotation="0 90 0"></a-text>';
 
 /* ═══ ZONA 1: ENTRADA (z = -14 a -8) ═══ */
 s+='<a-plane rotation="-90 0 0" width="10" height="6" position="0 0 -11" material="color:#3D2B1F"></a-plane>';
