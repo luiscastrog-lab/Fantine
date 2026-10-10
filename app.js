@@ -1,20 +1,17 @@
 
 /* =========================================
-   APP.JS V3.1 — La Fabrica de Fantine
-   COMPLETO DEFINITIVO:
-   - Campana al entrar
-   - Emoticones desaparecen (3.5s)
-   - Paneles 3D auto-cierre (6s)
-   - No se enciman
-   - Reset profesor + puzzle + galeria
-   - Quest-move joystick
-   - Firebase reacciones en tiempo real
+   APP.JS V3.2 — La Fabrica de Fantine
+   CORREGIDO: Fuse desactivado 5s al entrar,
+   Emoticones desaparecen (3.5s),
+   Paneles 3D auto-cierre (6s),
+   Campana al entrar, Reset profesor
    ========================================= */
 
 /* ═══ VARIABLES GLOBALES ═══ */
 var zi,oi,ci;
 var db,mn='',mi='',sr,cr=null,ms=false,dc=0,disc={};
 var ba,ca,bi;
+var fuseReady=false;
 var ids=['pantalla','cartel','porton','letrero','instrucciones',
          'carta','cuentas','diario','decreto','espejo',
          'reloj','campana','muro','puerta'];
@@ -105,10 +102,6 @@ window.addEventListener('DOMContentLoaded',function(){
     db.ref('online/'+mi).set({name:mn,t:Date.now()});
     db.ref('online/'+mi).onDisconnect().remove();
     document.getElementById('login').style.display='none';
-    var sc=document.querySelector('a-scene');
-    sc.setAttribute('raycaster','enabled',false);
-    setTimeout(function(){sc.setAttribute('raycaster','enabled',true);},5000);
-   
 
     /* Sonido campana al entrar */
     if(ca){ca.currentTime=0;ca.play().catch(function(){});}
@@ -118,6 +111,10 @@ window.addEventListener('DOMContentLoaded',function(){
 
     /* Asignar rig */
     cr=document.getElementById('rig');
+
+    /* Desactivar fuse por 5 segundos para evitar paneles accidentales */
+    fuseReady=false;
+    setTimeout(function(){fuseReady=true;},5000);
   });
 
   /* ═══ RESET PROFESOR ═══ */
@@ -156,6 +153,7 @@ window.addEventListener('DOMContentLoaded',function(){
 
   /* ═══ FUSE CURSOR — CLICK EN OBJETOS ═══ */
   sc.addEventListener('click',function(e){
+    if(!fuseReady)return;
     var el=e.target;
     if(!el)return;
 
@@ -357,6 +355,43 @@ function showVRPanel(id){
   }
 }
 
+/* ═══ CERRAR PANELES 2D ═══ */
+function cp(){
+  ids.forEach(function(pid){
+    var el=document.getElementById('p-'+pid);
+    if(el)el.style.display='none';
+  });
+}
+
+/* ═══ VIDEO ═══ */
+function ov(){
+  window.open('https://www.youtube.com/watch?v=xOyrZSaeZa0','_blank');
+}
+
+function cv(){
+  document.getElementById('vo').style.display='none';
+  document.getElementById('vf').src='';
+}
+
+/* ═══ MURO ═══ */
+function sm(){
+  document.getElementById('mi').style.display='block';
+}
+
+function wm(){
+  var txt=document.getElementById('mt').value.trim();
+  if(!txt)return;
+  db.ref('muro').push({name:mn,text:txt,t:Date.now(),session:sessionId});
+  document.getElementById('mt').value='';
+  document.getElementById('mi').style.display='none';
+  alert('Reflexion enviada al muro');
+}
+
+/* ═══ REACCIONES 2D ═══ */
+function sendReaction(type){
+  startReaction(type);
+}
+
 /* ═══ PUZZLE ═══ */
 function placePiece(slotId){
   if(selectedPiece===null)return;
@@ -401,5 +436,15 @@ function placeGPiece(slotId){
   }else{
     selectedGPiece=null;
   }
+}
+
+/* ═══ RESET SESION ═══ */
+function resetSession(){
+  sessionId='s'+Date.now();
+  db.ref('puzzle').remove();
+  db.ref('galeria').remove();
+  puzzleComplete=0;
+  galeriaComplete=0;
+  alert('Sesion reseteada');
 }
 
