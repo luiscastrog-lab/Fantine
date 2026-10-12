@@ -283,6 +283,10 @@ function showVREmoji(type){
 
 /* ═══ PANELES INFORMATIVOS ═══ */
 function openPanel(id){
+  /* Reproducir audio si existe */
+  var aud=document.getElementById('aud-'+id);
+  if(aud){aud.currentTime=0;aud.play().catch(function(){});}
+
   if(isVR){
     showVRPanel(id);
   }else{
@@ -294,6 +298,7 @@ function openPanel(id){
     if(p)p.style.display='block';
   }
 }
+
 
 /* ═══ PANEL 3D VR (auto-cierre 6s) ═══ */
 function showVRPanel(id){
