@@ -283,9 +283,18 @@ function showVREmoji(type){
 
 /* ═══ PANELES INFORMATIVOS ═══ */
 function openPanel(id){
-  /* Reproducir audio si existe */
+  /* Reproducir audio narrativo si existe */
   var aud=document.getElementById('aud-'+id);
-  if(aud){aud.currentTime=0;aud.play().catch(function(){});}
+  if(aud){
+    /* Bajar musica ambiental */
+    if(ba){ba.volume=0.1;}
+    aud.currentTime=0;
+    aud.play().catch(function(){});
+    /* Subir musica cuando termine el audio */
+    aud.onended=function(){
+      if(ba){ba.volume=1.0;}
+    };
+  }
 
   if(isVR){
     showVRPanel(id);
@@ -298,6 +307,7 @@ function openPanel(id){
     if(p)p.style.display='block';
   }
 }
+
 
 
 /* ═══ PANEL 3D VR (auto-cierre 6s) ═══ */
