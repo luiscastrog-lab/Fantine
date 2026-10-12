@@ -286,15 +286,28 @@ function openPanel(id){
   /* Reproducir audio narrativo si existe */
   var aud=document.getElementById('aud-'+id);
   if(aud){
-    /* Bajar musica ambiental */
-    if(ba){ba.volume=0.1;}
+    /* PAUSAR musica ambiental completamente */
+    if(ba){ba.pause();}
     aud.currentTime=0;
     aud.play().catch(function(){});
-    /* Subir musica cuando termine el audio */
+    /* Reanudar musica cuando termine el audio */
     aud.onended=function(){
-      if(ba){ba.volume=1.0;}
+      if(ba){ba.play().catch(function(){});}
     };
   }
+
+  if(isVR){
+    showVRPanel(id);
+  }else{
+    ids.forEach(function(pid){
+      var el=document.getElementById('p-'+pid);
+      if(el)el.style.display='none';
+    });
+    var p=document.getElementById('p-'+id);
+    if(p)p.style.display='block';
+  }
+}
+
 
   if(isVR){
     showVRPanel(id);
