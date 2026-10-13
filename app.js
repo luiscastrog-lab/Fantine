@@ -308,21 +308,6 @@ function openPanel(id){
   }
 }
 
-
-  if(isVR){
-    showVRPanel(id);
-  }else{
-    ids.forEach(function(pid){
-      var el=document.getElementById('p-'+pid);
-      if(el)el.style.display='none';
-    });
-    var p=document.getElementById('p-'+id);
-    if(p)p.style.display='block';
-  }
-}
-
-
-
 /* ═══ PANEL 3D VR (auto-cierre 6s) ═══ */
 function showVRPanel(id){
   if(activeVP){
