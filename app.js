@@ -1,10 +1,7 @@
 
 /* =========================================
-   APP.JS V3.2 — La Fabrica de Fantine
-   CORREGIDO: Fuse desactivado 5s al entrar,
-   Emoticones desaparecen (3.5s),
-   Paneles 3D auto-cierre (6s),
-   Campana al entrar, Reset profesor
+   APP.JS V3.3 — La Fabrica de Fantine
+   LIMPIO: Eliminado bloque openPanel duplicado
    ========================================= */
 
 /* ═══ VARIABLES GLOBALES ═══ */
@@ -87,7 +84,7 @@ AFRAME.registerComponent('quest-move',{
 window.addEventListener('DOMContentLoaded',function(){
   zi=document.getElementById('zi');
   oi=document.getElementById('oi');
-  ci=document.getElementById('ci');
+  ci=document.getElementById('pc');
   ba=document.getElementById('bgm');
   ca=document.getElementById('sfx');
   bi=document.getElementById('bingo');
@@ -114,7 +111,7 @@ window.addEventListener('DOMContentLoaded',function(){
 
     /* Desactivar fuse por 5 segundos para evitar paneles accidentales */
     fuseReady=false;
-    setTimeout(function(){fuseReady=true;},5000); 
+    setTimeout(function(){fuseReady=true;},5000);
   });
 
   /* ═══ RESET PROFESOR ═══ */
@@ -286,11 +283,9 @@ function openPanel(id){
   /* Reproducir audio narrativo si existe */
   var aud=document.getElementById('aud-'+id);
   if(aud){
-    /* PAUSAR musica ambiental completamente */
     if(ba){ba.pause();}
     aud.currentTime=0;
     aud.play().catch(function(){});
-    /* Reanudar musica cuando termine el audio */
     aud.onended=function(){
       if(ba){ba.play().catch(function(){});}
     };
