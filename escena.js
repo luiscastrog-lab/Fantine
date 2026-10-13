@@ -99,7 +99,11 @@ s+='<a-plane rotation="90 0 0" width="10" height="8" position="0 4 0" material="
 s+='<a-plane width="3.5" height="4" position="-3.25 2 -4" material="color:#4A3728"></a-plane>';
 s+='<a-plane width="3.5" height="4" position="3.25 2 -4" material="color:#4A3728"></a-plane>';
 s+='<a-plane width="3.5" height="4" position="-3.25 2 4" rotation="0 180 0" material="color:#4A3728"></a-plane>';
-s+='<a-plane width="3.5" height="4" position="3.25 2 4" rotation="0 180 0" material="color:#4A3728"></a-plane>';
+s+='<a-plane width="3.5" height="4" position="3.25 2 4" rotation="0 180 0" material="color:#4A3728"></a-plane>'; 
+s+='<a-box width="1.25" height="0.04" depth="0.02" position="-3 2.42 -13.93" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.6"></a-box>';
+s+='<a-box width="1.25" height="0.04" depth="0.02" position="-3 1.58 -13.93" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.6"></a-box>';
+s+='<a-box width="0.04" height="0.84" depth="0.02" position="-3.62 2 -13.93" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.6"></a-box>';
+s+='<a-box width="0.04" height="0.84" depth="0.02" position="-2.38 2 -13.93" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.6"></a-box>';
 s+='<a-plane width="8" height="4" position="-5 2 0" rotation="0 90 0" material="color:#4A3728"></a-plane>';
 s+='<a-plane width="8" height="4" position="5 2 0" rotation="0 -90 0" material="color:#4A3728"></a-plane>';
 s+='<a-plane width="3" height="0.6" position="0 3.5 -3.95" material="color:#1A1A2E;opacity:0.9"></a-plane>';
