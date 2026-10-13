@@ -62,7 +62,7 @@ s+='<a-plane width="6" height="4" position="-5 2 -11" rotation="0 90 0" material
 s+='<a-plane width="6" height="4" position="5 2 -11" rotation="0 -90 0" material="color:#4A3728"></a-plane>';
 s+='<a-plane width="3" height="0.8" position="0 3.2 -13.95" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.3"></a-plane>';
 s+='<a-text value="FABRIQUE MADELEINE" color="#1A1A2E" align="center" width="4" position="0 3.2 -13.9" font="mozillavr"></a-text>';
-s+='<a-box width="2" height="2.5" depth="0.15" position="0 1.25 -13.9" material="color:#5C3A1E;emissive:#8B6914;emissiveIntensity:0.3" class="clickable" data-panel="porton"></a-box>';
+s+='<a-box width="2" height="2.5" depth="0.15" position="0 1.25 -13.9" material="src:https://luiscastrog-lab.github.io/Fantine/z1-porton.png;emissive:#8B6914;emissiveIntensity:0.3" class="clickable" data-panel="porton"></a-box>';
 s+='<a-plane width="1.2" height="0.8" position="-3 2 -13.95" material="src:https://luiscastrog-lab.github.io/Fantine/z1-solicitud.png;emissive:#FFF;emissiveIntensity:0.2" class="clickable" data-panel="cartel"></a-plane>';
 s+='<a-text value="SE BUSCAN\\nOBRERAS" color="#1A1A2E" align="center" width="2" position="-3 2 -13.9"></a-text>';
 s+='<a-plane width="1.5" height="0.6" position="3 2.5 -13.95" material="color:#1A1A2E;emissive:#333;emissiveIntensity:0.2" class="clickable" data-panel="letrero"></a-plane>';
