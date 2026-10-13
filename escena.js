@@ -51,6 +51,7 @@ s+='<a-plane width="10" height="4" position="5 2 -16" rotation="0 -90 0" materia
 s+='<a-text value="→ ENTRADA" color="#FFD700" align="center" width="3" position="0.5 2 -17.5" rotation="0 -90 0"></a-text>';
 s+='<a-text value="← CINE" color="#FFD700" align="center" width="3" position="-1 2 -17" rotation="0 90 0"></a-text>';
 
+
 /* ═══ ZONA 1: ENTRADA (z = -14 a -8) ═══ */
 s+='<a-plane rotation="-90 0 0" width="10" height="6" position="0 0 -11" material="color:#3D2B1F"></a-plane>';
 s+='<a-plane rotation="90 0 0" width="10" height="6" position="0 4 -11" material="color:#1A1A2E"></a-plane>';
@@ -63,12 +64,32 @@ s+='<a-plane width="6" height="4" position="5 2 -11" rotation="0 -90 0" material
 s+='<a-plane width="3" height="0.8" position="0 3.2 -13.95" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.3"></a-plane>';
 s+='<a-text value="FABRIQUE MADELEINE" color="#1A1A2E" align="center" width="4" position="0 3.2 -13.9" font="mozillavr"></a-text>';
 s+='<a-box width="2" height="2.5" depth="0.15" position="0 1.25 -13.9" material="src:https://luiscastrog-lab.github.io/Fantine/z1-porton.png;emissive:#8B6914;emissiveIntensity:0.3" class="clickable" data-panel="porton"></a-box>';
+
+/* — Solicitud de Obreras + Marco LED dorado — */
 s+='<a-plane width="1.2" height="0.8" position="-3 2 -13.95" material="src:https://luiscastrog-lab.github.io/Fantine/z1-solicitud.png;emissive:#FFF;emissiveIntensity:0.2" class="clickable" data-panel="cartel"></a-plane>';
+s+='<a-box width="1.25" height="0.04" depth="0.02" position="-3 2.42 -13.93" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.6"></a-box>';
+s+='<a-box width="1.25" height="0.04" depth="0.02" position="-3 1.58 -13.93" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.6"></a-box>';
+s+='<a-box width="0.04" height="0.84" depth="0.02" position="-3.62 2 -13.93" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.6"></a-box>';
+s+='<a-box width="0.04" height="0.84" depth="0.02" position="-2.38 2 -13.93" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.6"></a-box>';
 s+='<a-text value="SE BUSCAN\\nOBRERAS" color="#1A1A2E" align="center" width="2" position="-3 2 -13.9"></a-text>';
+
+/* — Historia de la Fabrica + Marco LED dorado — */
 s+='<a-plane width="1.5" height="0.6" position="3 2.5 -13.95" material="src:https://luiscastrog-lab.github.io/Fantine/z1-historia.png;emissive:#333;emissiveIntensity:0.2" class="clickable" data-panel="letrero"></a-plane>';
+s+='<a-box width="1.55" height="0.04" depth="0.02" position="3 2.82 -13.93" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.6"></a-box>';
+s+='<a-box width="1.55" height="0.04" depth="0.02" position="3 2.18 -13.93" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.6"></a-box>';
+s+='<a-box width="0.04" height="0.64" depth="0.02" position="2.23 2.5 -13.93" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.6"></a-box>';
+s+='<a-box width="0.04" height="0.64" depth="0.02" position="3.77 2.5 -13.93" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.6"></a-box>';
 s+='<a-text value="ZONA 1:\\nENTRADA" color="#C8A951" align="center" width="2" position="2 2.5 -13.9"></a-text>';
+
+/* — Instrucciones de Navegacion + Marco LED naranja — */
 s+='<a-plane width="1.2" height="0.8" position="3 1.2 -13.95" material="src:https://luiscastrog-lab.github.io/Fantine/z1-instrucciones.png;emissive:#FF5900;emissiveIntensity:0.2" class="clickable" data-panel="instrucciones"></a-plane>';
+s+='<a-box width="1.25" height="0.04" depth="0.02" position="3 1.62 -13.93" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.6"></a-box>';
+s+='<a-box width="1.25" height="0.04" depth="0.02" position="3 0.78 -13.93" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.6"></a-box>';
+s+='<a-box width="0.04" height="0.84" depth="0.02" position="2.38 1.2 -13.93" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.6"></a-box>';
+s+='<a-box width="0.04" height="0.84" depth="0.02" position="3.62 1.2 -13.93" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.6"></a-box>';
 s+='<a-text value="COMO\\nNAVEGAR" color="#FFFDF8" align="center" width="2" position="3 1.2 -13.9"></a-text>';
+
+/* — Esferas de reaccion — */
 s+='<a-sphere radius="0.12" position="-4.5 1.8 -12" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.5" class="clickable" data-re="wow" animation="property:position;dir:alternate;dur:2000;easing:easeInOutSine;loop:true;to:-4.5 1.95 -12"></a-sphere>';
 s+='<a-text value="WOW" color="#FF5900" align="center" width="2" position="-4.5 1.55 -12"></a-text>';
 s+='<a-sphere radius="0.12" position="-4.5 1.8 -11.2" material="color:#3B82F6;emissive:#3B82F6;emissiveIntensity:0.5" class="clickable" data-re="triste" animation="property:position;dir:alternate;dur:2000;easing:easeInOutSine;loop:true;to:-4.5 1.95 -11.2"></a-sphere>';
@@ -79,10 +100,13 @@ s+='<a-sphere radius="0.12" position="-4.5 1.8 -9.6" material="color:#7C3AED;emi
 s+='<a-text value="HMM" color="#7C3AED" align="center" width="2" position="-4.5 1.55 -9.6"></a-text>';
 s+='<a-sphere radius="0.12" position="-4.5 1.8 -8.8" material="color:#F59E0B;emissive:#F59E0B;emissiveIntensity:0.5" class="clickable" data-re="idea" animation="property:position;dir:alternate;dur:2000;easing:easeInOutSine;loop:true;to:-4.5 1.95 -8.8"></a-sphere>';
 s+='<a-text value="IDEA" color="#F59E0B" align="center" width="2" position="-4.5 1.55 -8.8"></a-text>';
+
+/* — Mapa de ruta y señaletica — */
 s+='<a-plane width="1.5" height="1" position="4.9 2.5 -11" rotation="0 -90 0" material="color:#1A1A2E;opacity:0.9"></a-plane>';
 s+='<a-text value="MAPA DE RUTA\\n[CINE]→[1.ENTRADA]→[2.TALLER]\\n→[3.OFICINA]→[4.PATIO]→[5.SALIDA]\\n\\n★ ESTAS AQUI: ENTRADA" color="#C8A951" align="center" width="2" position="4.85 2.5 -11" rotation="0 -90 0"></a-text>';
 s+='<a-text value="→ TALLER" color="#FFD700" align="center" width="3" position="4.9 1.5 -11" rotation="0 -90 0"></a-text>';
 s+='<a-light type="point" intensity="0.6" distance="10" position="0 3.5 -11" color="#FFE0C2"></a-light>';
+
 
 
 /* ═══ PASILLO ZONA 1 → ZONA 2 ═══ */
