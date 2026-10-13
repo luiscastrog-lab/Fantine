@@ -115,6 +115,7 @@ window.addEventListener('DOMContentLoaded',function(){
     /* Desactivar fuse por 5 segundos para evitar paneles accidentales */
     fuseReady=false;
     setTimeout(function(){fuseReady=true;},5000);
+    document.getElementById('eb').addEventListener('click', go); 
   });
 
   /* ═══ RESET PROFESOR ═══ */
