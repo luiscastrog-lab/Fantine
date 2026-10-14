@@ -105,6 +105,12 @@ s+='<a-text value="IDEA" color="#F59E0B" align="center" width="2" position="-4.5
 s+='<a-plane width="1.5" height="1" position="4.9 2.5 -11" rotation="0 -90 0" material="color:#1A1A2E;opacity:0.9"></a-plane>';
 s+='<a-text value="MAPA DE RUTA\\n[CINE]→[1.ENTRADA]→[2.TALLER]\\n→[3.OFICINA]→[4.PATIO]→[5.SALIDA]\\n\\n★ ESTAS AQUI: ENTRADA" color="#C8A951" align="center" width="2" position="4.85 2.5 -11" rotation="0 -90 0"></a-text>';
 s+='<a-text value="→ TALLER" color="#FFD700" align="center" width="3" position="4.9 1.5 -11" rotation="0 -90 0"></a-text>';
+/* — Logo A Anahuac 3D al centro de la sala — */
+s+='<a-box width="0.15" height="1.5" depth="0.15" position="-0.4 0.75 -11" rotation="0 0 -8" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.4"></a-box>';
+s+='<a-box width="0.15" height="1.5" depth="0.15" position="0.4 0.75 -11" rotation="0 0 8" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.4"></a-box>';
+s+='<a-box width="0.6" height="0.12" depth="0.15" position="0 0.6 -11" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.4"></a-box>';
+s+='<a-box width="0.7" height="0.12" depth="0.15" position="0 1.5 -11" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.5"></a-box>';
+s+='<a-text value="UNIVERSIDAD ANAHUAC MAYAB" color="#C8A951" align="center" width="3" position="0 0.15 -11"></a-text>';
 s+='<a-light type="point" intensity="0.6" distance="10" position="0 3.5 -11" color="#FFE0C2"></a-light>';
 
 
