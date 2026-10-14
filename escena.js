@@ -125,38 +125,41 @@ s+='<a-plane width="10" height="4" position="5 2 -6" rotation="0 -90 0" material
 s+='<a-text value="→ TALLER" color="#FFD700" align="center" width="3" position="4.9 2 -6" rotation="0 -90 0"></a-text>';
 s+='<a-text value="← ENTRADA" color="#FFD700" align="center" width="3" position="-4.9 2 -6" rotation="0 90 0"></a-text>';
 
+
 /* ═══ ZONA 2: TALLER (z = -4 a 4) — GALERIA ═══ */
 s+='<a-plane rotation="-90 0 0" width="10" height="8" position="0 0 0" material="color:#3D2B1F"></a-plane>';
 s+='<a-plane rotation="90 0 0" width="10" height="8" position="0 4 0" material="color:#1A1A2E"></a-plane>';
 s+='<a-plane width="3.5" height="4" position="-3.25 2 -4" material="color:#4A3728"></a-plane>';
 s+='<a-plane width="3.5" height="4" position="3.25 2 -4" material="color:#4A3728"></a-plane>';
 s+='<a-plane width="3.5" height="4" position="-3.25 2 4" rotation="0 180 0" material="color:#4A3728"></a-plane>';
-s+='<a-plane width="3.5" height="4" position="3.25 2 4" rotation="0 180 0" material="color:#4A3728"></a-plane>'; 
-s+='<a-box width="1.25" height="0.04" depth="0.02" position="-3 2.42 -13.93" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.6"></a-box>';
-s+='<a-box width="1.25" height="0.04" depth="0.02" position="-3 1.58 -13.93" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.6"></a-box>';
-s+='<a-box width="0.04" height="0.84" depth="0.02" position="-3.62 2 -13.93" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.6"></a-box>';
-s+='<a-box width="0.04" height="0.84" depth="0.02" position="-2.38 2 -13.93" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.6"></a-box>';
+s+='<a-plane width="3.5" height="4" position="3.25 2 4" rotation="0 180 0" material="color:#4A3728"></a-plane>';
 s+='<a-plane width="8" height="4" position="-5 2 0" rotation="0 90 0" material="color:#4A3728"></a-plane>';
 s+='<a-plane width="8" height="4" position="5 2 0" rotation="0 -90 0" material="color:#4A3728"></a-plane>';
 s+='<a-plane width="3" height="0.6" position="0 3.5 -3.95" material="color:#1A1A2E;opacity:0.9"></a-plane>';
 s+='<a-text value="ZONA 2: TALLER DE LAS OBRERAS" color="#C8A951" align="center" width="4" position="0 3.5 -3.9"></a-text>';
 
+/* — Galeria: 6 imagenes en pared izquierda con marcos LED — */
 var galeriaNames=['ABUSO DE PODER','JUICIO SIN COMPASION','INJUSTICIA SOCIAL','DESESPERACION','DIGNIDAD EN EL SACRIFICIO','GRANDEZA DEL ALMA'];
 var galeriaFiles=['Galeria1.png','Galeria2.png','Galeria3.png','Galeria4.jpg','Galeria5.png','Galeria6.png'];
 var galeriaColors=['#EF4444','#7C3AED','#3B82F6','#F59E0B','#22C55E','#C8A951'];
 for(var gi=0;gi<6;gi++){
   var gz=-3+(gi*1.3);
-  s+='<a-plane width="1.15" height="0.95" position="-4.95 2 '+gz+'" rotation="0 90 0" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.2"></a-plane>';
-  s+='<a-plane id="gslot-'+gi+'" width="1" height="0.8" position="-4.9 2 '+gz+'" rotation="0 90 0" material="src:'+img+galeriaFiles[gi]+';color:#1A1A2E;opacity:0.5" class="clickable" data-slot-g="'+gi+'"></a-plane>';
+  /* Marco LED dorado */
+  s+='<a-plane width="1.15" height="0.95" position="-4.95 2 '+gz+'" rotation="0 90 0" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.3"></a-plane>';
+  /* Imagen del slot — color blanco y opacidad 1 para que se vea clara */
+  s+='<a-plane id="gslot-'+gi+'" width="1" height="0.8" position="-4.9 2 '+gz+'" rotation="0 90 0" material="src:'+img+galeriaFiles[gi]+';color:#FFF;opacity:1" class="clickable" data-slot-g="'+gi+'"></a-plane>';
 }
+
+/* — Letreros de conceptos en pared derecha (desordenados) — */
 var shuffled=[3,5,1,0,4,2];
 for(var li=0;li<6;li++){
   var realIdx=shuffled[li];
   var lz=-3+(li*1.3);
   s+='<a-box id="glet-'+realIdx+'" width="1" height="0.3" depth="0.05" position="4.8 2 '+lz+'" rotation="0 -90 0" material="color:#1A1A2E;emissive:'+galeriaColors[realIdx]+';emissiveIntensity:0.4" class="clickable" data-piece-g="'+realIdx+'" animation="property:position;dir:alternate;dur:2500;easing:easeInOutSine;loop:true;to:4.8 2.1 '+lz+'"></a-box>';
-  s+='<a-text value="'+galeriaNames[realIdx]+'" color="'+galeriaColors[realIdx]+'" align="center" width="2" position="4.75 2 '+lz+'" rotation="0 -90 0"></a-text>';
+  s+='<a-text value="'+galeriaNames[realIdx]+'" color="'+galeriaColors[realIdx]+'" align="center" width="2" position="4.75 2 '+lz+'" rotation="0 -90 0" class="clickable" data-piece-g="'+realIdx+'"></a-text>';
 }
 
+/* — Esferas de reaccion — */
 s+='<a-sphere radius="0.12" position="-4.5 1 -3" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.5" class="clickable" data-re="wow" animation="property:position;dir:alternate;dur:2000;easing:easeInOutSine;loop:true;to:-4.5 1.15 -3"></a-sphere>';
 s+='<a-text value="WOW" color="#FF5900" align="center" width="2" position="-4.5 0.75 -3"></a-text>';
 s+='<a-sphere radius="0.12" position="-4.5 1 -2.2" material="color:#3B82F6;emissive:#3B82F6;emissiveIntensity:0.5" class="clickable" data-re="triste" animation="property:position;dir:alternate;dur:2000;easing:easeInOutSine;loop:true;to:-4.5 1.15 -2.2"></a-sphere>';
@@ -167,6 +170,8 @@ s+='<a-sphere radius="0.12" position="-4.5 1 -0.6" material="color:#7C3AED;emiss
 s+='<a-text value="HMM" color="#7C3AED" align="center" width="2" position="-4.5 0.75 -0.6"></a-text>';
 s+='<a-sphere radius="0.12" position="-4.5 1 0.2" material="color:#F59E0B;emissive:#F59E0B;emissiveIntensity:0.5" class="clickable" data-re="idea" animation="property:position;dir:alternate;dur:2000;easing:easeInOutSine;loop:true;to:-4.5 1.15 0.2"></a-sphere>';
 s+='<a-text value="IDEA" color="#F59E0B" align="center" width="2" position="-4.5 0.75 0.2"></a-text>';
+
+/* — Mapa de ruta y señaletica — */
 s+='<a-plane width="1.5" height="1" position="4.9 3.2 0" rotation="0 -90 0" material="color:#1A1A2E;opacity:0.9"></a-plane>';
 s+='<a-text value="MAPA DE RUTA\\n[CINE]→[1.ENTRADA]→[2.TALLER]\\n→[3.OFICINA]→[4.PATIO]→[5.SALIDA]\\n\\n★ ESTAS AQUI: TALLER" color="#C8A951" align="center" width="2" position="4.85 3.2 0" rotation="0 -90 0"></a-text>';
 s+='<a-light type="point" intensity="0.6" distance="12" position="0 3.5 0" color="#FFE0C2"></a-light>';
