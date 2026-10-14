@@ -57,6 +57,8 @@ s+='<a-plane rotation="-90 0 0" width="10" height="6" position="0 0 -11" materia
 s+='<a-plane rotation="90 0 0" width="10" height="6" position="0 4 -11" material="color:#1A1A2E"></a-plane>';
 s+='<a-plane width="3.5" height="4" position="-3.25 2 -14" material="color:#4A3728"></a-plane>';
 s+='<a-plane width="3.5" height="4" position="3.25 2 -14" material="color:#4A3728"></a-plane>';
+s+='<a-plane width="3.5" height="4" position="-3.25 2 -14" rotation="0 180 0" material="color:#4A3728"></a-plane>';
+s+='<a-plane width="3.5" height="4" position="3.25 2 -14" rotation="0 180 0" material="color:#4A3728"></a-plane>';
 s+='<a-plane width="3.5" height="4" position="-3.25 2 -8" rotation="0 180 0" material="color:#4A3728"></a-plane>';
 s+='<a-plane width="3.5" height="4" position="3.25 2 -8" rotation="0 180 0" material="color:#4A3728"></a-plane>';
 s+='<a-plane width="6" height="4" position="-5 2 -11" rotation="0 90 0" material="color:#4A3728"></a-plane>';
