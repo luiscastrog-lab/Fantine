@@ -65,7 +65,7 @@ s+='<a-plane width="6" height="4" position="-5 2 -11" rotation="0 90 0" material
 s+='<a-plane width="6" height="4" position="5 2 -11" rotation="0 -90 0" material="color:#4A3728"></a-plane>';
 s+='<a-plane width="3" height="0.8" position="0 3.2 -13.95" material="color:#C8A951;emissive:#C8A951;emissiveIntensity:0.3"></a-plane>';
 s+='<a-text value="FABRIQUE MADELEINE" color="#1A1A2E" align="center" width="4" position="0 3.2 -13.9" font="mozillavr"></a-text>';
-s+='<a-box width="2" height="2.5" depth="0.15" position="0 1.25 -13.9" material="src:https://luiscastrog-lab.github.io/Fantine/z1-porton.png;emissive:#8B6914;emissiveIntensity:0.3" class="clickable" data-panel="porton"></a-box>';
+s+='<a-box width="2" height="2.5" depth="0.15" position="0 1.25 -13.9" material="src:https://luiscastrog-lab.github.io/Fantine/z1-porton1.png;emissive:#8B6914;emissiveIntensity:0.3" class="clickable" data-panel="porton"></a-box>';
 
 /* — Solicitud de Obreras + Marco LED dorado — */
 s+='<a-plane width="1.2" height="0.8" position="-3 2 -13.95" material="src:https://luiscastrog-lab.github.io/Fantine/z1-solicitud.png;emissive:#FFF;emissiveIntensity:0.2" class="clickable" data-panel="cartel"></a-plane>';
