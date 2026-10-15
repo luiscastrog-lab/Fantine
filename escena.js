@@ -140,7 +140,7 @@ s+='<a-text value="ZONA 2: TALLER DE LAS OBRERAS" color="#C8A951" align="center"
 
 /* — Galeria: 6 imagenes en pared izquierda con marcos LED — */
 var galeriaNames=['ABUSO DE PODER','JUICIO SIN COMPASION','INJUSTICIA SOCIAL','DESESPERACION','DIGNIDAD EN EL SACRIFICIO','GRANDEZA DEL ALMA'];
-var galeriaFiles=['Galeria1.png','Galeria2.png','Galeria3.png','Galeria4.jpg','Galeria5.png','Galeria6.png'];
+var galeriaFiles=['Galeria1.png','Galeria2.jpg','Galeria3.jpg','Galeria4.png','Galeria5.png','Galeria6.png'];
 var galeriaColors=['#EF4444','#7C3AED','#3B82F6','#F59E0B','#22C55E','#C8A951'];
 for(var gi=0;gi<6;gi++){
   var gz=-3+(gi*1.3);
