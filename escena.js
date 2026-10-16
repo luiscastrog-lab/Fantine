@@ -155,7 +155,8 @@ var shuffled=[3,5,1,0,4,2];
 for(var li=0;li<6;li++){
   var realIdx=shuffled[li];
   var lz=-3+(li*1.3);
-  s+='<a-box id="glet-'+realIdx+'" width="1" height="0.3" depth="0.05" position="4.8 2 '+lz+'" rotation="0 -90 0" material="color:#1A1A2E;emissive:'+galeriaColors[realIdx]+';emissiveIntensity:0.4" class="clickable" data-piece-g="'+realIdx+'"></a-box>';
+  s+='<a-plane id="glet-'+realIdx+'" width="1.2" height="0.4"
+ position="4.8 2 '+lz+'" rotation="0 -90 0" material="color:#1A1A2E;emissive:'+galeriaColors[realIdx]+';emissiveIntensity:0.4" class="clickable" data-piece-g="'+realIdx+'"></a-box>';
   s+='<a-text value="'+galeriaNames[realIdx]+'" color="'+galeriaColors[realIdx]+'" align="center" width="2" position="4.75 2 '+lz+'" rotation="0 -90 0" class="clickable" data-piece-g="'+realIdx+'"></a-text>';
 }
 
