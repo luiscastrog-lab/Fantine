@@ -99,6 +99,7 @@ window.addEventListener('DOMContentLoaded',function(){
     db.ref('online/'+mi).set({name:mn,t:Date.now()});
     db.ref('online/'+mi).onDisconnect().remove();
     document.getElementById('login').style.display='none';
+    document.getElementById('hud').style.display='block';
     if(mn.indexOf('PROF')===0){
       document.getElementById('resetBtn').style.display='inline-block';
     }
