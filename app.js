@@ -89,7 +89,7 @@ window.addEventListener('DOMContentLoaded',function(){
   ca=document.getElementById('sfx');
   bi=document.getElementById('bingo');
 
-  /* ═══ BOTON ENTRAR ═══ */
+ /* ═══ BOTON ENTRAR ═══ */
   document.getElementById('eb').addEventListener('click',function(){
     mn=document.getElementById('ni').value.trim();
     if(!mn){alert('Escribe tu nombre');return;}
@@ -99,6 +99,9 @@ window.addEventListener('DOMContentLoaded',function(){
     db.ref('online/'+mi).set({name:mn,t:Date.now()});
     db.ref('online/'+mi).onDisconnect().remove();
     document.getElementById('login').style.display='none';
+    if(mn.indexOf('PROF')===0){
+      document.getElementById('resetBtn').style.display='inline-block';
+    }
 
     /* Sonido campana al entrar */
     if(ca){ca.currentTime=0;ca.play().catch(function(){});}
