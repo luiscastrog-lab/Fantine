@@ -446,6 +446,7 @@ function placeGPiece(slotId){
   }
 }
 
+
 /* ═══ RESET SESION ═══ */
 function resetSession(){
   sessionId='s'+Date.now();
@@ -453,6 +454,36 @@ function resetSession(){
   db.ref('galeria').remove();
   puzzleComplete=0;
   galeriaComplete=0;
-  alert('Sesion reseteada');
+  selectedPiece=null;
+  selectedGPiece=null;
+
+  /* Reiniciar puzzle visual */
+  var slots=document.querySelectorAll('[data-slot]');
+  slots.forEach(function(sl){
+    sl.setAttribute('material','opacity','0.3');
+  });
+  var pieces=document.querySelectorAll('[data-piece]');
+  pieces.forEach(function(pc){
+    pc.setAttribute('visible','true');
+  });
+
+  /* Reiniciar galeria visual */
+  var gslots=document.querySelectorAll('[data-slot-g]');
+  gslots.forEach(function(sl){
+    sl.setAttribute('material','opacity','1');
+  });
+  var gpieces=document.querySelectorAll('[data-piece-g]');
+  gpieces.forEach(function(pc){
+    pc.setAttribute('visible','true');
+  });
+
+  /* Actualizar HUD */
+  var pcEl=document.getElementById('pc');
+  if(pcEl)pcEl.textContent='0';
+  var gcEl=document.getElementById('gc');
+  if(gcEl)gcEl.textContent='0';
+
+  alert('Sesion reseteada — puzzle y galeria reiniciados');
 }
+
 
