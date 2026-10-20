@@ -150,18 +150,24 @@ for(var gi=0;gi<6;gi++){
   s+='<a-plane id="gslot-'+gi+'" width="1" height="0.8" position="-4.9 2 '+gz+'" rotation="0 90 0" material="src:'+img+galeriaFiles[gi]+';color:#FFF;opacity:1" class="clickable" data-slot-g="'+gi+'"></a-plane>';
 }
 
-
-
-/* — Letreros de conceptos en pared derecha (desordenados) — */
+/* — Conceptos flotantes al CENTRO de la sala (facil de apuntar con fuse) — */
 var shuffled=[3,5,1,0,4,2];
+var conceptX=[-1.5, 0, 1.5, -1.5, 0, 1.5];
+var conceptY=[2.2, 2.2, 2.2, 1.2, 1.2, 1.2];
+var conceptZ=[-1, -1, -1, -1, -1, -1];
 for(var li=0;li<6;li++){
   var realIdx=shuffled[li];
-  var lz=-3+(li*1.3);
-  /* Plano clickable - el fuse cursor detecta este plano */
-  s+='<a-plane id="glet-'+realIdx+'" width="1.2" height="0.4" position="4.75 2 '+lz+'" rotation="0 -90 0" material="color:#1A1A2E;emissive:'+galeriaColors[realIdx]+';emissiveIntensity:0.4;side:double" class="clickable" data-piece-g="'+realIdx+'"></a-plane>';
-  /* Texto visual solamente - SIN data-piece-g, SIN class clickable */
-  s+='<a-text value="'+galeriaNames[realIdx]+'" color="'+galeriaColors[realIdx]+'" align="center" width="2" position="4.7 2 '+lz+'" rotation="0 -90 0"></a-text>';
+  var cx=conceptX[li];
+  var cy=conceptY[li];
+  var cz=conceptZ[li];
+  /* Plano flotante clickable — el fuse cursor detecta este plano */
+  s+='<a-plane id="glet-'+realIdx+'" width="1.3" height="0.5" position="'+cx+' '+cy+' '+cz+'" material="color:#1A1A2E;emissive:'+galeriaColors[realIdx]+';emissiveIntensity:0.5;side:double" class="clickable" data-piece-g="'+realIdx+'" animation="property:position;dir:alternate;dur:3000;easing:easeInOutSine;loop:true;to:'+cx+' '+(cy+0.08)+' '+cz+'"></a-plane>';
+  /* Texto visual — SIN data-piece-g, SIN class clickable */
+  s+='<a-text value="'+galeriaNames[realIdx]+'" color="'+galeriaColors[realIdx]+'" align="center" width="2.2" position="'+cx+' '+cy+' '+(cz-0.01)+'"></a-text>';
 }
+/* Cartel instrucciones galeria */
+s+='<a-plane width="2" height="0.6" position="0 2.8 -1" material="color:#1A1A2E;opacity:0.9"></a-plane>';
+s+='<a-text value="SELECCIONA UN CONCEPTO\\ny luego MIRA LA IMAGEN\\nque le corresponde" color="#C8A951" align="center" width="2.5" position="0 2.8 -1.01"></a-text>';
 
 /* — Esferas de reaccion — */
 s+='<a-sphere radius="0.12" position="-4.5 1 -3" material="color:#FF5900;emissive:#FF5900;emissiveIntensity:0.5" class="clickable" data-re="wow" animation="property:position;dir:alternate;dur:2000;easing:easeInOutSine;loop:true;to:-4.5 1.15 -3"></a-sphere>';
